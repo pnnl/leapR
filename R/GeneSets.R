@@ -151,26 +151,23 @@ permute_enrichment_in_groups <- function(geneset, targets=NULL, background=NULL,
 }
 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
-                                 mapping_column=NULL, abundance_column=NULL, randomize=F, pathway_genes=F) {
- 
+                                 mapping_column=NULL, abundance_column=NULL, randomize=F) {
+  
   resultp = c()
-	resultf = c()
-	coln=8
-	if (pathway_genes==T) coln = 9
-	
-	results = matrix(nrow=length(geneset$names), ncol=coln)
-	rownames(results) = geneset$names
-	
-	if (pathway_genes == F) colnames(results) = c("in_path", "out_path", "in_back", "out_back", "foldx", "pvalue", "Adjusted_pvalue", "Signed_AdjP")
-	else colnames(results) = c("in_path", "out_path", "in_back", "out_back", "foldx", "pvalue", "Adjusted_pvalue", "Signed_AdjP", "GeneSet")
+  resultf = c()
+  results = data.frame(row.names = geneset$names, 
+                       in_path=rep(NA_real_, length(geneset$names)), in_path_names=rep(NA_character_, length(geneset$names)), out_path=rep(NA_real_, length(geneset$names)),
+                       in_back=rep(NA_real_, length(geneset$names)), out_back=rep(NA_real_, length(geneset$names)), foldx=rep(NA_real_, length(geneset$names)),
+                       pvalue=rep(NA_real_, length(geneset$names)), Adjusted_pvalue=rep(NA_real_, length(geneset$names)), Signed_AdjP=rep(NA_real_, length(geneset$names)), 
+                       stringsAsFactors = F)
   
-  if (method == "ks") colnames(results)[c(2,4)] = c("MeanPath", "Zscore")
+  if (method == "ks") colnames(results)[c(3,5)] = c("MeanPath", "Zscore")
   
-	for (i in 1:length(geneset$names)) {
-		thisname = geneset$names[i]
-		thissize = geneset$size[i]
-		thisdesc = geneset$desc[i]
-		grouplist = geneset$matrix[i,1:thissize]
+  for (i in 1:length(geneset$names)) {
+    thisname = geneset$names[i]
+    thissize = geneset$size[i]
+    thisdesc = geneset$desc[i]
+    grouplist = geneset$matrix[i,1:thissize]
     if (randomize) {
       # choose a random set of genes as this grouplist
       # A disadvantage is that we resample for each functional group rather than
@@ -178,15 +175,16 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       #   I don't think this should be a huge problem though.
       grouplist = sample(unlist(geneset$matrix), length(grouplist))
     }
-		in_back = length(background)
-        
+    in_back = length(background)
+    
     if (method == "fishers") {
-		  enr = enrichment_by_fishers(targets, background, grouplist)
-		  p = enr$fisher$p.value
-		  f = enr$foldx
-		  mat = enr$mat
-		
-		  results[thisname,] = c(mat[1,1], mat[1,2], mat[2,1], mat[2,2], f, p, NA, NA)	
+      enr = enrichment_by_fishers(targets, background, grouplist)
+      p = enr$fisher$p.value
+      f = enr$foldx
+      mat = enr$mat
+      names = enr$in_path_names
+      
+      results[thisname, ] = list(mat[1,1], names, mat[1,2], mat[2,1], mat[2,2], f, p, NA, NA)
     }
     else if (method == "ks") {    #Kolmogorov-Smirnov test
       # in this case "background" must be the continuous variable from which grouplist can be drawn
@@ -194,29 +192,29 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       
       if (is.null(mapping_column)) {
         in_group = background[grouplist[which(grouplist %in% rownames(background))],abundance_column]
+        in_group_name = paste(intersect(grouplist, rownames(background)), collapse = ", ")
         backlist = background[,abundance_column]
-        }
+      }
       else {
         # mapping_column adds the ability to use phospho-type data where the gene name (non-unique) is in the
         #       first column and the rownames are peptide ids
         # unfortunately this means that "background" has to be the whole matrix and abundance_column
         #       has to be specified, which is a bit ugly
         in_group = background[which(background[,mapping_column] %in% grouplist),abundance_column]
+        in_group_name = paste(intersect(background[,mapping_column], grouplist), collapse = ", ")
         backlist = background[,abundance_column]
-        
-        in_names = rownames(background)[which(background[,mapping_column] %in% grouplist)]
       }
       
       in_path = length(in_group)
       
+      
       if (in_path > minsize) {
         in_back = length(backlist)
-      
+        
         enr = try(ks.test(in_group, backlist))
         if (class(enr) == "try-error") {
           enr = NA
           p.value = NA
-          #cat("oops\n")
         }
         else {
           p.value = enr$p.value
@@ -232,19 +230,18 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         else in_rank = rank(backlist)[which(background[,mapping_column] %in% grouplist)]
         
         foldx = mean(in_rank, na.rm=T)/length(backlist)
-          
+        
         zscore = (mean(in_group, na.rm=T)-mean(backlist, na.rm=T))/sd(in_group, na.rm=T)
-      
+        
         #padj = enr$p.value*length(geneset$names)
         # c("in_path", "MeanPath", "in_back", "Zscore", "foldx", "pvalue", "Adjusted_pvalue")
-        if (pathway_genes == F) results[thisname,] = c(in_path, mean(in_group, na.rm=T), in_back, zscore, foldx, p.value, NA, NA)
-        else results[thisname,] = c(in_path, mean(in_group, na.rm=T), in_back, zscore, foldx, p.value, NA, NA, paste(sort(in_names), collapse=" "))
+        results[thisname, ] = list(in_path, in_group_name, mean(in_group, na.rm=T), in_back, zscore, foldx, p.value, NA, NA)
       }
     }
   }
   results[,"Adjusted_pvalue"] = p.adjust(results[,"pvalue"], method="BH")
-  #results[,"Signed_AdjP"] = results[,"Adjusted_pvalue"]*sign(results[,"in_path"])
-	return(results)
+  results[,"Signed_AdjP"] = results[,"Adjusted_pvalue"]*sign(results[,"in_path"])
+  return(results)
 }
 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original") {
@@ -898,6 +895,7 @@ enrichment_by_fishers <- function(group, background, annotation) {
   non_group = background[!background %in% group]
   
   group_annot = sum(group %in% annotation)
+  group_annot_names = paste(intersect(group, annotation), collapse = ", ")
   non_group_annot = sum(non_group %in% annotation)
   
   group_nonannot = sum(!group %in% annotation)
@@ -913,9 +911,8 @@ enrichment_by_fishers <- function(group, background, annotation) {
   #print(test)
   #cat(sum(test), length(background), "\n")
   
-  # pretty sure this "fold" is the odds ratio
   fold = per[1]/per[2]
   
-  return(list(fisher=ft, mat=test, foldx=fold))
+  return(list(fisher=ft, mat=test, foldx=fold, in_path_names=group_annot_names))
 }
 
