@@ -1,5 +1,11 @@
-# ClusterEnrichment
-
+#' Cluster Enrichment
+#'
+#' @param hclust is...description of function argument
+#' @param annotation is...description of function argument
+#' @param cutrange is...description of function argument
+#'
+#' @export
+#'
 cluster_enrichment <- function(hclust, annotation, cutrange=2:10) {
 	results = list()
 	for (i in cutrange) {
