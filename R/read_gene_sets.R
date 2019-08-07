@@ -1,8 +1,20 @@
-#'read_gene_sets
+#' read_gene_sets
+#'
+#' read_gene_sets function description is...
+#'
+#' @param gsfile is...
+#' @param gene.labels defaults to NA
+#' @param gs.size.threshold.min defaults to 5
+#' @param gs.size.threshold.max defaults to 15000
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
-
+#' @export
+#'
 
 read_gene_sets <- function(gsfile, gene.labels=NA, gs.size.threshold.min=5, gs.size.threshold.max=15000) {
   # Read input gene set database

@@ -1,6 +1,19 @@
-#'coxph_expression
+#' coxph_expression
+#'
+#' coxph_expression function description is...
+#'
+#' @param survivalmatrix is...
+#' @param statusvar is...
+#' @param timevar is...
+#' @param startcolumn is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 coxph_expression <- function(survivalmatrix, statusvar, timevar, startcolumn) {

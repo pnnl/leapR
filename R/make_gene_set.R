@@ -1,6 +1,18 @@
-#'make_gene_set
+#' make_gene_set
+#'
+#' make_gene_set function description is...
+#'
+#' @param name is...
+#' @param desc is...
+#' @param genelist is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 make_gene_set <- function(name, desc, genelist) {

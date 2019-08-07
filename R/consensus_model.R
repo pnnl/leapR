@@ -1,5 +1,18 @@
-#'consensus_model
+#' consensus_model
 #'
+#' consensus_model function description is...
+#'
+#' @param model_list is...
+#' @param return.all default is TRUE
+#' @param filter_count default is NULL
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
+#'
+#' @export
 #'
 
 consensus_model = function(model_list, return.all=T, filter_count=NULL) {

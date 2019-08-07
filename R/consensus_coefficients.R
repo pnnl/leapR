@@ -1,6 +1,21 @@
-#'consensus_coefficients
+#' consensus_coefficients
+#'
+#' consensus_coefficients function description is...
+#'
+#' @param fitcv is...
+#' @param level is...
+#' @param return.all default is TRUE
+#' @param filter_count default is NULL
+#' @param meanweight default is NULL
+#' @param subsample default is NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 consensus_coefficients = function(fitcv, level, return.all=T, filter_count=NULL, meanweight=NULL, subsample=NULL) {

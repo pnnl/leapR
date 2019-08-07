@@ -1,9 +1,19 @@
-#'gene_set_heatmap
+#' gene_set_heatmap
+#'
+#' gene_set_heatmap function description is...
+#'
+#' @param inmatrix is...
+#' @param colsets default is an NA
+#' @param filter defualt is 1.5
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
-
 
 gene_set_heatmap <- function(inmatrix, colsets=NA, filter=1.5) {
   # this will generate a matrix identical to the one above, but

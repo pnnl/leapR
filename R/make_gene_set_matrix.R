@@ -1,7 +1,17 @@
-#'make_gene_set_matrix
+#' make_gene_set_matrix
+#'
+#' make_gene_set_matrix function description is...
+#'
+#' @param database is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
-
+#' }
+#'
+#' @export
+#'
 
 make_gene_set_matrix <- function(database) {
   # takes a gene set database structure and returns

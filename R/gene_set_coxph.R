@@ -1,6 +1,31 @@
-#'gene_set_coxph
+#' gene_set_coxph
+#'
+#' gene_set_coxph function description is...
+#'
+#' @param data is...
+#' @param survivaldata is...
+#' @param timevar is...
+#' @param statusvar is...
+#' @param geneset is...
+#' @param min.geneset.size default is 6
+#' @param num.repeats default is 10
+#' @param randomize.order logical indicates whether order should be randomized, default is FALSE
+#' @param randomize.genes logical indicates whether genes should be randomized, default is FALSE
+#' @param match.set.size logical, defaults to FALSE
+#' @param extra.features defaults to NULL
+#' @param sigthresh defaults to 0.05
+#' @param translation_table defaults to NULL
+#' @param training.set.ratio defaults to 0.75
+#' @param sum.sig logical, defaults to FALSE
+#' @param sig.vote logical, defaults to FALSE
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 gene_set_coxph <- function(data, survivaldata, timevar, statusvar, geneset,

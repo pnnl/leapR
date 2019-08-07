@@ -1,6 +1,18 @@
-#'overlap_gene_sets
+#' overlap_gene_sets
+#'
+#' overlap_gene_sets function description is...
+#'
+#' @param geneset is...
+#' @param set1 is...
+#' @param set2 is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 overlap_gene_sets <- function(geneset, set1, set2) {

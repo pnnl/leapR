@@ -1,7 +1,25 @@
-#'cross_validation_matrix
+#' cross_validation_matrix
+#'
+#' cross_validation_matrix function description is...
+#'
+#' @param validation_dataset is...
+#' @param survivaldata is...
+#' @param timevar is...
+#' @param statusvar is...
+#' @param fitcv is...
+#' @param data is...
+#' @param consensus_foldx default is 25
+#' @param consensus_maxsteps default is 100
+#' @param meanweight default is NULL
+#' @param ... is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 cross_validation_matrix = function(validation_dataset, survivaldata, timevar, statusvar,

@@ -1,9 +1,23 @@
-#'build_predictor_save
+#' build_predictor_save
+#'
+#' build_predictor_save function description is...
+#'
+#' @param fit is...
+#' @param data is...
+#' @param level default is NULL
+#' @param signature default is NULL
+#' @param genesymbols_from default is TRUE
+#' @param genesymbols_to default is NULL
+#' @param browser default is FALSE
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
-
 
 build_predictor_save = function(fit, data, level=NULL, signature=NULL, genesymbols_from=TRUE, genesymbols_to=NULL, browser=F) {
   if (is.null(signature)) {

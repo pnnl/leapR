@@ -1,7 +1,27 @@
-#'enrichment_in_abundance
+#' enrichment_in_abundance
+#'
+#' enrichment_in_abundance function description is...
+#'
+#' @param geneset is...
+#' @param abundance is...
+#' @param mapping_column defaults to NULL
+#' @param abundance_column defaults to NULL
+#' @param fdr defaults to 0
+#' @param matchset defaults to NULL
+#' @param longform is a logical. Defaults to FALSE
+#' @param sample_comparison defaults to NULL
+#' @param background_comparison defaults to NULL
+#' @param min_p_threshold defaults to NULL
+#' @param tag defaults to an NA
+#' @param sample_n defaults to NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abundance_column=NULL,

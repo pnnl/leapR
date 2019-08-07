@@ -1,6 +1,19 @@
-#'cluster_enrichment
+#' cluster_enrichment
+#'
+#' Cluster enrichment function description...
+#'
+#' @param database is...
+#' @param clusters is...
+#' @param background default is an NA
+#' @param sigfilter default is .05
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 cluster_enrichment <- function(database, clusters, background=NA, sigfilter=0.05) {

@@ -1,5 +1,16 @@
-#'average_redundant_rows
+#' average_redundant_rows
 #'
+#' average_redundant_rows function description is...
+#'
+#' @param data is a...
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
+#'
+#' @export
 #'
 
 average_redundant_rows <- function(data) {

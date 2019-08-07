@@ -1,6 +1,17 @@
-#'extract_gene_set
+#' extract_gene_set
+#'
+#' extract_gene_set function description is...
+#'
+#' @param geneset is...
+#' @param setlist is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 extract_gene_set <- function(geneset, setlist) {

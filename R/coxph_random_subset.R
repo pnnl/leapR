@@ -1,6 +1,21 @@
-#'coxph_random_subset
+#' coxph_random_subset
+#'
+#' coxph_random_subset function description...
+#'
+#' @param survivalmatrix is...
+#' @param statusvar is...
+#' @param timevar is...
+#' @param startcolumn is...
+#' @param size default is 5
+#' @param ntimes default is 50
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 coxph_random_subset <- function(survivalmatrix, statusvar, timevar, startcolumn, size=5, ntimes=50) {

@@ -1,6 +1,20 @@
-#'rpf_coxph_formatdata
+#' rpf_coxph_formatdata
+#'
+#' rpf_coxph_formatdata function description is...
+#'
+#' @param data is...
+#' @param survdata is...
+#' @param timevar is...
+#' @param statusvar is...
+#' @param extra.features defaults to NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 rpf_coxph_formatdata <- function(data, survdata, timevar, statusvar, extra.features=NULL) {

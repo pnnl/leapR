@@ -1,6 +1,42 @@
-#'gene_set_rpf
+#' gene_set_rpf
+#'
+#' gene_set_rpf function description is...
+#'
+#' @param data is...
+#' @param survivaldata is...
+#' @param timevar is...
+#' @param statusvar is...
+#' @param geneset is...
+#' @param load.saved.file logical, defaults to TRUE
+#' @param only.load.files logical, defaults to FALSE
+#' @param gsprefix defaults to ''
+#' @param min.geneset.size defaults to 6
+#' @param max.steps defaults to 30
+#' @param num.repeats defaults to 0
+#' @param pre.pvalue.threshold defaults to NULL
+#' @param validation.data defaults to NULL
+#' @param make.validata defaults to TRUE
+#' @param collect.validation.pvalues defaults to FALSE
+#' @param p.value.threshold defaults to 0.05
+#' @param randomize.order logical, defaults to FALSE
+#' @param randomize.genes logical, defaults to FALSE
+#' @param match.set.size logical, defaults to FALSE
+#' @param training.set.ratio defaults to 0.5
+#' @param extra.features defaults to NULL
+#' @param generator.mode logical, defaults to FALSE
+#' @param save.cv.pvalues logical defaults to FALSE
+#' @param translation_table defaults to NULL
+#' @param signature.level defaults to 20
+#' @param sig.vote logical defaults to FALSE
+#' @param ... is ...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 gene_set_rpf <- function(data, survivaldata, timevar, statusvar, geneset,

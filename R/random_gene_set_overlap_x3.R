@@ -1,7 +1,22 @@
-#'random_gene_set_overlap_x3
+#' random_gene_set_overlap_x3
+#'
+#' random_gene_set_overlap_x3 function description is...
+#'
+#' @param list_1 is...
+#' @param list_2 is...
+#' @param list_3 is...
+#' @param n1 is...
+#' @param n2 is...
+#' @param n3 is...
+#' @param rep defaults to 1000
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 random_gene_set_overlap_x3 <- function(list_1, list_2, list_3, n1, n2, n3, rep=100) {

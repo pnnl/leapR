@@ -1,6 +1,17 @@
-#'clinical_data_table_1
+#' clinical_data_table_1
+#'
+#' clinical_data_table_1 function description is...
+#'
+#' @param patientlist is a list...
+#' @param clinical_data is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 clinical_data_table_1 = function(patientlist, clinical_data) {

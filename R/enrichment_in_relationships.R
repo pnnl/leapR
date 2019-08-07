@@ -1,7 +1,21 @@
-#'enrichment_in_relationships
+#' enrichment_in_relationships
+#'
+#' enrichment_in_relationships function description is...
+#'
+#' @param geneset is...
+#' @param relationships is...
+#' @param idmap defaults to an NA
+#' @param tag defaults to an NA
+#' @param mode defaults to 'original'
+#'
+#' @examples
+#' dontrun{
 #'
 #'
-
+#' }
+#'
+#' @export
+#'
 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original") {
   # for each category in geneset calculates enrichment of within-group
