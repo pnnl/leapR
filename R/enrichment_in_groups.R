@@ -1,8 +1,24 @@
-#'enrichment_in_groups
+#' enrichment_in_groups
+#'
+#' enrichment_in_groups function description is...
+#'
+#' @param genesets is...
+#' @param targets defaults to NULL
+#' @param background defaults to NULL
+#' @param method defaults to 'fishers'
+#' @param minsize defaults to 5
+#' @param mapping_column defaults to NULL
+#' @param abundance_column defaults to NULL
+#' @param randomize is a logical, defaults to FALSE
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
-
+#' @export
+#'
 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
                                  mapping_column=NULL, abundance_column=NULL, randomize=F) {

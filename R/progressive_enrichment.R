@@ -1,6 +1,22 @@
-#'progressive_enrichment
+#' progressive_enrichment
+#'
+#' progressive_enrichment function description is...
+#'
+#' @param geneset is...
+#' @param rankedlist is...
+#' @param decreasing defaults to TRUE
+#' @param ntimes defaults to 10
+#' @param nstep defaults to 10
+#' @param startat defaults at 10
+#' @param endat defaults to .5
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 progressive_enrichment <- function(geneset, rankedlist, decreasing=T, ntimes=10, nstep=10, startat=10, endat=0.5) {

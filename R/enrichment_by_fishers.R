@@ -1,5 +1,18 @@
-#'enrichment_by_fishers
+#' enrichment_by_fishers
 #'
+#' enrichment_by_fishers function description is...
+#'
+#' @param group is...
+#' @param background is...
+#' @param annotation is...
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
+#'
+#' @export
 #'
 #'
 

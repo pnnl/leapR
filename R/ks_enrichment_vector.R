@@ -1,10 +1,21 @@
-#'ks_enrichment_vector
+#' ks_enrichment_vector
+#'
+#' ks_enrichment_vector function description is...
+#'
+#' @param groupgeneids is...
+#' @param backgroundgenes is...
+#' @param map_column defaults to 0
+#' @param sort_col defaults to 1
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 #'
-#'
-
 
 ks_enrichment_vector <- function(groupgeneids, backgroundgenes, map_column=0, sort_col=1) {
   # returns a vector that is length(backgroundgenes) long of the

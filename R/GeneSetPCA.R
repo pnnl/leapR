@@ -1,11 +1,19 @@
 #' pca cluster distinctness
 #'
+#' pca_cluster_distinctness function discription is...
+#'
 #' @param geneset is...description of function argument
 #' @param datatable is...description of function argument
 #' @param groups is...description of function argument
 #' @param labels is...description of function argument
 #' @param includeall is...description of function argument
 #' @param mode is...description of function argument
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
 #'
 #' @export
 #'

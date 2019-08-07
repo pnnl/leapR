@@ -1,7 +1,17 @@
-#'pathway_model_predictor_matrix
+#' pathway_model_predictor_matrix
+#'
+#' pathway_model_predictor_matrix function description is...
+#'
+#' @param pathfit is...
+#' @param validation_data defaults to NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 pathway_model_predictor_matrix = function(pathfit, validation_data=NULL) {

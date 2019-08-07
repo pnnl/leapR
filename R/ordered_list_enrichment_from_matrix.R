@@ -1,6 +1,23 @@
-#'ordered_list_enrichment_from_matrix
+#' ordered_list_enrichment_from_matrix
+#'
+#' ordered_list_enrichment_from_matrix function description is...
+#'
+#' @param geneset is...
+#' @param datamatrix is...
+#' @param starting_col defaults to NULL
+#' @param ending_col defaults to NULL
+#' @param idcolumn defaults to NULL
+#' @param threshold defaults to 0.02
+#' @param background_list defaults to NULL
+#' @param enrichment_threshold defaults to 0.05
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 ordered_list_enrichment_from_matrix <- function(geneset, datamatrix, starting_col=NULL, ending_col=NULL, idcolumn=NULL,

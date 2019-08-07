@@ -1,8 +1,19 @@
-#'correlation_enrichment
+#' correlation_enrichment
+#'
+#' correlation_enrichment function description is...
+#'
+#' @param geneset is...
+#' @param abundance is...
+#' @param mapping_column default is NA
+#' @param tag default is NA
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
-#'
+#' @export
 #'
 
 correlation_enrichment <- function(geneset, abundance, mapping_column=NA, tag=NA) {

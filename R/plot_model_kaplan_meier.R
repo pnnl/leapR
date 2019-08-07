@@ -1,7 +1,27 @@
-#'plot_model_kaplan_meier
+#' plot_model_kaplan_meier
+#'
+#' plto_model_kaplan_meier function description is...
+#'
+#' @param fit is...
+#' @param data is...
+#' @param level is...
+#' @param signature defaults to NULL
+#' @param prediction defaults to NULL
+#' @param training.set defaults to NULL
+#' @param group.ratios defaults to c(0.5,0.5)
+#' @param plotthis defaults to TRUE
+#' @param extra defaults to NULL
+#' @param return.survival defaults to FALSE
+#' @param genesymbols_from defaults to TRUE
+#' @param ... is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 plot_model_kaplan_meier = function(fit, data, level, signature=NULL, prediction=NULL,

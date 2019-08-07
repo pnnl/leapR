@@ -1,6 +1,18 @@
-#'bottleneck_overlap
+#' bottleneck_overlap
+#'
+#' bottleneck_overlap function description is...
+#'
+#' @param set_1 is...
+#' @param set_2 is...
+#' @param percentage default is .2
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 bottleneck_overlap <- function(set_1, set_2, percentage=0.2) {

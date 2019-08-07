@@ -1,6 +1,23 @@
-#'permute_enrichment_in_groups
+#' permute_enrichment_in_groups
+#'
+#' permute_enrichment_in_groups function description is...
+#'
+#' @param geneset is...
+#' @param targets defaults to NULL
+#' @param background defaults to NULL
+#' @param method defaults to 'fishers'
+#' @param minsize defaults to 5
+#' @param mapping_column defaults to NULL
+#' @param abundance_column defaults to NULL
+#' @param ntimes defaults to 100
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 permute_enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,

@@ -1,6 +1,19 @@
-#'group_membership_matrix
+#' group_membership_matrix
+#'
+#' group_membership_matrix function description is...
+#'
+#' @param geneset is...
+#' @param pathwayname is...
+#' @param sources is...
+#' @param mode defaults to 'original'
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 group_membership_matrix <- function(geneset, pathwayname, sources, mode="original") {

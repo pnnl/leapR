@@ -1,6 +1,21 @@
-#'coxph_subset
+#' coxph_subset
+#'
+#' coxph_subset function description is...
+#'
+#' @param survivalmatrix is...
+#' @param statusvar default is 'status'
+#' @param timevar defult is 'time'
+#' @param columns is...
+#' @param rows is...
+#' @param verbose default is FALSE
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 coxph_subset <- function(survivalmatrix, statusvar="status", timevar="time", columns, rows, verbose=F) {

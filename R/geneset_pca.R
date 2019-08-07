@@ -1,9 +1,20 @@
-#'geneset_pca
+#' geneset_pca
+#'
+#' geneset_pca function description is...
+#'
+#' @param geneset is...
+#' @param datatable is...
+#' @param minsize defaults to 5
+#' @param ncomp defaults to 1
+#'
+#'@examples
+#' dontrun{
 #'
 #'
+#' }
 #'
-
-
+#' @export
+#'
 
 geneset_pca <- function(geneset, datatable, minsize=5, ncomp=1) {
   out = list()

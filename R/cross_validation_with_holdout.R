@@ -1,6 +1,29 @@
-#'cross_validation_with_holdout
+#' cross_validation_with_holdout
+#'
+#' cross_validation_with_holdout function description is...
+#'
+#' @param data is...
+#' @param survivaldata is...
+#' @param timevar is...
+#' @param statusvar is...
+#' @param consensus_holdout default is 0.5
+#' @param validation_holdout default is 0.3333
+#' @param validation_dataset default is NA
+#' @param foldx default is 5
+#' @param consensus_foldx default is 25
+#' @param consensus_maxsteps default is 100
+#' @param consensus_level defaul is 40
+#' @param consensus_count_filter default is 4
+#' @param load.saved.file Logical indicating whether or not to load saved file. Default is TRUE
+#' @param ... is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 cross_validation_with_holdout = function(data, survivaldata, timevar, statusvar,

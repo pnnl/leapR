@@ -1,6 +1,18 @@
-#'print.model
+#' print.model
+#'
+#' print.model function description is...
+#'
+#' @param fit is...
+#' @param level defaults to NULL
+#' @param pvalues defaults to NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 print.model <- function(fit, level=NULL, pvalues=NULL) {

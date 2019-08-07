@@ -1,5 +1,19 @@
-#'random_overlap
+#' random_overlap
 #'
+#' random_overlap function description is...
+#'
+#' @param items is...
+#' @param counts is...
+#' @param N defaults to 3
+#' @param rep defaults to 100
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
+#'
+#' @export
 #'
 
 random_overlap <- function(items, counts=c(10,50,100), N=3,rep=100) {

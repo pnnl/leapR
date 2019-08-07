@@ -1,6 +1,18 @@
-#'gene_set_overlap
+#' gene_set_overlap
+#'
+#' gene_set_overlap function description is...
+#'
+#' @param inmatrix is...
+#' @param colsets defaults to an NA
+#' @param filter defaults to 1.5
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 gene_set_overlap <- function(inmatrix, colsets=NA, filter=1.5) {

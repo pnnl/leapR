@@ -1,5 +1,21 @@
-#'enrichment_redundancy_matrix
+#' enrichment_redundancy_matrix
 #'
+#' enrichment_redundancy_matrix function description is...
+#'
+#' @param geneset is...
+#' @param dataframe defaults to NA
+#' @param enrichment_results defaults to NA
+#' @param significance_threshold defaults to NA
+#' @param pathway_list defaults to NA
+#' @param method default is 'jaccard'
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
+#'
+#' @export
 #'
 
 enrichment_redundancy_matrix <- function(geneset, dataframe=NA, enrichment_results=NA, significance_threshold=NA,

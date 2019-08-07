@@ -1,6 +1,21 @@
-#'pvalue_from_random_gene_set_overlap_db
+#' pvalue_from_random_gene_set_overlap_db
+#'
+#' pvalue_from_random_gene_set_overlap_db function description is...
+#'
+#' @param inmatrix_1 is...
+#' @param inmatrix_2 is...
+#' @param names_1 is...
+#' @param names_2 is...
+#' @param rep defaults to 1000
+#' @param longform defaults to FALSE
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 pvalue_from_random_gene_set_overlap_db <- function(inmatrix_1, inmatrix_2, names_1, names_2, rep=1000, longform=F) {

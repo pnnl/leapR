@@ -1,7 +1,17 @@
-#'cv_selected_variable_analysis
+#' cv_selected_variable_analysis
+#'
+#' cv_selected_varibale_analysis function description is...
+#'
+#' @param fitcv is...
+#' @param level is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 cv_selected_variable_analysis = function(fitcv, level) {

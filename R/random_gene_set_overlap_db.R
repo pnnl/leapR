@@ -1,7 +1,20 @@
-#'random_gene_set_overlap_db
+#' random_gene_set_overlap_db
+#'
+#' random_gene_set_overlap_db function description is...
+#'
+#' @param inmatrix_1 is...
+#' @param inmatrix_2 is...
+#' @param n1 is...
+#' @param n2 is...
+#' @param rep defaults to 100
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 random_gene_set_overlap_db <- function(inmatrix_1, inmatrix_2, n1, n2, rep=100) {

@@ -1,6 +1,20 @@
-#'random_gene_set_overlap
+#' random_gene_set_overlap
+#'
+#' random_gene_set_overlap function description is...
+#'
+#' @param inmatrix is...
+#' @param colsets defaults to NA
+#' @param filter defaults to 1.5
+#' @param N defaults to NA
+#' @param rep defaults to 1000
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 random_gene_set_overlap <- function(inmatrix, colsets=NA, filter=1.5, N=NA, rep=100) {

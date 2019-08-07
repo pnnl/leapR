@@ -1,6 +1,21 @@
-#'pairwise_overlap_enrichment
+#' pairwise_overlap_enrichment
+#'
+#' pairwise_overlap_enrichment function description is...
+#'
+#' @param geneset is...
+#' @param datamatrix is...
+#' @param condition1 is...
+#' @param condition2 is...
+#' @param mapping_column defaults to NULL
+#' @param subsample_components defaults to NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 pairwise_overlap_enrichment <- function(geneset, datamatrix, condition1, condition2, mapping_column=NULL,

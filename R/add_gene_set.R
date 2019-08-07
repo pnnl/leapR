@@ -1,8 +1,18 @@
-#'add_gene_set
+#' add_gene_set
+#'
+#' add_gene_set function description...
+#'
+#' @param geneset is...
+#' @param name default is an NA
+#' @param genelist default is an NA
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
-#'
+#' @export
 
 
 add_gene_set <- function(geneset, name=NA, desc=NA, genelist=NA) {

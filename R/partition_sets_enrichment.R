@@ -1,7 +1,22 @@
-#'partition_sets_enrichment
+#' partition_sets_enrichment
+#'
+#' partiton_sets_enrichment function description is...
+#'
+#' @param partition_sets is...
+#' @param geneset is...
+#' @param abundance is...
+#' @param mapping_column defaults to NULL
+#' @param abundance_column defaults to NULL
+#' @param sample_comparison defaults to NULL
+#' @param background_comparison defaults to NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 partition_sets_enrichment <- function(partition_sets, geneset, abundance, mapping_column=NULL, abundance_column=NULL,

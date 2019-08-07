@@ -1,6 +1,28 @@
-#'plot_expression
+#' plot_expression
+#'
+#' plot_expression function description is...
+#'
+#' @param ratios is...
+#' @param rowname is...
+#' @param pfactor defaults to 1
+#' @param xvector defaults to NA
+#' @param xfactor defaults to 0
+#' @param title defaults to NA
+#' @param condrange is...
+#' @param trendline defaults to FALSE
+#' @param trendcolor defaults to 'red'
+#' @param color defaults to 'grey'
+#' @param legend defaults to FALSE
+#' @param yr defaults to NA
+#' @param mode defaults to "new"
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 plot_expression <- function(ratios, rowname, pfactor=1, xvector=NA, xfactor=0, title=NA, condrange=c(), trendline=FALSE, trendcolor="red", color="grey", legend=FALSE, yr=NA, mode="new") {

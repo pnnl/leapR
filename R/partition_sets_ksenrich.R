@@ -1,6 +1,19 @@
-#'partition_sets_ksenrich
+#' partition_sets_ksenrich
+#'
+#' partition_sets_ksenrich function description is...
+#'
+#' @param partition_sets is...
+#' @param geneset is...
+#' @param abundance is...
+#' @param mapping_column defaults to NULL
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
+#'
+#' @export
 #'
 
 partition_sets_ksenrich <- function(partition_sets, geneset, abundance, mapping_column=NULL) {

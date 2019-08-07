@@ -1,8 +1,20 @@
-#'survival_formodel
+#' survival_formodel
+#'
+#' survival_formodel function description is...
+#'
+#' @param genename is...
+#' @param leapstruct is...
+#' @param dataset is...
+#' @param consensusmat is...
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
-
+#' @export
+#'
 
 survival_formodel = function(genename, leapstruct, dataset, consensusmat) {
   winner = which.min(pvalues_complete[genename,])

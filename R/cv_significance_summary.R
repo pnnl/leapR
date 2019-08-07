@@ -1,7 +1,19 @@
-#'cv_significance_summary
+#' cv_significance_summary
+#'
+#' cv_significance_summary function description is...
+#'
+#' @param mintable is...
+#' @param results_struct is...
+#' @param pthresh defaults to 0.05
+#' @param return.percentage is a logical indicating whether percentage should be returned. Defaults to TRUE
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
+#' @export
 #'
 
 cv_significance_summary <- function(mintable, results_struct, pthresh=0.05, return.percentage=T) {

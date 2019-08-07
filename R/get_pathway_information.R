@@ -1,5 +1,18 @@
-#'get_pathway_information
+#' get_pathway_information
 #'
+#' get_pathway_information function description is...
+#'
+#' @param geneset is...
+#' @param path is...
+#' @param remove.tags logical, defaults to FALSE
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
+#'
+#' @export
 #'
 
 get_pathway_information <- function(geneset, path, remove.tags=F) {

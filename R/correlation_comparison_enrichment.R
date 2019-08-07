@@ -1,9 +1,23 @@
-#'correlation_comparison_enrichment
+#' correlation_comparison_enrichment
+#'
+#' correlation_comparison_enrichment function description is...
+#'
+#' @param geneset is...
+#' @param abundance is...
+#' @param set1 is...
+#' @param set2 is...
+#' @param mapping_column default is an NA
+#' @param tag default is an NA
+#' @param mode default is 'original'
+#'
+#' @examples
+#' dontrun{
 #'
 #'
+#' }
 #'
-
-
+#' @export
+#'
 
 correlation_comparison_enrichment <- function(geneset, abundance, set1, set2, mapping_column=NA, tag=NA, mode="original") {
   allgenes = unique(unlist(as.list(geneset$matrix)))
