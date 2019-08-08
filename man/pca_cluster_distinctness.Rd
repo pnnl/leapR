@@ -21,5 +21,12 @@ pca_cluster_distinctness(geneset, datatable, groups, labels = NULL,
 \item{mode}{is...description of function argument}
 }
 \description{
-pca cluster distinctness
+pca_cluster_distinctness function discription is...
+}
+\examples{
+dontrun{
+
+
+}
+
 }
