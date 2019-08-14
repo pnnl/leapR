@@ -21,6 +21,23 @@ correlation_enrichment function description is...
 }
 \examples{
 dontrun{
+        library(readr)
+        data("protdata")
+        data("shortlist")
+        data("longlist")
+
+        #we have to update the colnames slightly to match what we have in the patient groups
+        colnames(protdata) = sapply(colnames(protdata), function (r) {a=strsplit(r,"\\\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
+
+        #read in the pathways
+        ncipid = read_gene_sets(gsfile = "/example/NCI_PID_genesymbol_corrected.gmt")
+
+        #this is using all the patients regardless of survival time
+        protdata.enrichment.correlation = correlation_enrichment(ncipid, protdata)
+
+        #now we'll do two more- one for the short survivors and one for the long survivors
+        protdata.enrichment.correlation.short = correlation_enrichment(ncipid, protdata[,shortlist])
+        protdata.enrichment.correlation.long = correlation_enrichment(ncipid, protdata[,longlist])
 
 
 }

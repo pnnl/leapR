@@ -17,7 +17,17 @@
 #'
 #' @examples
 #' dontrun{
+#'         data("shortlist")
+#'         data("longlist")
 #'
+#'         #in this example we lump a bunch of patients together (the 'short survivors') and compare them to another group (the 'long survivors')
+#'         protdata.enrichment.svl = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist, sample_comparison=longlist)
+#'
+#'         #I generally output these files and then view them in Excel afterward
+#'         write.table(protdata.enrichment.svl, file="protdata.enrichment.svl.txt", sep="\t", quote=F)
+#'
+#'         #another application is to compare just one patient against another (this would be the equivalent of comparing one time point to another)
+#'         protdata.enrichment.svl.ovo = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist[1], sample_comparison=longlist[1])
 #'
 #' }
 #'
