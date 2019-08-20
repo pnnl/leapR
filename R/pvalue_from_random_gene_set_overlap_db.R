@@ -15,7 +15,6 @@
 #'
 #' }
 #'
-#' @export
 #'
 
 pvalue_from_random_gene_set_overlap_db <- function(inmatrix_1, inmatrix_2, names_1, names_2, rep=1000, longform=F) {

@@ -11,13 +11,6 @@
 #' @param abundance_column defaults to NULL
 #' @param ntimes defaults to 100
 #'
-#' @examples
-#' dontrun{
-#'
-#'
-#' }
-#'
-#' @export
 #'
 
 permute_enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
