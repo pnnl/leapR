@@ -28,10 +28,3 @@ permute_enrichment_in_groups(geneset, targets = NULL,
 \description{
 permute_enrichment_in_groups function description is...
 }
-\examples{
-dontrun{
-
-
-}
-
-}

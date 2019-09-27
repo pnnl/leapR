@@ -12,3 +12,4 @@ Imports:
     stats,
     readr,
     survival
+LinkingTo: readr

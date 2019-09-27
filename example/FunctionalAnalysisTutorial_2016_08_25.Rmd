@@ -7,6 +7,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(mcdeR)
+library(readr)
 source("../R/GeneSets.R")
 ```
 
@@ -175,7 +177,7 @@ Description: In the example below I'm simply calculating enrichment for one of t
 
 Interpretation: Similar to the other examples be cautious of pathways with good p values that consider a small number of pathway numbers (in_path column). The MeanPath column gives a measure that shows how far above or below the median the mean rank of the pathway is (normalized to -1,1). The Zscore column is a Zscore calculated on the basis of the mean percentage rank of the pathway relative to the mean of the entire list divided by the standard deviation of the pathway rank. The foldx column expresses the mean percentage rank of the pathway relative to the entire list - closer to 0 is higher in the list and closer to 1 is closer to the bottom of the list. Each of these should give consistent results, but will be somewhat different.
 
-``` {r ks, echo=FALSE}
+``` {r ks, echo=FALSE, warning = F}
 # This is how you calculate enrichment in a ranked list (for example from topology)
 prodata.enrichment.ks = enrichment_in_groups(ncipid, background=protdata, method="ks",
                                              abundance_column=shortlist[1])
