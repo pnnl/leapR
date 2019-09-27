@@ -2,7 +2,7 @@
 #'
 #' read_gene_sets function description is...
 #'
-#' @param gsfile is...
+#' @param gsfile is a gene set file, for example a .gmt file (gene matrix transposed file format)
 #' @param gene.labels defaults to NA
 #' @param gs.size.threshold.min defaults to 5
 #' @param gs.size.threshold.max defaults to 15000

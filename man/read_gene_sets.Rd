@@ -8,7 +8,7 @@ read_gene_sets(gsfile, gene.labels = NA, gs.size.threshold.min = 5,
   gs.size.threshold.max = 15000)
 }
 \arguments{
-\item{gsfile}{is...}
+\item{gsfile}{is a gene set file, for example a .gmt file (gene matrix transposed file format)}
 
 \item{gene.labels}{defaults to NA}
 
