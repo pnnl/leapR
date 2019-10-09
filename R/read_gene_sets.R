@@ -71,5 +71,9 @@ read_gene_sets <- function(gsfile, gene.labels=NA, gs.size.threshold.min=5, gs.s
   gs.names <- temp.names[1:Ng]
   gs.desc <- temp.desc[1:Ng]
   size.G <- temp.size.G[1:Ng]
-  return(list(names=gs.names, desc=gs.desc, sizes=size.G, matrix=gs))
+
+  result = list(names=gs.names, desc=gs.desc, sizes=size.G, matrix=gs)
+
+  class(result) = c("geneset_data", "list")
+  return(result)
 }
