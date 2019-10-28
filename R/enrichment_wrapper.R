@@ -11,11 +11,11 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
                                significance_threshold=NA, pathway_list=NA, datamatrix=NULL, condition1=NULL, condition2=NULL,
                                subsample_components=NULL, ntimes=100){
 
-  #check that geneset is of correct class
-  #if(!inherits(geneset, "geneset_data")) stop("geneset must be of class 'geneset_data")
 
   #check that enrichment_method is one of the designated methods
-  if(!is.element(enrichment_method, c("correlation_comparison_enrichment", "correlation_enrichment", "difference_enrichment_in_relationships", "enrichment_in_abundance", "enrichment_in_groups", "enrichment_in_relationships", "enrichment_redundancy_matrix", "pairwise_overlap_enrichment", "permute_enrichment_in_groups"))) stop("enrichment_method must be one of the methods designated in the function documentation")
+  if(!is.element(enrichment_method, c("correlation_comparison_enrichment", "correlation_enrichment", "difference_enrichment_in_relationships",
+                                      "enrichment_in_abundance", "enrichment_in_groups", "enrichment_in_relationships",
+                                      "enrichment_redundancy_matrix", "pairwise_overlap_enrichment", "permute_enrichment_in_groups"))) stop("enrichment_method must be one of the methods designated in the function documentation")
 
   #checking each enrichment method
   if(enrichment_method == "correlation_comparison_enrichment"){
