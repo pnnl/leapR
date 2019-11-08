@@ -101,14 +101,20 @@ longlist = read.table("long_list.txt", sep="\t", stringsAsFactors=F)[,1]
 
 # in this example we lump a bunch of patients together (the 'short survivors') and compare
 #   them to another group (the 'long survivors')
-protdata.enrichment.svl = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist, sample_comparison=longlist)
+#protdata.enrichment.svl = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist, sample_comparison=longlist)
+
+###using enrichment_wrapper function
+protdata.enrichment.svl = enrichment_wrapper(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)
 
 # I generally output these files and then view them in Excel afterward
 write.table(protdata.enrichment.svl, file="protdata.enrichment.svl.txt", sep="\t", quote=F)
 
 # another application is to compare just one patient against another (this would be the
 #     equivalent of comparing one time point to another)
-protdata.enrichment.svl.ovo = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist[1], sample_comparison=longlist[1])
+#protdata.enrichment.svl.ovo = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist[1], sample_comparison=longlist[1])
+
+###using enrichment_wrapper function
+protdata.enrichment.svl.ovo = enrichment_wrapper(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist[1], secondary_columns=longlist[1])
 
 ```
 
@@ -132,8 +138,10 @@ Interpretation: As with the t test comparison above it is important to look at t
 genelist = rownames(protdata)[which(protdata[,1]>0.5)]
 background = rownames(protdata)
 
-prodata.enrichment.fishers = enrichment_in_groups(ncipid, targets=genelist,
-                                                  background=background)
+#prodata.enrichment.fishers = enrichment_in_groups(ncipid, targets=genelist, background=background)
+
+###using enrichment_wrapper function
+prodata.enrichment.fishers = enrichment_wrapper(geneset=ncipid, enrichment_method="enrichment_by_fishers", datamatrix=protdata, threshold=.5, primary_columns="TCGA-13-1484")
 
 
 # in this example we construct some modules from the heirarchical clustering of the
@@ -179,10 +187,11 @@ Interpretation: Similar to the other examples be cautious of pathways with good 
 
 ``` {r ks, echo=FALSE, warning = F}
 # This is how you calculate enrichment in a ranked list (for example from topology)
-prodata.enrichment.ks = enrichment_in_groups(ncipid, background=protdata, method="ks",
-                                             abundance_column=shortlist[1])
+#prodata.enrichment.ks = enrichment_in_groups(ncipid, background=protdata, method="ks",
+#                                             abundance_column=shortlist[1])
 
-
+###using enrichment_wrapper function
+protdata.enrichment.ks = enrichment_wrapper(geneset=ncipid, "enrichment_by_ks", datamatrix=protdata, primary_columns=shortlist[1])
 ```
 
 The 'under development' section.
@@ -197,10 +206,17 @@ Interpretation: The ingroup_mean gives the mean correlation of the pathway membe
 ``` {r correlation, echo=FALSE}
 
 # this is using all the patients regardless of survival time
-protdata.enrichment.correlation = correlation_enrichment(ncipid, protdata)
+#protdata.enrichment.correlation = correlation_enrichment(ncipid, protdata)
 
 # now we'll do two more- one for the short survivors and one for the long survivors
-protdata.enrichment.correlation.short = correlation_enrichment(ncipid, protdata[,shortlist])
-protdata.enrichment.correlation.long = correlation_enrichment(ncipid, protdata[,longlist])
+#protdata.enrichment.correlation.short = correlation_enrichment(ncipid, protdata[,shortlist])
+#protdata.enrichment.correlation.long = correlation_enrichment(ncipid, protdata[,longlist])
 
+
+###using enrichment_wrapper function
+protdata.enrichment.correlation = enrichment_wrapper(geneset=ncipid, enrichment_method = "correlation_enrichment", datamatrix=protdata)
+
+protdata.enrichment.correlation.short = enrichment_wrapper(geneset=ncipid, enrichment_method = "correlation_enrichment", datamatrix=protdata[,shortlist])
+
+protdata.enrichment.correlation.long = enrichment_wrapper(geneset=ncipid, enrichment_method = "correlation_enrichment", datamatrix=protdata[,longlist])
 ```

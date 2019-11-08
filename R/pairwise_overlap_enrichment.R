@@ -34,7 +34,7 @@ pairwise_overlap_enrichment <- function(geneset, datamatrix, condition1, conditi
   uniquea = unique_count = overlap_count = overlap
 
   for (path1 in geneset$names) {
-    cat(path1, "\n")
+    #cat(path1, "\n")
     for (path2 in geneset$names) {
       if (path1 != path2) {
         this = overlap_gene_sets(geneset, path1, path2)

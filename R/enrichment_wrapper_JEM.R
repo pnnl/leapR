@@ -1,4 +1,20 @@
-#work on wrapper function for enrichment functions
+#' enrichment_wrapper
+#'
+#' enrichment_wrapper is a wrapper function that consolidates multiple enrichment methods.
+#'
+#' @param geneset is...
+#' @param enrichment_method is...
+#' @param datamatrix is...
+#' @param id_column is...
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
+#'
+#' @export
+#'
 
 enrichment_wrapper = function(geneset, enrichment_method, ...){
   .enrichment_wrapper(geneset, enrichment_method, ...)
@@ -43,7 +59,7 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
     if(!is.null(primary_columns)){
       if(length(primary_columns) > 1){stop("'primary_columns' must be a string of length 1")}
     }
-    
+
     if(!is.null(primary_columns) & !is.null(datamatrix)){
       # TODO: add a validation that datamatrix has a column named primary_columns
       if(!is.element(primary_columns, colnames(datamatrix))){stop("'primary_columns' must be a column name of 'datamatrix'")}
@@ -71,34 +87,34 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
 
     if(!is.null(primary_columns)){
       # We'll do the list splitting here
-      # TODO: add a validation that the primary_columns is one column for this case             
+      # TODO: add a validation that the primary_columns is one column for this case
       if(length(primary_columns) > 1){stop("'primary_columns' must be a string of length 1")}
     }
-    
+
     if(!is.null(primary_columns) & !is.null(datamatrix)){
       # TODO: add a validation that the datamatrix has a column with the primary_columns name
       if(!is.element(primary_columns, colnames(datamatrix))){stop("'primary_columns' must be a column name of 'datamatrix'")}
     }
 
-    background = rownames(datamatrix)   
+    background = rownames(datamatrix)
 
-    # TODO: we should allow the user to specify if they want it greater than or less than for the threshold      
+    # TODO: we should allow the user to specify if they want it greater than or less than for the threshold
     if(greaterthan == FALSE & !is.null(threshold)){
       targets = rownames(datamatrix[which(datamatrix[,primary_columns]<threshold),])
       }
     else if(greaterthan == TRUE & !is.null(threshold)){
       targets = rownames(datamatrix[which(datamatrix[,primary_columns]>threshold),])
     }
-    
-    # TODO: add a validation that targets is non-empty            
+
+    # TODO: add a validation that targets is non-empty
     if(length(targets) == 0){stop("please adjust 'threshold' argument, there are no target genes captured by current threshold value")}
-    
+
     # TODO: add a validation that id_column exists in datamatrix
     if(!is.null(id_column) & !is.null(datamatrix)){
       if(!is.element(id_column, colnames(datamatrix))){stop("'id_column' must be a column name of 'datamatrix'")}
     }
-    
-    if (!is.null(id_column)) {
+
+    if(!is.null(id_column)) {
       background = unique(datamatrix[background,])
       targets = unique(datamatrix[targets,])
     }
@@ -117,16 +133,18 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
     result = enrichment_in_abundance(geneset=geneset, abundance=datamatrix, mapping_column=id_column,
                                      abundance_column=primary_columns, sample_comparison=secondary_columns,
                                      fdr=fdr, min_p_threshold=min_p_threshold, sample_n=sample_n)
-    
+
     # matchset=matchset, - this is a specific flag that's used for debugging
     # min_p_threshold is a parameter that will change the output - adding a couple of columns
+
+    result = as.data.frame(result)
   }
 
   else if(enrichment_method == "enrichment_in_relationships"){
 
     if(is.null(datamatrix)){stop("'datamatrix' argument is required")}
     message("'enrichment_in_relationships' has the following optional arguments: idmap=NA")
-    
+
     #if(is.null(mode)){mode = 'original'} - this pertains to multiomics comparisons and we'll need to figure out how
     #                                       to recode this -
 
@@ -138,22 +156,28 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
   else if(enrichment_method == "correlation_enrichment"){
 
     if(is.null(datamatrix)){stop("'datamatrix' argument is required")}
-    message("'correlation_enrichment' has the following optional arguments: id_column=NA, tag=NA")
+    message("'correlation_enrichment' has the following optional arguments:  id_column=NA, tag=NA")
     if(is.null(id_column)){id_column = NA}
 
-    result = correlation_enrichment(geneset=geneset, abundance=datamatrix, mapping_column=id_column)
+    temp_result = correlation_enrichment(geneset=geneset, abundance=datamatrix, mapping_column=id_column)
+
+    result = as.data.frame(temp_result$enrichment)
+    attr(result, "corrmat") = temp_result$corrmat
   }
 
-  else if(enrichment_method == "correlation_comparison_enrichment"){
-
-    if(is.null(datamatrix)|is.null(primary_columns)|is.null(secondary_columns)) {stop("'datamatrix', 'primary_columns' and 'secondary_columns' arguments are required")}
-    message("'correlation_comparison_enrichment' has the following optional arguments: id_column=NA, tag=NA, mode='original'")
-    if(is.null(mode)){mode = 'original'}
-    if(is.null(id_column)){id_column = NA}
-
-    result = correlation_comparison_enrichment(geneset=geneset, abundance=datamatrix, set1=primary_columns, set2=secondary_columns,
-                                               mapping_column=id_column, mode=mode)
-  }
+####IG this function calls "difference_enrichment_in_relationships" which is not an active enrichment method at this point
+#
+#  else if(enrichment_method == "correlation_comparison_enrichment"){
+#
+#    if(is.null(datamatrix)|is.null(primary_columns)|is.null(secondary_columns)) {stop("'datamatrix', 'primary_columns' and 'secondary_columns' arguments are required")}
+#    message("'correlation_comparison_enrichment' has the following optional arguments: id_column=NA, tag=NA, mode='original'")
+#    if(is.null(mode)){mode = 'original'}
+#    if(is.null(id_column)){id_column = NA}
+#
+#    result = correlation_comparison_enrichment(geneset=geneset, abundance=datamatrix, set1=primary_columns, set2=secondary_columns,
+#                                               mapping_column=id_column, mode=mode)
+#  }
+####
 
   ### JEM - I think we should maybe not have this following function in the wrapper
   ###       the reason being that this takes two data matrices instead of one and there's not
@@ -185,11 +209,17 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
 
   else if(enrichment_method == "pairwise_overlap_enrichment"){
 
-    if(is.null(datamatrix)|is.null(primary_columns)|is.null(secondary_columns)){stop("'datamatrix', 'condition1', 'condition2' arguments are required")}
+    if(is.null(datamatrix)|is.null(primary_columns)|is.null(secondary_columns)){stop("'datamatrix', 'primary_columns', 'secondary_columns' arguments are required")}
     message("'pairwise_overlap_enrichment' has the following optional arguments: id_column=NULL, subsample_components=NULL")
 
-    result = pairwise_overlap_enrichment(geneset=geneset, datamatrix=datamatrix, condition1=primary_columns, condition2=secondary_columns,
+    temp_result = pairwise_overlap_enrichment(geneset=geneset, datamatrix=datamatrix, condition1=primary_columns, condition2=secondary_columns,
                                          mapping_column=id_column, subsample_components=subsample_components)
+    result = as.data.frame(temp_result$overlap_pmat)
+    attr(result, "unique_pmat") = as.data.frame(temp_result$unique_pmat)
+    attr(result, "overlap_counts") = as.data.frame(temp_result$overlap_counts)
+    attr(result, "unique_counts") = as.data.frame(temp_result$unique_counts)
+
+
   }
 
   # JEM- we need to do this - but probably should make it work for all the different methods in the same way
