@@ -7,20 +7,73 @@
 enrichment_wrapper(geneset, enrichment_method, ...)
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
-\item{enrichment_method}{is...}
+\item{enrichment_method}{is a character string specifying the method of enrichment to be performed, one of: "correlation_comparison_enrichment", "correlation_enrichment","difference_enrichment_in_relationships", "enrichment_in_abundance","enrichment_by_fishers", "enrichment_by_ks", "enrichment_in_relationships","enrichment_redundancy_matrix", "pairwise_overlap_enrichment","permute_enrichment_in_groups".}
 
-\item{datamatrix}{is...}
-
-\item{id_column}{is...}
+\item{...}{further arguments}
 }
 \description{
 enrichment_wrapper is a wrapper function that consolidates multiple enrichment methods.
 }
+\details{
+Further arguments and enrichment method optional argument information
+\tabular{ll}{
+datamatrix \tab Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns). This is an optional argument used with all the active enrichment methods. \cr
+\tab \cr
+id_column \tab Is a character string, a column name of \code{datamatrix}, that...??. This is an optional argument used with all active enrichment methods with the exception of 'enrichment_in_relationships'. \cr
+\tab \cr
+primary_columns \tab Is a character vector composed of column names from \code{datamatrix}, that ...??. This is an optional argument used with 'enrichment_by_ks', 'enrichment_by_fishers', 'enrichment_in_abundance', and 'pairwise_overlap_enrichment' methods. \cr
+\tab \cr
+secondary_columns \tab Is a character vector of column names, similar to 'primary_columns' argument...??. This is an optional argument used with 'enrichment_in_abundance', and 'pairwise_overlap_enrichment' methods. \cr
+\tab \cr
+threshold \tab Is a numeric value, an optional argument used with 'enrichment_by_fishers' method which filters out abundance values either above or below it. \cr
+\tab \cr
+minsize \tab Is a numeric value, an optional argument used with 'enrichment_by_fishers' and 'enrichment_by_ks". \cr
+\tab \cr
+mode \tab USED IN AN INACTIVE ENRICHMENT METHOD('enrichment_in_relationships', 'difference_enrichment_in_relationships' and 'correlation_comparison_enrichment') OF THIS 'enrichment_wrapper()' FUNCTION, CURRENTLY COMMENTED OUT. \cr
+\tab \cr
+idmap \tab Is...??. This is an optional argument used with 'enrichment_in_relationships' method. \cr
+\tab \cr
+fdr \tab A numerical value which specifies how many times to randomly sample genes, is an optional argument used with 'enrichment_in_abundance' method. \cr
+\tab \cr
+min_p_threshold \tab Is a numeric value, a lower p-value threshold and is an optional argument used with 'enrichment_in_abundance' method. \cr
+\tab \cr
+sample_n \tab Is...??. This is an optional argument used with 'enrichment_in_abundnace' method. \cr
+\tab \cr
+enrichment_results \tab USED IN AN INACTIVE ENRICHMENT METHOD('enrichment_redundancy_matrix') OF THIS 'enrichment_wrapper()' FUNCTION, CURRENTLY COMMENTED OUT. \cr
+\tab \cr
+significance_threshold \tab USED IN AN INACTIVE ENRICHMENT METHOD('enrichment_redundancy_matrix') OF THIS 'enrichment_wrapper()' FUNCTION, CURRENTLY COMMENTED OUT.. \cr
+\tab \cr
+pathway_list \tab USED IN AN INACTIVE ENRICHMENT METHOD('enrichment_redundancy_matrix') OF THIS 'enrichment_wrapper()' FUNCTION, CURRENTLY COMMENTED OUT. \cr
+\tab \cr
+subsample_components \tab Is...??. This is an optional argument used with 'pairwise_overlap_enrichment' method. \cr
+\tab \cr
+ntimes \tab USED IN AN INACTIVE ENRICHMENT METHOD('permute_enrichment_in_groups') OF THIS 'enrichment_wrapper()' FUNCTION, CURRENTLY COMMENTED OUT. \cr
+\tab \cr
+greaterthan \tab Is a logical value that defaults to TRUE, it's used with 'enrichment_by_fishers' method. When set to TRUE, genes with abundance data above the \code{threshold} argument are kept. When set to FALSE genes with abundance data below the \code{threshold} argument are kept. This is an optional argument used with 'enrichment_by_ks' method. \cr
+\tab \cr
+}
+}
 \examples{
 dontrun{
+        # read in the example abundance data
+        # A requirement is that the row names be gene symbols for use with the pathways file below
+        # technically they just have to have the *same* identifiers, but practically I use gene symbols
+        protdata = read.table("OVCA_protein_combined.txt", sep="\\t", row.names=1, header=1, stringsAsFactors=F)
 
+        # we have to update the colnames slightly to match what we have in the patient groups
+        colnames(protdata) = sapply(colnames(protdata), function (r) {
+        a=strsplit(r,"\\\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
+
+        # read in the pathways
+        ncipid = read_gene_sets("NCI_PID_genesymbol_corrected.gmt")
+
+        # read in the patient groups
+        shortlist = read.table("short_list.txt", sep="\\t", stringsAsFactors=F)[,1]
+        longlist = read.table("long_list.txt", sep="\\t", stringsAsFactors=F)[,1]
+
+        protdata.enrichment.svl = enrichment_wrapper(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)
 
 }
 
