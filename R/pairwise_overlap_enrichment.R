@@ -2,11 +2,11 @@
 #'
 #' pairwise_overlap_enrichment function description is...
 #'
-#' @param geneset is...
-#' @param datamatrix is...
-#' @param condition1 is...
-#' @param condition2 is...
-#' @param mapping_column defaults to NULL
+#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
+#' @param datamatrix Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
+#' @param condition1 Is a character vector composed of column names from \code{datamatrix}, that ...??
+#' @param condition2 Is a character vector of column names, similar to \code{condition1} ...??.
+#' @param mapping_column Is a character string, a column name of \code{datamatrix}, that...??.
 #' @param subsample_components defaults to NULL
 #'
 #' @examples

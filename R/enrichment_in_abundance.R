@@ -2,29 +2,35 @@
 #'
 #' enrichment_in_abundance function description is...
 #'
-#' @param geneset is...
-#' @param abundance is...
+#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
+#' @param abundance Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
 #' @param mapping_column defaults to NULL
-#' @param abundance_column defaults to NULL
-#' @param fdr defaults to 0
+#' @param abundance_column Is a character vector composed of column names from \code{abundance}, that ...??.
+#' @param fdr A numerical value which specifies how many times to randomly sample genes, defaults to 0.
 #' @param matchset defaults to NULL
 #' @param longform is a logical. Defaults to FALSE
-#' @param sample_comparison defaults to NULL
+#' @param sample_comparison Is a character vector of column names, similar to \code{abundance_column} ...??.
 #' @param background_comparison defaults to NULL
-#' @param min_p_threshold defaults to NULL
+#' @param min_p_threshold Is a numeric value, a lower p-value threshold, defaults to NULL.
 #' @param tag defaults to an NA
-#' @param sample_n defaults to NULL
+#' @param sample_n Is...??
 #'
 #' @examples
 #' dontrun{
-#'         data("shortlist")
+#'         library(mcdeR)
+#'
+#'         # read in the example abundance data
+#'         data("protdata")
+#'
+#'         # read in the pathways
+#'         data("ncipid")
+#'
+#'         # read in the patient groups
+#'         data("short_list")
 #'         data("longlist")
 #'
 #'         #in this example we lump a bunch of patients together (the 'short survivors') and compare them to another group (the 'long survivors')
 #'         protdata.enrichment.svl = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist, sample_comparison=longlist)
-#'
-#'         #I generally output these files and then view them in Excel afterward
-#'         write.table(protdata.enrichment.svl, file="protdata.enrichment.svl.txt", sep="\t", quote=F)
 #'
 #'         #another application is to compare just one patient against another (this would be the equivalent of comparing one time point to another)
 #'         protdata.enrichment.svl.ovo = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist[1], sample_comparison=longlist[1])

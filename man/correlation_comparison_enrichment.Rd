@@ -8,15 +8,15 @@ correlation_comparison_enrichment(geneset, abundance, set1, set2,
   mapping_column = NA, tag = NA, mode = "original")
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
-\item{abundance}{is...}
+\item{abundance}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
-\item{set1}{is...}
+\item{set1}{Is a character vector composed of column names from \code{abundance}, that ...??.}
 
-\item{set2}{is...}
+\item{set2}{Is a character vector of column names, similar to \code{set1} ...??.}
 
-\item{mapping_column}{default is an NA}
+\item{mapping_column}{Is a character string, a column name of \code{abundance}, that...??.}
 
 \item{tag}{default is an NA}
 

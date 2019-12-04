@@ -2,27 +2,24 @@
 #'
 #' enrichment_in_groups function description is...
 #'
-#' @param genesets is...
+#' @param genesets geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
 #' @param targets defaults to NULL
-#' @param background defaults to NULL
-#' @param method defaults to 'fishers'
-#' @param minsize defaults to 5
-#' @param mapping_column defaults to NULL
-#' @param abundance_column defaults to NULL
+#' @param background Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
+#' @param method A character string specifying which enrichment method to use, defaults to 'fishers'.
+#' @param minsize Is a numeric value, defaults to 5
+#' @param mapping_column Is a character string, a column name of \code{background}, that...??.
+#' @param abundance_column Is a character vector composed of column names from \code{background}, that ...??.
 #' @param randomize is a logical, defaults to FALSE
 #'
 #' @examples
 #' dontrun{
-#'        library(readr)
+#'        library(mcdeR)
+#'
+#'        # read in the example abundance data
 #'        data("protdata")
 #'
-#'        #we have to update the colnames slightly to match what we have in the patient groups
-#'        colnames(protdata) = sapply(colnames(protdata), function (r) {a=strsplit(r,"\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
-#'
-#'        #read in the pathways
-#'        ncipid = read_gene_sets(gsfile = "/example/NCI_PID_genesymbol_corrected.gmt")
-#'
-#'
+#'        # read in the pathways
+#'        data("ncipid")
 #'
 #'        #for this example we will construct a list of genes from the expression data to emulate what you might be inputting
 #'        genelist = rownames(protdata)[which(protdata[,1]>0.5)]

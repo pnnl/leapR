@@ -2,12 +2,12 @@
 #'
 #' permute_enrichment_in_groups function description is...
 #'
-#' @param geneset is...
+#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
 #' @param targets defaults to NULL
-#' @param background defaults to NULL
+#' @param background Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
 #' @param method defaults to 'fishers'
 #' @param minsize defaults to 5
-#' @param mapping_column defaults to NULL
+#' @param mapping_column Is a character string, a column name of \code{background}, that...??.
 #' @param abundance_column defaults to NULL
 #' @param ntimes defaults to 100
 #'

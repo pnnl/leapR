@@ -8,7 +8,7 @@ difference_enrichment_in_relationships(geneset, relationships1,
   relationships2, idmap = NA, tag = NA, mode = "original")
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
 \item{relationships1}{is...}
 

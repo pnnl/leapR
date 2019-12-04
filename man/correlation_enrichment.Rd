@@ -8,11 +8,11 @@ correlation_enrichment(geneset, abundance, mapping_column = NA,
   tag = NA)
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
-\item{abundance}{is...}
+\item{abundance}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
-\item{mapping_column}{default is NA}
+\item{mapping_column}{Is a character string, a column name of \code{abundance}, that...??.}
 
 \item{tag}{default is NA}
 }
@@ -21,16 +21,17 @@ correlation_enrichment function description is...
 }
 \examples{
 dontrun{
-        library(readr)
+        library(mcdeR)
+
+        # read in the example abundance data
         data("protdata")
-        data("shortlist")
+
+        # read in the pathways
+        data("ncipid")
+
+        # read in the patient groups
+        data("short_list")
         data("longlist")
-
-        #we have to update the colnames slightly to match what we have in the patient groups
-        colnames(protdata) = sapply(colnames(protdata), function (r) {a=strsplit(r,"\\\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
-
-        #read in the pathways
-        ncipid = read_gene_sets(gsfile = "/example/NCI_PID_genesymbol_corrected.gmt")
 
         #this is using all the patients regardless of survival time
         protdata.enrichment.correlation = correlation_enrichment(ncipid, protdata)
@@ -38,8 +39,6 @@ dontrun{
         #now we'll do two more- one for the short survivors and one for the long survivors
         protdata.enrichment.correlation.short = correlation_enrichment(ncipid, protdata[,shortlist])
         protdata.enrichment.correlation.long = correlation_enrichment(ncipid, protdata[,longlist])
-
-
 }
 
 }

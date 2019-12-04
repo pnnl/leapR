@@ -2,8 +2,8 @@
 #'
 #' enrichment_in_relationships function description is...
 #'
-#' @param geneset is...
-#' @param relationships is...
+#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
+#' @param relationships Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
 #' @param idmap defaults to an NA
 #' @param tag defaults to an NA
 #' @param mode defaults to 'original'

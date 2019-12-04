@@ -11,35 +11,32 @@ enrichment_in_groups(geneset, targets = NULL, background = NULL,
 \arguments{
 \item{targets}{defaults to NULL}
 
-\item{background}{defaults to NULL}
+\item{background}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
-\item{method}{defaults to 'fishers'}
+\item{method}{A character string specifying which enrichment method to use, defaults to 'fishers'.}
 
-\item{minsize}{defaults to 5}
+\item{minsize}{Is a numeric value, defaults to 5}
 
-\item{mapping_column}{defaults to NULL}
+\item{mapping_column}{Is a character string, a column name of \code{background}, that...??.}
 
-\item{abundance_column}{defaults to NULL}
+\item{abundance_column}{Is a character vector composed of column names from \code{background}, that ...??.}
 
 \item{randomize}{is a logical, defaults to FALSE}
 
-\item{genesets}{is...}
+\item{genesets}{geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 }
 \description{
 enrichment_in_groups function description is...
 }
 \examples{
 dontrun{
-       library(readr)
+       library(mcdeR)
+
+       # read in the example abundance data
        data("protdata")
 
-       #we have to update the colnames slightly to match what we have in the patient groups
-       colnames(protdata) = sapply(colnames(protdata), function (r) {a=strsplit(r,"\\\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
-
-       #read in the pathways
-       ncipid = read_gene_sets(gsfile = "/example/NCI_PID_genesymbol_corrected.gmt")
-
-
+       # read in the pathways
+       data("ncipid")
 
        #for this example we will construct a list of genes from the expression data to emulate what you might be inputting
        genelist = rownames(protdata)[which(protdata[,1]>0.5)]

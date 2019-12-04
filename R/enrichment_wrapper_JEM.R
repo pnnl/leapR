@@ -47,21 +47,17 @@
 #'
 #' @examples
 #' dontrun{
-#'         # read in the example abundance data
-#'         # A requirement is that the row names be gene symbols for use with the pathways file below
-#'         # technically they just have to have the *same* identifiers, but practically I use gene symbols
-#'         protdata = read.table("OVCA_protein_combined.txt", sep="\t", row.names=1, header=1, stringsAsFactors=F)
+#'         library(mcdeR)
 #'
-#'         # we have to update the colnames slightly to match what we have in the patient groups
-#'         colnames(protdata) = sapply(colnames(protdata), function (r) {
-#'         a=strsplit(r,"\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
+#'         # read in the example abundance data
+#'         data("protdata")
 #'
 #'         # read in the pathways
-#'         ncipid = read_gene_sets("NCI_PID_genesymbol_corrected.gmt")
+#'         data("ncipid")
 #'
 #'         # read in the patient groups
-#'         shortlist = read.table("short_list.txt", sep="\t", stringsAsFactors=F)[,1]
-#'         longlist = read.table("long_list.txt", sep="\t", stringsAsFactors=F)[,1]
+#'         data("short_list")
+#'         data("longlist")
 #'
 #'         protdata.enrichment.svl = enrichment_wrapper(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)
 #'

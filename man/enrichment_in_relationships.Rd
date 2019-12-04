@@ -8,9 +8,9 @@ enrichment_in_relationships(geneset, relationships, idmap = NA,
   tag = NA, mode = "original")
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
-\item{relationships}{is...}
+\item{relationships}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
 \item{idmap}{defaults to an NA}
 
