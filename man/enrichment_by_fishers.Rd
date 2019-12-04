@@ -9,7 +9,7 @@ enrichment_by_fishers(group, background, annotation)
 \arguments{
 \item{group}{is...}
 
-\item{background}{is...}
+\item{background}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
 \item{annotation}{is...}
 }

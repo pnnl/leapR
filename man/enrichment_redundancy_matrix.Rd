@@ -9,7 +9,7 @@ enrichment_redundancy_matrix(geneset, dataframe = NA,
   pathway_list = NA, method = "jaccard")
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
 \item{dataframe}{defaults to NA}
 

@@ -2,11 +2,11 @@
 #'
 #' correlation_comparison_enrichment function description is...
 #'
-#' @param geneset is...
-#' @param abundance is...
-#' @param set1 is...
-#' @param set2 is...
-#' @param mapping_column default is an NA
+#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
+#' @param abundance Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
+#' @param set1 Is a character vector composed of column names from \code{abundance}, that ...??.
+#' @param set2 Is a character vector of column names, similar to \code{set1} ...??.
+#' @param mapping_column Is a character string, a column name of \code{abundance}, that...??.
 #' @param tag default is an NA
 #' @param mode default is 'original'
 #'

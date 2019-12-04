@@ -9,17 +9,17 @@ permute_enrichment_in_groups(geneset, targets = NULL,
   mapping_column = NULL, abundance_column = NULL, ntimes = 100)
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
 \item{targets}{defaults to NULL}
 
-\item{background}{defaults to NULL}
+\item{background}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
 \item{method}{defaults to 'fishers'}
 
 \item{minsize}{defaults to 5}
 
-\item{mapping_column}{defaults to NULL}
+\item{mapping_column}{Is a character string, a column name of \code{background}, that...??.}
 
 \item{abundance_column}{defaults to NULL}
 

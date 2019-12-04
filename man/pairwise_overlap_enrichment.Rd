@@ -8,15 +8,15 @@ pairwise_overlap_enrichment(geneset, datamatrix, condition1, condition2,
   mapping_column = NULL, subsample_components = NULL)
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
-\item{datamatrix}{is...}
+\item{datamatrix}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
-\item{condition1}{is...}
+\item{condition1}{Is a character vector composed of column names from \code{datamatrix}, that ...??}
 
-\item{condition2}{is...}
+\item{condition2}{Is a character vector of column names, similar to \code{condition1} ...??.}
 
-\item{mapping_column}{defaults to NULL}
+\item{mapping_column}{Is a character string, a column name of \code{datamatrix}, that...??.}
 
 \item{subsample_components}{defaults to NULL}
 }

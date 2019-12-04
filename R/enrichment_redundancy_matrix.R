@@ -2,7 +2,7 @@
 #'
 #' enrichment_redundancy_matrix function description is...
 #'
-#' @param geneset is...
+#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
 #' @param dataframe defaults to NA
 #' @param enrichment_results defaults to NA
 #' @param significance_threshold defaults to NA

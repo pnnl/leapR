@@ -10,43 +10,49 @@ enrichment_in_abundance(geneset, abundance, mapping_column = NULL,
   min_p_threshold = NULL, tag = NA, sample_n = NULL)
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
 
-\item{abundance}{is...}
+\item{abundance}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
 \item{mapping_column}{defaults to NULL}
 
-\item{abundance_column}{defaults to NULL}
+\item{abundance_column}{Is a character vector composed of column names from \code{abundance}, that ...??.}
 
-\item{fdr}{defaults to 0}
+\item{fdr}{A numerical value which specifies how many times to randomly sample genes, defaults to 0.}
 
 \item{matchset}{defaults to NULL}
 
 \item{longform}{is a logical. Defaults to FALSE}
 
-\item{sample_comparison}{defaults to NULL}
+\item{sample_comparison}{Is a character vector of column names, similar to \code{abundance_column} ...??.}
 
 \item{background_comparison}{defaults to NULL}
 
-\item{min_p_threshold}{defaults to NULL}
+\item{min_p_threshold}{Is a numeric value, a lower p-value threshold, defaults to NULL.}
 
 \item{tag}{defaults to an NA}
 
-\item{sample_n}{defaults to NULL}
+\item{sample_n}{Is...??}
 }
 \description{
 enrichment_in_abundance function description is...
 }
 \examples{
 dontrun{
-        data("shortlist")
+        library(mcdeR)
+
+        # read in the example abundance data
+        data("protdata")
+
+        # read in the pathways
+        data("ncipid")
+
+        # read in the patient groups
+        data("short_list")
         data("longlist")
 
         #in this example we lump a bunch of patients together (the 'short survivors') and compare them to another group (the 'long survivors')
         protdata.enrichment.svl = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist, sample_comparison=longlist)
-
-        #I generally output these files and then view them in Excel afterward
-        write.table(protdata.enrichment.svl, file="protdata.enrichment.svl.txt", sep="\\t", quote=F)
 
         #another application is to compare just one patient against another (this would be the equivalent of comparing one time point to another)
         protdata.enrichment.svl.ovo = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist[1], sample_comparison=longlist[1])
