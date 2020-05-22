@@ -55,12 +55,12 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
   resultp = c()
   resultf = c()
   results = data.frame(row.names = geneset$names,
-                       in_path=rep(NA_real_, length(geneset$names)), in_path_names=rep(NA_character_, length(geneset$names)), out_path=rep(NA_real_, length(geneset$names)),
-                       in_back=rep(NA_real_, length(geneset$names)), out_back=rep(NA_real_, length(geneset$names)), foldx=rep(NA_real_, length(geneset$names)),
-                       pvalue=rep(NA_real_, length(geneset$names)), Adjusted_pvalue=rep(NA_real_, length(geneset$names)), Signed_AdjP=rep(NA_real_, length(geneset$names)),
-                       stringsAsFactors = F)
-
-  if (method == "ks") colnames(results)[c(3,5)] = c("MeanPath", "Zscore")
+                       ingroup_n=rep(NA_real_, length(geneset$names)), ingroupnames=rep(NA_character_, length(geneset$names)), 
+                       inggroup_mean=rep(NA_real_, length(geneset$names)), outgroup_n=rep(NA_real_, length(geneset$names)), 
+                       zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
+                       pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
+                       SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
+                       bacground_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
 
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
@@ -82,8 +82,15 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       f = enr$foldx
       mat = enr$mat
       names = enr$in_path_names
-
-      results[thisname, ] = list(mat[1,1], names, mat[1,2], mat[2,1], mat[2,2], f, p, NA, NA)
+      
+      results[thisname,"ingroup_n"] = mat[1,1]
+      results[thisname,"ingroupnames"] = names
+      results[thisname,"outgroup_n"] = mat[1,2]
+      results[thisname,"pvalue"] = p
+      results[thisname,"oddsratio"] = f
+      results[thisname,"background_n"] = mat[2,2]
+      # putting this here is a bit of a kludge (since it's not actually a mean, it's a count)
+      results[thisname,"background_mean"] = mat[2,1]
     }
     else if (method == "ks") {    #Kolmogorov-Smirnov test
       # in this case "background" must be the continuous variable from which grouplist can be drawn
@@ -132,13 +139,17 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
 
         zscore = (mean(in_group, na.rm=T)-mean(backlist, na.rm=T))/sd(in_group, na.rm=T)
 
-        #padj = enr$p.value*length(geneset$names)
-        # c("in_path", "MeanPath", "in_back", "Zscore", "foldx", "pvalue", "Adjusted_pvalue")
-        results[thisname, ] = list(in_path, in_group_name, mean(in_group, na.rm=T), in_back, zscore, foldx, p.value, NA, NA)
+        results[thisname,"ingroup_n"] = in_path
+        results[thisname,"ingroupnames"] = in_group_name
+        results[thisname,"ingroup_mean"] = mean(in_group, na.rm=T)
+        results[thisname,"outgroup_n"] = in_back
+        results[thisname,"zscore"] = zscore
+        results[thisname,"pvalue"] = p.value
+        results[thisname,"oddsratio"] = foldx
       }
     }
   }
-  results[,"Adjusted_pvalue"] = p.adjust(results[,"pvalue"], method="BH")
-  results[,"Signed_AdjP"] = results[,"Adjusted_pvalue"]*sign(results[,"in_path"])
+  results[,"BH_pvalue"] = p.adjust(results[,"pvalue"], method="BH")
+  results[,"SignedBH_pvalue"] = results[,"BH_pvalue"]*sign(results[,"in_path"])
   return(results)
 }

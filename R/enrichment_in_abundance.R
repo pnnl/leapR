@@ -49,10 +49,15 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
   #     two sided t test
   # If the sample_comparison variable is set then do a comparison between this
   #     abundance and sample comparison set which is vector of valid column (sample) ids
-  results = matrix(nrow=length(geneset$names), ncol=8)
-  rownames(results) = geneset$names
-  colnames(results) = c("ingroup_mean", "outgroup_mean", "ingroup_n", "outgroup_n", "pvalue", "BH_pvalue", "count_above", "count_below")
-
+  results = data.frame(row.names = geneset$names,
+                       ingroup_n=rep(NA_real_, length(geneset$names)), ingroupnames=rep(NA_character_, length(geneset$names)), 
+                       ingroup_mean=rep(NA_real_, length(geneset$names)), outgroup_n=rep(NA_real_, length(geneset$names)), 
+                       zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
+                       pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
+                       SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
+                       bacground_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+  
+  
   if (!is.null(mapping_column)) groupnames = unique(abundance[,mapping_column])
 
   for (i in 1:length(geneset$names)) {
@@ -89,7 +94,8 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
       # I changed this to make it easier to use- may break old code!
       # ingroup = abundance[grouplist[which(grouplist %in% names(abundance))]]
       # outgroup = abundance[which(!names(abundance) %in% grouplist)]
-      ingroup = unlist(abundance[grouplist[which(grouplist %in% rownames(abundance))],
+      ingroupnames = grouplist[which(grouplist %in% rownames(abundance))]
+      ingroup = unlist(abundance[ingroupnames,
                                  abundance_column[which(abundance_column %in% colnames(abundance))]])
 
       if (!is.null(sample_comparison)) outgroup = abundance[which(rownames(abundance) %in% grouplist),
@@ -107,23 +113,23 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
 
       # we step through all components to calculate the number
       #    that are above/below the threshold
-      if (!is.null(min_p_threshold)) {
-        count_above = 0
-        count_below = 0
-        # this works with sample_comparison
-        for (this_bit in rownames(ingroup)) {
-          petevalue = try(t.test(ingroup[this_bit,], outgroup[this_bit,])$p.value, silent=F);
-          if (class(petevalue)=="try-error" || is.na(petevalue)) {
-            petevalue = NA;
-          }
-          else {
-            if (petevalue > min_p_threshold) count_above = count_above + 1
-            if (petevalue <= min_p_threshold) count_below = count_below + 1
-          }
-        }
-        results[thisname,"count_above"] = count_above
-        results[thisname,"count_below"] = count_below
-      }
+      # if (!is.null(min_p_threshold)) {
+      #   count_above = 0
+      #   count_below = 0
+      #   # this works with sample_comparison
+      #   for (this_bit in rownames(ingroup)) {
+      #     petevalue = try(t.test(ingroup[this_bit,], outgroup[this_bit,])$p.value, silent=F);
+      #     if (class(petevalue)=="try-error" || is.na(petevalue)) {
+      #       petevalue = NA;
+      #     }
+      #     else {
+      #       if (petevalue > min_p_threshold) count_above = count_above + 1
+      #       if (petevalue <= min_p_threshold) count_below = count_below + 1
+      #     }
+      #   }
+      #   results[thisname,"count_above"] = count_above
+      #   results[thisname,"count_below"] = count_below
+      # }
     }
 
     delta = in_mean - out_mean
@@ -143,15 +149,25 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
       }
       pvalue = sum(abs(background)>abs(delta))/length(background)
     }
-
-    this = c(in_mean, out_mean, length(unlist(ingroup)), length(unlist(outgroup)), pvalue, NA)
-
-    results[thisname,1:6] = this
+    
+    # changing the order of output columns to match with the results from the other enrichment methods
+    
+    ingroupnames = paste(ingroupnames, collapse = ", ")
+    results[thisname,"ingroup_n"] = length(unlist(ingroup))
+    results[thisname,"ingroupnames"] = ingroupnames
+    results[thisname,"ingroup_mean"] = in_mean
+    results[thisname,"outgroup_n"] = length(unlist(outgroup))
+    results[thisname,"outgroup_mean"] = out_mean
+    results[thisname,"pvalue"] = pvalue
+    
+    #question : do we want to calculate an oddsratio for this too?
   }
+  #update
   results[,"BH_pvalue"] = p.adjust(results[,"pvalue"], method="BH")
-  if (!is.null(matchset)) {
-    results = results[matchset,]
-    if (longform==T) results = list(results, ingroup, outgroup)
-  }
+  
+  #if (!is.null(matchset)) {
+  #  results = results[matchset,]
+  #  if (longform==T) results = list(results, ingroup, outgroup)
+  #}
   return(results)
 }
