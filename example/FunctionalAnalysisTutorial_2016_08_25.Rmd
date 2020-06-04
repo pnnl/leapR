@@ -7,9 +7,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(mcdeR)
+#library(mcdeR)
 library(readr)
 source("../R/GeneSets.R")
+source("../R/read_gene_sets.R")
+source("../R/enrichment_wrapper_JEM.R")
+source("../R/enrichment_in_groups.R")
+source("../R/enrichment_by_fishers.R")
 ```
 
 This is intended to be a short introduction to the functional enrichment code I've written
