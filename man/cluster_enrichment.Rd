@@ -4,20 +4,26 @@
 \alias{cluster_enrichment}
 \title{cluster_enrichment}
 \usage{
-cluster_enrichment(database, clusters, background = NA,
-  sigfilter = 0.05)
+cluster_enrichment(geneset, clusters, background = NA, sigfilter = 0.05)
 }
 \arguments{
-\item{database}{is...}
+\item{geneset}{is a GeneSet object for pathway annotation}
 
-\item{clusters}{is...}
+\item{clusters}{is a list of clusters (gene lists) to calculate enrichment on}
 
-\item{background}{default is an NA}
+\item{background}{is a list of genes to serve as the background for enrichment}
 
-\item{sigfilter}{default is .05}
+\item{sigfilter}{minimum significance threshold default is .05}
 }
 \description{
-Cluster enrichment function description...
+Cluster enrichment Run enrichment (Fisher's exact) on clusters (lists of identifier groups)
+}
+\details{
+This function will calculate enrichment (Fisher's exact test for membership overlap) on
+
+a series of lists of genes, such as from a set of clusters. The results are returned as
+
+a list of results matrices in the order of the input clusters.
 }
 \examples{
 dontrun{

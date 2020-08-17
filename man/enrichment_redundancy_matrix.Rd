@@ -4,9 +4,14 @@
 \alias{enrichment_redundancy_matrix}
 \title{enrichment_redundancy_matrix}
 \usage{
-enrichment_redundancy_matrix(geneset, dataframe = NA,
-  enrichment_results = NA, significance_threshold = NA,
-  pathway_list = NA, method = "jaccard")
+enrichment_redundancy_matrix(
+  geneset,
+  dataframe = NA,
+  enrichment_results = NA,
+  significance_threshold = NA,
+  pathway_list = NA,
+  method = "jaccard"
+)
 }
 \arguments{
 \item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}

@@ -4,9 +4,16 @@
 \alias{permute_enrichment_in_groups}
 \title{permute_enrichment_in_groups}
 \usage{
-permute_enrichment_in_groups(geneset, targets = NULL,
-  background = NULL, method = "fishers", minsize = 5,
-  mapping_column = NULL, abundance_column = NULL, ntimes = 100)
+permute_enrichment_in_groups(
+  geneset,
+  targets = NULL,
+  background = NULL,
+  method = "fishers",
+  minsize = 5,
+  mapping_column = NULL,
+  abundance_column = NULL,
+  ntimes = 100
+)
 }
 \arguments{
 \item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}

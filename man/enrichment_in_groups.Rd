@@ -4,33 +4,45 @@
 \alias{enrichment_in_groups}
 \title{enrichment_in_groups}
 \usage{
-enrichment_in_groups(geneset, targets = NULL, background = NULL,
-  method = "fishers", minsize = 5, mapping_column = NULL,
-  abundance_column = NULL, randomize = F)
+enrichment_in_groups(
+  geneset,
+  targets = NULL,
+  background = NULL,
+  method = "fishers",
+  minsize = 5,
+  mapping_column = NULL,
+  abundance_column = NULL,
+  randomize = F
+)
 }
 \arguments{
 \item{targets}{defaults to NULL}
 
 \item{background}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
-\item{method}{A character string specifying which enrichment method to use, defaults to 'fishers'.}
+\item{method}{A character string specifying which enrichment method to use fishers or ks for Kolgmorov-Smirnov, defaults to 'fishers'.}
 
-\item{minsize}{Is a numeric value, defaults to 5}
+\item{minsize}{Is the minimum size of a gene set that will be considered, defaults to 5}
 
-\item{mapping_column}{Is a character string, a column name of \code{background}, that...??.}
+\item{mapping_column}{Is an optional character string, a column name of \code{abundance}, for specifying gene mapping (e.g. for phosphoproteomics data). Defaults to NULL}
 
 \item{abundance_column}{Is a character vector composed of column names from \code{background}, that ...??.}
 
 \item{randomize}{is a logical, defaults to FALSE}
 
-\item{genesets}{geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
+\item{genesets}{is a GeneSet object for pathway annotation}
 }
 \description{
-enrichment_in_groups function description is...
+Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
+}
+\details{
+
+
+
 }
 \examples{
 dontrun{
-       library(mcdeR)
+       library(LEAP)
 
        # read in the example abundance data
        data("protdata")
@@ -62,5 +74,6 @@ dontrun{
        protdata.enrichment.fishers.module_1 = enrichment_in_groups(ncipid, targets=names(modules[which(modules==1)]),background=names(modules))
 
 }
+
 
 }

@@ -2,13 +2,15 @@
 #'
 #' correlation_comparison_enrichment function description is...
 #'
-#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
-#' @param abundance Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
-#' @param set1 Is a character vector composed of column names from \code{abundance}, that ...??.
-#' @param set2 Is a character vector of column names, similar to \code{set1} ...??.
-#' @param mapping_column Is a character string, a column name of \code{abundance}, that...??.
-#' @param tag default is an NA
+#' @param geneset is a GeneSet object for pathway annotation
+#' @param abundance Is a \emph{mxn} matrix of abundance data (protein, gene, etc.), with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
+#' @param set1 Is a character vector composed of column names from \code{abundance}, for calculation of correlation.
+#' @param set2 Is a character vector of column names, similar to \code{set1}, for calculation of correlation to compare.
+#' @param mapping_column Is a character string, a column name of \code{abundance}, for specifying gene mapping (e.g. for phosphoproteomics data).
+#' @param tag a prefix tag (optional) for specifying source of data default is NA
 #' @param mode default is 'original'
+#'
+#' @description This function calculates pairwise correlation in genes in each pathway and compares the ...
 #'
 #' @examples
 #' dontrun{

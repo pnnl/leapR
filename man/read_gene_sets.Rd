@@ -4,8 +4,12 @@
 \alias{read_gene_sets}
 \title{read_gene_sets}
 \usage{
-read_gene_sets(gsfile, gene.labels = NA, gs.size.threshold.min = 5,
-  gs.size.threshold.max = 15000)
+read_gene_sets(
+  gsfile,
+  gene.labels = NA,
+  gs.size.threshold.min = 5,
+  gs.size.threshold.max = 15000
+)
 }
 \arguments{
 \item{gsfile}{is a gene set file, for example a .gmt file (gene matrix transposed file format)}

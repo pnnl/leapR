@@ -4,25 +4,35 @@
 \alias{correlation_comparison_enrichment}
 \title{correlation_comparison_enrichment}
 \usage{
-correlation_comparison_enrichment(geneset, abundance, set1, set2,
-  mapping_column = NA, tag = NA, mode = "original")
+correlation_comparison_enrichment(
+  geneset,
+  abundance,
+  set1,
+  set2,
+  mapping_column = NA,
+  tag = NA,
+  mode = "original"
+)
 }
 \arguments{
-\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
+\item{geneset}{is a GeneSet object for pathway annotation}
 
-\item{abundance}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
+\item{abundance}{Is a \emph{mxn} matrix of abundance data (protein, gene, etc.), with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
-\item{set1}{Is a character vector composed of column names from \code{abundance}, that ...??.}
+\item{set1}{Is a character vector composed of column names from \code{abundance}, for calculation of correlation.}
 
-\item{set2}{Is a character vector of column names, similar to \code{set1} ...??.}
+\item{set2}{Is a character vector of column names, similar to \code{set1}, for calculation of correlation to compare.}
 
-\item{mapping_column}{Is a character string, a column name of \code{abundance}, that...??.}
+\item{mapping_column}{Is a character string, a column name of \code{abundance}, for specifying gene mapping (e.g. for phosphoproteomics data).}
 
-\item{tag}{default is an NA}
+\item{tag}{a prefix tag (optional) for specifying source of data default is NA}
 
 \item{mode}{default is 'original'}
 }
 \description{
+This function calculates pairwise correlation in genes in each pathway and compares the ...
+}
+\details{
 correlation_comparison_enrichment function description is...
 }
 \examples{

@@ -4,24 +4,32 @@
 \alias{correlation_enrichment}
 \title{correlation_enrichment}
 \usage{
-correlation_enrichment(geneset, abundance, mapping_column = NA,
-  tag = NA)
+correlation_enrichment(geneset, abundance, mapping_column = NA, tag = NA)
 }
 \arguments{
-\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
+\item{geneset}{is GeneSet object for pathway annotation}
 
-\item{abundance}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
+\item{abundance}{Is a \emph{mxn} matrix of abundance data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
 
-\item{mapping_column}{Is a character string, a column name of \code{abundance}, that...??.}
+\item{mapping_column}{Is a character string, a column name of \code{abundance}, that contains gene names (e.g. for phosphoproteomics). Default is NA}
 
-\item{tag}{default is NA}
+\item{tag}{is an optional prefix that specifies the data type. Default is NA}
 }
 \description{
+This function calculates the correlation of pathway members, for each pathway, and calculates enrichment based
+
+on the distribution of this correlation. This is based on a hypothesis that pathways that are more coordinated
+
+in activity (i.e. members are more correlated across different conditions) might be more important - or more
+
+active.
+}
+\details{
 correlation_enrichment function description is...
 }
 \examples{
 dontrun{
-        library(mcdeR)
+        library(LEAP)
 
         # read in the example abundance data
         data("protdata")

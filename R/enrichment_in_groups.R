@@ -1,19 +1,33 @@
 #' enrichment_in_groups
 #'
-#' enrichment_in_groups function description is...
+#' Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
 #'
-#' @param genesets geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
+#' @param genesets is a GeneSet object for pathway annotation
 #' @param targets defaults to NULL
 #' @param background Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
-#' @param method A character string specifying which enrichment method to use, defaults to 'fishers'.
-#' @param minsize Is a numeric value, defaults to 5
-#' @param mapping_column Is a character string, a column name of \code{background}, that...??.
+#' @param method A character string specifying which enrichment method to use fishers or ks for Kolgmorov-Smirnov, defaults to 'fishers'.
+#' @param minsize Is the minimum size of a gene set that will be considered, defaults to 5
+#' @param mapping_column Is an optional character string, a column name of \code{abundance}, for specifying gene mapping (e.g. for phosphoproteomics data). Defaults to NULL
 #' @param abundance_column Is a character vector composed of column names from \code{background}, that ...??.
 #' @param randomize is a logical, defaults to FALSE
+#' 
+#' @details  
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
+#' @details
 #'
 #' @examples
 #' dontrun{
-#'        library(mcdeR)
+#'        library(LEAP)
 #'
 #'        # read in the example abundance data
 #'        data("protdata")
@@ -46,7 +60,6 @@
 #'
 #' }
 #'
-#' @export
 #'
 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,

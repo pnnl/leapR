@@ -57,7 +57,7 @@ greaterthan \tab Is a logical value that defaults to TRUE, it's used with 'enric
 }
 \examples{
 dontrun{
-        library(mcdeR)
+        library(LEAP)
 
         # read in the example abundance data
         data("protdata")

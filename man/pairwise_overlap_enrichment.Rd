@@ -4,8 +4,14 @@
 \alias{pairwise_overlap_enrichment}
 \title{pairwise_overlap_enrichment}
 \usage{
-pairwise_overlap_enrichment(geneset, datamatrix, condition1, condition2,
-  mapping_column = NULL, subsample_components = NULL)
+pairwise_overlap_enrichment(
+  geneset,
+  datamatrix,
+  condition1,
+  condition2,
+  mapping_column = NULL,
+  subsample_components = NULL
+)
 }
 \arguments{
 \item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}

@@ -1,14 +1,21 @@
 #' add_gene_set
 #'
-#' add_gene_set function description...
+#' add_gene_set function Add a gene set to a GeneSet object.
 #'
-#' @param geneset is...
-#' @param name default is an NA
-#' @param genelist default is an NA
+#' @param geneset is a GeneSet object for pathway annotation
+#' @param name is the name of the gene set to be added
+#' @param genelist is a list of the gene ids to be added
+#' @param desc is a short description of the gene set 
+#' 
+#' @details This function adds a single new gene set to an existing GeneSet object. It returns
+#'              the same (now modified) GeneSet object.
 #'
 #' @examples
 #' dontrun{
-#'
+#'   mygeneset = make_gene_set()
+#'   mygeneset = add_gene_set(mygeneset, name="MyPathway", 
+#'                            desc="A pathway describing an important thing",
+#'                            genelist=c("geneA","geneB","geneX","geneY"))
 #'
 #' }
 #'

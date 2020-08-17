@@ -1,11 +1,15 @@
 #' cluster_enrichment
 #'
-#' Cluster enrichment function description...
+#' Cluster enrichment Run enrichment (Fisher's exact) on clusters (lists of identifier groups)
 #'
-#' @param database is...
-#' @param clusters is...
-#' @param background default is an NA
-#' @param sigfilter default is .05
+#' @param geneset is a GeneSet object for pathway annotation
+#' @param clusters is a list of clusters (gene lists) to calculate enrichment on
+#' @param background is a list of genes to serve as the background for enrichment
+#' @param sigfilter minimum significance threshold default is .05 
+#'
+#' @details This function will calculate enrichment (Fisher's exact test for membership overlap) on
+#' @details a series of lists of genes, such as from a set of clusters. The results are returned as
+#' @details a list of results matrices in the order of the input clusters.
 #'
 #' @examples
 #' dontrun{
@@ -16,10 +20,10 @@
 #' @export
 #'
 
-cluster_enrichment <- function(database, clusters, background=NA, sigfilter=0.05) {
+cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05) {
   x = length(clusters)-1
   if (is.na(background))  background = clusters[[x+1]]
-  this = sapply(1:x, function (i) list(enrichment_in_groups(database, clusters[[i]], background)))
+  this = sapply(1:x, function (i) list(enrichment_in_groups(geneset, clusters[[i]], background)))
   outlist = list()
   for (i in 1:x) {
     these = this[[i]][which(this[[i]][,7]<sigfilter),]

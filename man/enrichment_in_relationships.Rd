@@ -4,8 +4,13 @@
 \alias{enrichment_in_relationships}
 \title{enrichment_in_relationships}
 \usage{
-enrichment_in_relationships(geneset, relationships, idmap = NA,
-  tag = NA, mode = "original")
+enrichment_in_relationships(
+  geneset,
+  relationships,
+  idmap = NA,
+  tag = NA,
+  mode = "original"
+)
 }
 \arguments{
 \item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
