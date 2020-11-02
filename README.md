@@ -1,2 +1,2 @@
-# LEAP
-Functional Enrichment Analysis for R.
+# MEAP
+Multi-omic Enrichment Analysis of Pathways (MEAP) in R
