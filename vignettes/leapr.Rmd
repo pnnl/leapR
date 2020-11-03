@@ -25,50 +25,50 @@ library(leapr)
 This is intended to be a short introduction to the `leapr` package.
 
 # Definitions 
-*Dataset* - in this case I'm generally talking about a matrix of components (rows) measured in the same system under multiple different conditions (columns)
+*Dataset* - a matrix of components (rows) measured in the same system under multiple different conditions (columns)
 
 *Component* - the things being measured, genes, proteins, methylation site, phosphosite, etc. For functional (currently) the component must be associated with a gene name. That is, there's not currently a way to calculate pathway enrichment using lipids.
 
-*Pathway* - here I'm using this to mean 'a group of components that works together to accomplish something or are related to each other in some other way'. This includes classic signaling and metabolic pathways, but also molecular function and localization categories and other groups of related components, like genome location, conservation, etc.
+*Pathway* - a set of components that works together to accomplish something or are related to each other in some other way. This includes classic signaling and metabolic pathways, but also molecular function and localization categories and other groups of related components, like genome location, conservation, etc.
 
 *Condition* - a sample where the treatment, environmental conditions, patient, time point or some combination of those is varied. 
 
 The overall idea for functional enrichment is to determine which pathways
 are statistically over-represented in one group versus another, display statistically differential
 abundance from one group to another, or are statistically differentially distributed in a ranked 
-list based on the abundance of one sample. Each of these purposes has a different underlying statistical test (or families of tests) and the results of each can be interpreted in somewhat different ways.
+list based on the abundance of one sample. Each of these purposes has a different underlying statistical test (or family of tests) and the results of each can be interpreted in somewhat different ways. The purpose of this vignette is to give the user a very brief introduction on how to use the package, not to discuss the underlying statistical choices that need to be made when analyzing such data.
 
-In the following sections I have tried to step through each application, list the possible uses for the application, and how it should be interpreted- using an example dataset (and constructing example data/lists/etc from the example data). There are a number of caveats that I also attempt to capture here.
+There are a number of caveats (probably non-exhuastive) with doing this kind of analysis.
 
 # Important points for consideration
 
 ### 1. Data normalization
-One important point is to use data that's been normalized in a particular way to do these analyses. I normalize as a Z score *by row* (gene/protein/etc.). So, for each row, calculate the mean and standard deviation across all the conditions (columns) and then express as a Z score. 
+One important point is to use data that's been normalized in a particular way to do these analyses. Data here has been normalized as a Z score *by row* (gene/protein/etc.). So, for each row, calculate the mean and standard deviation across all the conditions (columns) and then express as a Z score. 
 
-Here's why. All high-throughput technologies (microarray, RNAseq, MS-assisted proteomics, metabolomics, lipidomics, etc.) suffer from the same limitation. The detectability of each molecule being detected (protein, RNA, etc.) is different and, in general, it's impossible to accurately determine *how detectable* each one is. The functional enrichment process lumps together measurements from different components (proteins, genes, etc.) to summarize a pathway. If the component measurements aren't directly comparable (they aren't) then this can and will introduce significant systematic errors and won't produce the results you're looking for. 
-
-This caveat actually limits the applicability of functional enrichment for data which have limited number of samples (two condition comparisons for example). In those cases using an approach like Fisher's exact is a reasonable one. For example identifying those components that are differentially expressed between conditions and then assessing enrichment of the differentially expressed components relative to all other conditions.
+Here's why. All high-throughput technologies (microarray, RNAseq, MS-assisted proteomics, metabolomics, lipidomics, etc.) suffer from the same limitation. The detectability of each molecule being detected (protein, RNA, etc.) is different and, in general, it's impossible to accurately determine *how detectable* each one is. The multi-omic functional enrichment process lumps together measurements from different components (proteins, genes, etc.) to summarize a pathway. If the component measurements aren't directly comparable (they aren't) then this can and will introduce significant systematic errors and won't produce the results you're looking for. Careful consideration must be given that the results of the analysis reflect the question being asked and that the normalization method hasn't obscured the desired results.
 
 ### 2. Background
-The background of comparison for functional enrichment is always important, but really only impacts the Fisher's exact tests in my applications below. The background is the answer to "my functional group of interest is statistically enriched relative to what?" For Fisher's exact tests this is really important. [tbc]
+The background of comparison for functional enrichment is always important, but really only impacts the Fisher's exact tests in my applications below. The background is the answer to "my functional group of interest is statistically enriched relative to what?" For Fisher's exact tests this is really important. Generally, it is best to compare enrichment versus those components observed in the data - not against the universe of all possible components. For example, a proteomics dataset from plasma may have a limited number of proteins observed relative to all possible human proteins. Functional enrichment using all possible proteins will yeild very different results than if it's performed using only those proteins observed in plasma as a background.
 
 ### 3. Multiple hypothesis correction
 When testing the statistical significance of differences in a lot of pathways it's necessary to correct for multiple hypotheses. This essentially accounts for the possibility you might see SOMETHING significant by chance if you just test enough things- so it moves p values in a less significant direction. The more things you test, the greater this move will be. So pathway databases with lots of pathways are affected more by this correction, making it harder to get a significant result (which is a good thing actually).
 
 ### 4. Pathway databases
-I have included two 'databases' (organized text files) for pathways. The first is taken from the NCI's Pathway Interaction Database (PID) and covers signaling pathways in human. The second is taken from the MSIGDB (the same database used by GSEA) that has lots of different pathways gathered from multiple different sources- some are more useful than others. The MSIGDB is good for giving more options- but runs into multiple hypothesis correction issues (see above). They can be loaded as follows:
+Two 'databases' (organized text files) are included for pathways. The first is taken from the NCI's Pathway Interaction Database (PID) and covers signaling pathways in human - but is no longer being actively maintained. The second is taken from the MSIGDB (the same database used by GSEA) that has lots of different pathways gathered from multiple different sources- some are more useful than others. The MSIGDB is good for giving more options- but runs into multiple hypothesis correction issues (see above). They can be loaded as follows:
 ```
 data(msigdb)
 data(ncipid)
 ```
 
 ### 5. Identifiers
-The identifiers (gene names, e.g.) for the data input MUST match the identifiers used in the pathway database. For the two human databases that I've included I use the HGNC-approved gene names. Which means your data has to use the same identifiers.
+The identifiers (gene names, e.g.) for the data input MUST match the identifiers used in the pathway database. The two included human databases use the HGNC-approved gene names. Which means your data has to use the same identifiers.
 
 ### 6. Example data
-I've included a sample data set that is from the CPTAC study of 169 ovarian tumors. For each application I've formatted the data to be an example of the type of analysis and also try to point out other ways you might use the approach (either in examples or as text). This data can be loaded as follows:
+A sample data set is included that is from the CPTAC study of 169 ovarian tumors. For each application data is formatted to be an example of the type of analysis and also try to point out other ways you might use the approach (either in examples or as text). This data can be loaded as follows:
 ```
 data(protdata)
+data(transdata)
+
 ```
 We also include some groups of patients to compare:
 ```
@@ -113,10 +113,10 @@ It is VERY important to also consider the effect size. That is, the difference b
 #   them to another group (the 'long survivors')
 
 ###using enrichment_wrapper function
-protdata.enrichment.svl = enrichment_wrapper(geneset=ncipid, 
-                                             enrichment_method='enrichment_in_abundance',
-                                             datamatrix=protdata, primary_columns=shortlist,
-                                             secondary_columns=longlist)
+protdata.enrichment.svl = leapR(geneset=ncipid, 
+                                enrichment_method='enrichment_in_abundance',
+                                datamatrix=protdata, primary_columns=shortlist,
+                                secondary_columns=longlist)
 
 # I generally output these files and then view them in Excel afterward
 write.table(protdata.enrichment.svl, 
@@ -126,14 +126,13 @@ write.table(protdata.enrichment.svl,
 knitr::kable(head(protdata.enrichment.svl))
 # another application is to compare just one patient against another (this would be the
 #     equivalent of comparing one time point to another)
-#protdata.enrichment.svl.ovo = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist[1], sample_comparison=longlist[1])
 
 ###using enrichment_wrapper function
-protdata.enrichment.svl.ovo = enrichment_wrapper(geneset=ncipid,
-                                                 enrichment_method='enrichment_in_abundance',
-                                                 datamatrix=protdata, 
-                                                 primary_columns=shortlist[1],
-                                                 secondary_columns=longlist[1])
+protdata.enrichment.svl.ovo = leapR(geneset=ncipid,
+                                    enrichment_method='enrichment_in_abundance',
+                                    datamatrix=protdata, 
+                                    primary_columns=shortlist[1],
+                                    secondary_columns=longlist[1])
 knitr::kable(head(protdata.enrichment.svl.ovo))
 ```
 
@@ -161,13 +160,11 @@ As with the t test comparison above it is important to look at the number of pat
 genelist = rownames(protdata)[which(protdata[,1]>0.5)]
 background = rownames(protdata)
 
-#prodata.enrichment.fishers = enrichment_in_groups(ncipid, targets=genelist, background=background)
-
 ###using enrichment_wrapper function
-prodata.enrichment.fishers = enrichment_wrapper(geneset=ncipid,
-                                                enrichment_method="enrichment_by_fishers",
-                                                datamatrix=protdata, threshold=.5,
-                                                primary_columns="TCGA-13-1484")
+prodata.enrichment.fishers = leapR(geneset=ncipid,
+                                   enrichment_method="enrichment_by_fishers",
+                                   datamatrix=protdata, threshold=.5,
+                                   primary_columns="TCGA-13-1484")
 
 
 # in this example we construct some modules from the hierarchical clustering of the
