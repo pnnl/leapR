@@ -6,6 +6,15 @@
 #' @source Where did this come from?
 "protdata"
 
+#' Transcriptomic data
+#' 
+#' A dataset containing gene transcriptomic data containing 18632 genes and 174 patient samples. 
+#' Values represent normalized (Z score) gene expression relative to the mean expression for that gene
+#' @format A data frame with 18632 rows and 174 columns
+#' @source Where did this come from?
+"transdata"
+
+
 #'NCI Gene lists
 #'
 #'A list of pathways and the genes that comprise these pathways
@@ -24,7 +33,7 @@
 #' 
 #' @format A list with 4 items
 #'\describe{
-#' \item{names} The names of the signling pathways
+#' \item{names} The names of the signaling pathways
 #' \item{desc}
 #' \item{sizes}
 #' \item{matrix}

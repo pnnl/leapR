@@ -185,8 +185,12 @@ modules = cutree(protdata_hc, k=5)
 #         number and the name is the gene name
 
 # To do enrichment for one module (module 1 in this case) do this
-protdata.enrichment.fishers.module_1 = enrichment_in_groups(ncipid, targets=names(modules[which(modules==1)]),
-                                                            background=names(modules))
+protdata.enrichment.fishers.module_1 = leapR(geneset=ncipid, enrichment_method="enrichment_by_fishers",
+                                             datamatrix=)
+
+
+# protdata.enrichment.fishers.module_1 = enrichment_in_groups(ncipid, targets=names(modules[which(modules==1)]),
+#                                                            background=names(modules))
 
 # To do enrichment for all modules and dump the results into text files
 # do this
