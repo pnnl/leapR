@@ -15,7 +15,6 @@
 #'
 #' @examples
 #' dontrun{
-#' dontrun{
 #'         library(leapr)
 #'
 #'         # read in the example protein data

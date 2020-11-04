@@ -10,7 +10,7 @@
 #'      library(leapr)
 #'      
 #'      # load example gene set
-#'      data("ncipid)
+#'      data("ncipid")
 #'      
 #'      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 #'

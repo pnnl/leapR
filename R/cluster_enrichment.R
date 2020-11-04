@@ -12,7 +12,6 @@
 #' @details a list of results matrices in the order of the input clusters.
 #'
 #' @examples
-#' dontrun{
 #'dontrun{
 #'         library(leapr)
 #'

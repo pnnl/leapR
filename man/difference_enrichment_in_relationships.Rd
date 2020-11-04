@@ -13,24 +13,6 @@ difference_enrichment_in_relationships(
   mode = "original"
 )
 }
-\arguments{
-\item{geneset}{is...}
-
-\item{relationships1}{is...}
-
-\item{relationships2}{is...}
-
-\item{idmap}{defaults to an NA}
-
-\item{tag}{defaults to an NA}
-}
 \description{
-difference_enrichment_in_relationships function description is...
-}
-\examples{
-dontrun{
-
-
-}
-
+# access through leapr wrapper
 }

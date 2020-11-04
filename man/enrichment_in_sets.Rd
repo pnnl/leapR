@@ -13,19 +13,7 @@ enrichment_in_sets(
   randomize = F
 )
 }
-\arguments{
-\item{targets}{defaults to NULL}
-
-\item{background}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
-
-\item{minsize}{Is the minimum size of a gene set that will be considered, defaults to 5}
-
-\item{mapping_column}{Is an optional character string, a column name of \code{abundance}, for specifying gene mapping (e.g. for phosphoproteomics data). Defaults to NULL}
-
-\item{randomize}{is a logical, defaults to FALSE}
-
-\item{genesets}{is a GeneSet object for pathway annotation}
-}
 \description{
 Enrichment in sets is a wrapper function for enrichment_in_groups where 'method' argument is set to "fishers" and "abundance_column" is set to NA
+# access through leapr wrapper
 }
