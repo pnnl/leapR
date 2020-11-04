@@ -118,7 +118,7 @@ protdata.enrichment.svl = leapR(geneset=ncipid,
                                 datamatrix=protdata, primary_columns=shortlist,
                                 secondary_columns=longlist)
 
-knitr::kable(protdata.enrichment.svl[order(protdata.enrichment.svl[,6]),][1:10,])
+knitr::kable(protdata.enrichment.svl[order(protdata.enrichment.svl[,"pvalue"]),][1:10,])
 # another application is to compare just one patient against another (this would be the
 #     equivalent of comparing one time point to another)
 
@@ -128,7 +128,7 @@ protdata.enrichment.svl.ovo = leapR(geneset=ncipid,
                                     datamatrix=protdata, 
                                     primary_columns=shortlist[1],
                                     secondary_columns=longlist[1])
-knitr::kable(protdata.enrichment.svl.ovo[order(protdata.enrichment.svl.ovo[,6]),][1:10,])
+knitr::kable(protdata.enrichment.svl.ovo[order(protdata.enrichment.svl.ovo[,"pvalue"]),][1:10,])
 ```
 
 ## Example 2: Fisher's exact test
@@ -156,12 +156,12 @@ genelist = rownames(protdata)[which(protdata[,1]>0.5)]
 background = rownames(protdata)
 
 ###using enrichment_wrapper function
-prodata.enrichment.fishers = leapR(geneset=ncipid,
+protdata.enrichment.fishers = leapR(geneset=ncipid,
                                    enrichment_method="enrichment_by_fishers",
                                    datamatrix=protdata, threshold=.5,
                                    primary_columns="TCGA-13-1484")
 
-knitr::kable(protdata.enrichment.fishers[order(protdata.enrichment.fishers[,6]),][1:10,])
+knitr::kable(protdata.enrichment.fishers[order(protdata.enrichment.fishers[,"pvalue"]),][1:10,])
 
 # in this example we construct some modules from the hierarchical clustering of the
 #     data
@@ -192,7 +192,7 @@ for (i in 1:5) {
   results = leapR(geneset=ncipid, enrichment_method="enrichment_by_fishers",
                   background=names(modules), targets=names(modules[which(modules==i)]))
   
-  knitr::kable(results[order(results[,6]),][1:10,])
+  knitr::kable(results[order(results[,"pvalue"]),][1:10,])
 
   #fname = sprintf("protdata.enrichment.fishers.module_%d", i)
   #write.table(results, file=fname, sep="\t", quote=F)
@@ -215,7 +215,7 @@ Similar to the other examples be cautious of pathways with good p values that co
 protdata.enrichment.ks = leapR(geneset=ncipid, "enrichment_by_ks", 
                                             datamatrix=protdata, 
                                             primary_columns=shortlist[1])
-knitr::kable(protdata.enrichment.ks[order(protdata.enrichment.ks[,6]),][1:10])
+knitr::kable(protdata.enrichment.ks[order(protdata.enrichment.ks[,"pvalue"]),][1:10,])
 ```
 
 In this section I'll go through the ideas behind and use of several different kinds of enrichment that I've been working on. Consider this section to be under development and so use at your risk.
@@ -230,18 +230,18 @@ The `ingroup_mean` gives the mean correlation of the pathway members to each oth
 
 
 ###using enrichment_wrapper function
-protdata.enrichment.correlation = leapRr(geneset=ncipid, 
+protdata.enrichment.correlation = leapR(geneset=ncipid, 
                                         enrichment_method = "correlation_enrichment",
                                         datamatrix=protdata)
 
-knitr::kable(head(protdata.enrichment.correlation[order(protdata.enrichment.correlation[,6]),]))
+knitr::kable(head(protdata.enrichment.correlation[order(protdata.enrichment.correlation[,"pvalue"]),]))
 protdata.enrichment.correlation.short = leapR(geneset=ncipid, 
                                               enrichment_method = "correlation_enrichment", 
                                               datamatrix=protdata[,shortlist])
-knitr::kable(head(protdata.enrichment.correlation.short[order(protdata.enrichment.correlation.short[,6]),]))
+knitr::kable(head(protdata.enrichment.correlation.short[order(protdata.enrichment.correlation.short[,"pvalue"]),]))
 
 protdata.enrichment.correlation.long = leapR(geneset=ncipid, 
                                             enrichment_method = "correlation_enrichment",
                                             datamatrix=protdata[,longlist])
-knitr::kable(head(protdata.enrichment.correlation.long[order(protdata.enrichment.correlation.long[,6]),]))
+knitr::kable(head(protdata.enrichment.correlation.long[order(protdata.enrichment.correlation.long[,"pvalue"]),]))
 ```
