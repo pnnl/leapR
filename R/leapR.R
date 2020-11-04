@@ -1,6 +1,6 @@
-#' enrichment_wrapper
+#' leapR
 #'
-#' enrichment_wrapper is a wrapper function that consolidates multiple enrichment methods.
+#' leapR is a wrapper function that consolidates multiple enrichment methods.
 #'
 #' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
 #' @param enrichment_method is a character string specifying the method of enrichment to be performed, one of: "correlation_comparison_enrichment", "correlation_enrichment","difference_enrichment_in_relationships", "enrichment_in_abundance","enrichment_by_fishers", "enrichment_by_ks", "enrichment_in_relationships","enrichment_redundancy_matrix", "pairwise_overlap_enrichment","permute_enrichment_in_groups".
@@ -47,7 +47,7 @@
 #'
 #' @examples
 #' dontrun{
-#'         library(LEAP)
+#'         library(leapR)
 #'
 #'         # read in the example abundance data
 #'         data("protdata")
@@ -59,14 +59,14 @@
 #'         data("short_list")
 #'         data("longlist")
 #'
-#'         protdata.enrichment.svl = enrichment_wrapper(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)
+#'         protdata.enrichment.svl = leapR(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)
 #'
 #' }
 #'
 #' @export
 #'
 
-enrichment_wrapper = function(geneset, enrichment_method, ...){
+leapR = function(geneset, enrichment_method, ...){
   .enrichment_wrapper(geneset, enrichment_method, ...)
 }
 
@@ -74,7 +74,7 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
                                secondary_columns=NULL, threshold=NULL, minsize=5, mode=NULL,
                                idmap=NA, fdr=0, min_p_threshold=NULL, sample_n=NULL,
                                enrichment_results=NA,
-                               significance_threshold=NA, pathway_list=NA,
+                               significance_threshold=NA, pathway_list=NA, background=NULL, targets=NULL,
                                subsample_components=NULL, ntimes=100, greaterthan=TRUE){
 
   # JEM: we will remove the 'tag' parameter. This is used to indicate different types of 'omics data and we'll
@@ -144,8 +144,9 @@ enrichment_wrapper = function(geneset, enrichment_method, ...){
       # TODO: add a validation that the datamatrix has a column with the primary_columns name
       if(!is.element(primary_columns, colnames(datamatrix))){stop("'primary_columns' must be a column name of 'datamatrix'")}
     }
-
-    background = rownames(datamatrix)
+    
+    # if we've been passed background instead of a datamatrix then use it as the background
+    if (is.null(background)) background = rownames(datamatrix)
 
     # TODO: we should allow the user to specify if they want it greater than or less than for the threshold
     if(greaterthan == FALSE & !is.null(threshold)){

@@ -118,12 +118,7 @@ protdata.enrichment.svl = leapR(geneset=ncipid,
                                 datamatrix=protdata, primary_columns=shortlist,
                                 secondary_columns=longlist)
 
-# I generally output these files and then view them in Excel afterward
-write.table(protdata.enrichment.svl, 
-            file="protdata.enrichment.svl.txt",
-            sep="\t", quote=F)
-
-knitr::kable(head(protdata.enrichment.svl))
+knitr::kable(protdata.enrichment.svl[order(protdata.enrichment.svl[,6]),][1:10,])
 # another application is to compare just one patient against another (this would be the
 #     equivalent of comparing one time point to another)
 
@@ -133,7 +128,7 @@ protdata.enrichment.svl.ovo = leapR(geneset=ncipid,
                                     datamatrix=protdata, 
                                     primary_columns=shortlist[1],
                                     secondary_columns=longlist[1])
-knitr::kable(head(protdata.enrichment.svl.ovo))
+knitr::kable(protdata.enrichment.svl.ovo[order(protdata.enrichment.svl.ovo[,6]),][1:10,])
 ```
 
 ## Example 2: Fisher's exact test
@@ -166,6 +161,7 @@ prodata.enrichment.fishers = leapR(geneset=ncipid,
                                    datamatrix=protdata, threshold=.5,
                                    primary_columns="TCGA-13-1484")
 
+knitr::kable(protdata.enrichment.fishers[order(protdata.enrichment.fishers[,6]),][1:10,])
 
 # in this example we construct some modules from the hierarchical clustering of the
 #     data
@@ -186,30 +182,26 @@ modules = cutree(protdata_hc, k=5)
 
 # To do enrichment for one module (module 1 in this case) do this
 protdata.enrichment.fishers.module_1 = leapR(geneset=ncipid, enrichment_method="enrichment_by_fishers",
-                                             datamatrix=)
-
-
-# protdata.enrichment.fishers.module_1 = enrichment_in_groups(ncipid, targets=names(modules[which(modules==1)]),
-#                                                            background=names(modules))
+                                             background=names(modules), targets=names(modules[which(modules==1)]))
 
 # To do enrichment for all modules and dump the results into text files
 # do this
 
 for (i in 1:5) {
   # step through each module
-  results = enrichment_in_groups(ncipid, targets=names(modules[which(modules==i)]),
-                                 background=names(modules))
+  results = leapR(geneset=ncipid, enrichment_method="enrichment_by_fishers",
+                  background=names(modules), targets=names(modules[which(modules==i)]))
   
-  knitr::kable(head(results))
+  knitr::kable(results[order(results[,6]),][1:10,])
 
-  fname = sprintf("protdata.enrichment.fishers.module_%d", i)
-  write.table(results, file=fname, sep="\t", quote=F)
+  #fname = sprintf("protdata.enrichment.fishers.module_%d", i)
+  #write.table(results, file=fname, sep="\t", quote=F)
 }
 
 ```
 
-## Example 3. The Kolmogorov–Smirnov test (KS or Vodka Test)
-Similar to the popular GSEA, KS tests whether a group of components (the pathway) is distributed in a statistically significant manner in a ranked list of components. That is, if all the members of the pathway are clustered together at the top of the list (highly abundant, e.g.) or at the bottom of the list (low abundance, e.g.) this will return good p values. I should note that GSEA uses a somewhat more sophisticated approach than this and their application has a lot of bells and whistles.
+## Example 3. The Kolmogorov–Smirnov test (KS)
+Similar to the popular GSEA, KS tests whether a group of components (the pathway) is distributed in a statistically significant manner in a ranked list of components. That is, if all the members of the pathway are clustered together at the top of the list (highly abundant, e.g.) or at the bottom of the list (low abundance, e.g.) this will return good p values. I should note that GSEA uses a more sophisticated approach than this and their application has a lot of bells and whistles.
 
 ### Description
 In the example below I'm simply calculating enrichment for one of the patients in the list (arbitrarily selected). The ranking value is relative protein abundance in this case, but can be any continuous measure or derived value. For example, you could calculate the topology of all proteins in a network and use the topology measure (degree) as the measure. 
@@ -219,17 +211,12 @@ Similar to the other examples be cautious of pathways with good p values that co
 
 ``` {r ks, echo=FALSE, warning = F}
 # This is how you calculate enrichment in a ranked list (for example from topology)
-#prodata.enrichment.ks = enrichment_in_groups(ncipid, background=protdata, method="ks",
-#                                             abundance_column=shortlist[1])
-
 ###using enrichment_wrapper function
-protdata.enrichment.ks = enrichment_wrapper(geneset=ncipid, "enrichment_by_ks", 
+protdata.enrichment.ks = leapR(geneset=ncipid, "enrichment_by_ks", 
                                             datamatrix=protdata, 
                                             primary_columns=shortlist[1])
-knitr::kable(head(protdata.enrichment.ks))
+knitr::kable(protdata.enrichment.ks[order(protdata.enrichment.ks[,6]),][1:10])
 ```
-
-The 'under development' section.
 
 In this section I'll go through the ideas behind and use of several different kinds of enrichment that I've been working on. Consider this section to be under development and so use at your risk.
 
@@ -243,18 +230,18 @@ The `ingroup_mean` gives the mean correlation of the pathway members to each oth
 
 
 ###using enrichment_wrapper function
-protdata.enrichment.correlation = enrichment_wrapper(geneset=ncipid, 
-                                                     enrichment_method = "correlation_enrichment",
-                                                     datamatrix=protdata)
+protdata.enrichment.correlation = leapRr(geneset=ncipid, 
+                                        enrichment_method = "correlation_enrichment",
+                                        datamatrix=protdata)
 
-knitr::kable(head(protdata.enrichment.correlation))
-protdata.enrichment.correlation.short = enrichment_wrapper(geneset=ncipid, 
-                                                           enrichment_method = "correlation_enrichment", 
-                                                           datamatrix=protdata[,shortlist])
-knitr::kable(head(protdata.enrichment.correlation.short))
+knitr::kable(head(protdata.enrichment.correlation[order(protdata.enrichment.correlation[,6]),]))
+protdata.enrichment.correlation.short = leapR(geneset=ncipid, 
+                                              enrichment_method = "correlation_enrichment", 
+                                              datamatrix=protdata[,shortlist])
+knitr::kable(head(protdata.enrichment.correlation.short[order(protdata.enrichment.correlation.short[,6]),]))
 
-protdata.enrichment.correlation.long = enrichment_wrapper(geneset=ncipid, 
-                                                          enrichment_method = "correlation_enrichment",
-                                                          datamatrix=protdata[,longlist])
-knitr::kable(head(protdata.enrichment.correlation.long))
+protdata.enrichment.correlation.long = leapR(geneset=ncipid, 
+                                            enrichment_method = "correlation_enrichment",
+                                            datamatrix=protdata[,longlist])
+knitr::kable(head(protdata.enrichment.correlation.long[order(protdata.enrichment.correlation.long[,6]),]))
 ```
