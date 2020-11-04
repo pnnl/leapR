@@ -1,32 +1,6 @@
 #' enrichment_by_fishers
 #'
-#' Calculate statistical enrichment by membership (Fisher's exact test) between a group and background
-#' based on an annotation.
-#'
-#' @param group is a list of identifiers (e.g. differentially expressed gene ids) to test for enrichment
-#' @param background is the total list of identifiers to consider as a background
-#' @param annotation is a list of identifiers to compare with group (e.g. a pathway)
-#'
-#' @details This function uses the Fisher's exact test to test a contingency table formed by the group, the annotation,
-#' @details and the background - a lists of identifiers. Also known as a hypergeometric test, this essentially tests
-#' @details how surprising it is that one group (group) overlaps with another group (annotation) in the context of the
-#' @details background of all identifiers considered (background; e.g. all the proteins identified in the assay), to the
-#' @details extent observed in a dataset.
-#'
-#' @examples
-#' dontrun{
-#' 
-#'  background = c("A","B","C","D","E","F","G","H","I","J","K","L")
-#'  group = c("A","B","C","D")
-#'  annotation = c("A", "B","C","D","E")
-#'  
-#'  result = enrichment_by_fishers(group, background, annotation)
-#'  result$fisher$p.value
-#'
-#'
-#' }
-#'
-#' @export
+#' # helper function for enrichment functions
 #'
 #'
 

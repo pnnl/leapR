@@ -47,7 +47,7 @@
 #'
 #' @examples
 #' dontrun{
-#'         library(leapR)
+#'         library(leapr)
 #'
 #'         # read in the example abundance data
 #'         data("protdata")
@@ -56,7 +56,7 @@
 #'         data("ncipid")
 #'
 #'         # read in the patient groups
-#'         data("short_list")
+#'         data("shortlist")
 #'         data("longlist")
 #'
 #'         protdata.enrichment.svl = leapR(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)

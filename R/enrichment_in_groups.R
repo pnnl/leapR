@@ -1,65 +1,7 @@
 #' enrichment_in_groups
 #'
 #' Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
-#'
-#' @param genesets is a GeneSet object for pathway annotation
-#' @param targets defaults to NULL
-#' @param background Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
-#' @param method A character string specifying which enrichment method to use fishers or ks for Kolgmorov-Smirnov, defaults to 'fishers'.
-#' @param minsize Is the minimum size of a gene set that will be considered, defaults to 5
-#' @param mapping_column Is an optional character string, a column name of \code{abundance}, for specifying gene mapping (e.g. for phosphoproteomics data). Defaults to NULL
-#' @param abundance_column Is a character vector composed of column names from \code{background}, that ...??.
-#' @param randomize is a logical, defaults to FALSE
-#' 
-#' @details  
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#' @details
-#'
-#' @examples
-#' dontrun{
-#'        library(LEAP)
-#'
-#'        # read in the example abundance data
-#'        data("protdata")
-#'
-#'        # read in the pathways
-#'        data("ncipid")
-#'
-#'        #for this example we will construct a list of genes from the expression data to emulate what you might be inputting
-#'        genelist = rownames(protdata)[which(protdata[,1]>0.5)]
-#'        background = rownames(protdata)
-#'
-#'        prodata.enrichment.fishers = enrichment_in_groups(ncipid, targets=genelist, background=background)
-#'
-#'        #in this example we construct some modules from the heirarchical clustering of the data
-#'        protdata_naf = as.matrix(protdata)
-#'
-#'        #hierarchical clustering is not too happy with lots of missing values so we'll do a zero fill on this to get the modules
-#'        protdata_naf[which(is.na(protdata_naf))] = 0
-#'
-#'        #construct the hierarchical clustering using the 'wardD' method, which seems to give more even sized modules
-#'        protdata_hc = hclust(dist(protdata_naf), method="ward")
-#'
-#'        #arbitrarily we'll chop the clusters into 5 modules
-#'        modules = cutree(protdata_hc, k=5)
-#'
-#'        #modules is a named list of values where each value is a module number and the name is the gene name
-#'
-#'        #To do enrichment for one module (module 1 in this case) do this
-#'        protdata.enrichment.fishers.module_1 = enrichment_in_groups(ncipid, targets=names(modules[which(modules==1)]),background=names(modules))
-#'
-#' }
-#'
+#' # access through leapr wrapper
 #'
 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,

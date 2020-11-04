@@ -1,14 +1,18 @@
 #' get_pathway_information
 #'
-#' get_pathway_information function description is...
+#' get_pathway_information extracts information about a pathway from a GeneSet object
 #'
-#' @param geneset is...
-#' @param path is...
-#' @param remove.tags logical, defaults to FALSE
-#'
+#' @param geneset is a GeneSet object for pathway annotation
+#' @param name is the name of the gene set to be returned
+#' 
 #' @examples
 #' dontrun{
-#'
+#'      library(leapr)
+#'      
+#'      # load example gene set
+#'      data("ncipid)
+#'      
+#'      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 #'
 #' }
 #'

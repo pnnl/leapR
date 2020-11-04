@@ -1,20 +1,9 @@
 #' enrichment_in_relationships
 #'
-#' enrichment_in_relationships function description is...
+#' enrichment_in_relationships function description is a general way to determine if a pathway
+#' is enriched in relationships (interactions, correlation) between its members
+#' # access through leapr wrapper
 #'
-#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
-#' @param relationships Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
-#' @param idmap defaults to an NA
-#' @param tag defaults to an NA
-#' @param mode defaults to 'original'
-#'
-#' @examples
-#' dontrun{
-#'
-#'
-#' }
-#'
-#' @export
 #'
 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original") {
