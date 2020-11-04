@@ -20,13 +20,13 @@ The primary function of the `leapR` package is the `leapR` function itself. This
 
 Here is a list of enrichment arguments that can be called with the `leapR` command.
 
-| Argument                                        | Description |   |
-| ---                                             | ----        |   |
-| `correlation_comparison_enrichment`             |             |   |
-| `correlation_enrichment`                        |             |   |
-| `difference_enrichment_in_relationships`        |             |   |
-| `enrichment_in_abundance`                       |             |   |
-| `enrichment_by_fishers`                         |             |   |
+| Argument                                        | Description |   
+| ---                                             | ----        |   
+| `correlation_comparison_enrichment`             |             |   
+| `correlation_enrichment`                        |             |   
+| `difference_enrichment_in_relationships`        |             |   
+| `enrichment_in_abundance`                       |             |   
+| `enrichment_by_fishers`                         |             |   
 | `enrichment_by_ks`||
 | `enrichment_in_relationships`||
 |`enrichment_redundancy_matrix`||
