@@ -2,7 +2,7 @@
 title: "leapr"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{leapr}
+  %\VignetteIndexEntry{leapr}  
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
