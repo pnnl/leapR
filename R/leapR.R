@@ -193,8 +193,8 @@ leapR = function(geneset, enrichment_method, ...){
   else if(enrichment_method == "enrichment_comparison"){
     
     if(is.null(datamatrix)){stop("'datamatrix' argument is required")}
-    if(is.null(sample_comparison){stop("'secondary_columns' argument is required")})
-    if(is.null(abundance_column){stop("'primary_columns' argument is required")})
+    if(is.null(sample_comparison)){stop("'secondary_columns' argument is required")}
+    if(is.null(abundance_column)){stop("'primary_columns' argument is required")}
     
     #JEM removing these messages since they clutter
     #message("'enrichment_comparison' has the following optional arguments: id_column=NULL, primary_columns=NULL,fdr=0, secondary_columns=NULL,
