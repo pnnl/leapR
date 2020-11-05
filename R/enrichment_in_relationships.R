@@ -5,7 +5,8 @@
 #' # access through leapr wrapper
 #'
 #'
-
+#' @noRd
+#' 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original") {
   # for each category in geneset calculates enrichment of within-group
   #     relationships relative to between-group relationships, where

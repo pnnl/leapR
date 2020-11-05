@@ -202,7 +202,7 @@ Similar to the other examples be cautious of pathways with good p values that co
 ``` {r ks, echo=FALSE, warning = F}
 # This is how you calculate enrichment in a ranked list (for example from topology)
 ###using enrichment_wrapper function
-protdata.enrichment.sets = leapR(geneset=ncipid, "enrichment_in_sets", 
+protdata.enrichment.sets = leapR(geneset=ncipid, "enrichment_in_order", 
                                             datamatrix=protdata, 
                                             primary_columns=shortlist[1])
 knitr::kable(protdata.enrichment.sets[order(protdata.enrichment.sets[,"pvalue"]),][1:10,])

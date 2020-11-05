@@ -41,9 +41,11 @@ dontrun{
         # perform heirarchical clustering on the  data
         transdata.hc = hclust(dist(transdata), method="ward.D2")
         
+        transdata.hc.clusters = cutree(transdata.hc, k=5)
+        
         #calculates enrichment for each of the clusters individually and returns a list
         #   of enrichment results
-        transdata.hc.enrichment = cluster_enrichment(geneset=ncipid, clusters=transdata.hc, background=rownames(transdata))
+        transdata.hc.enrichment = cluster_enrichment(geneset=ncipid, clusters=transdata.hc.clusters, background=rownames(transdata))
         
 }
 

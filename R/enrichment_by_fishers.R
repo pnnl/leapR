@@ -2,7 +2,7 @@
 #'
 #' # helper function for enrichment functions
 #'
-#'
+#' @noRd
 
 enrichment_by_fishers <- function(group, background, annotation) {
   # calculate the fishers exact on a group of things versus a background

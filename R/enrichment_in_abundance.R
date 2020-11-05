@@ -3,7 +3,7 @@
 #' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
 # # access through leapr wrapper
 #'
-#'
+#' @noRd
 
 enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abundance_column=NULL,
                                     fdr=0, matchset=NULL, longform=F, sample_comparison=NULL,

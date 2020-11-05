@@ -28,6 +28,7 @@ check_id_names = function(abundance_data, geneset_data){
 #' @param abundance_data2 second data object of class 'abundance_data'
 #'
 #'
+#' @noRd
 compare_id_names = function(abundance_data1, abundance_data2){
   if(!inherits(abundance_data1, "abundance_data") & !inherits(abundance_data2, "abundance_data")) stop("abundance_data1 and abundance_data2 objects must be of class 'abundance_data'")
 
