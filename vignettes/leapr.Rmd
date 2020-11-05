@@ -114,7 +114,7 @@ It is VERY important to also consider the effect size. That is, the difference b
 
 ###using enrichment_wrapper function
 protdata.enrichment.svl = leapR(geneset=ncipid, 
-                                enrichment_method='enrichment_in_abundance',
+                                enrichment_method='enrichment_comparison',
                                 datamatrix=protdata, primary_columns=shortlist,
                                 secondary_columns=longlist)
 
@@ -124,7 +124,7 @@ knitr::kable(protdata.enrichment.svl[order(protdata.enrichment.svl[,"pvalue"]),]
 
 ###using enrichment_wrapper function
 protdata.enrichment.svl.ovo = leapR(geneset=ncipid,
-                                    enrichment_method='enrichment_in_abundance',
+                                    enrichment_method='enrichment_comparison',
                                     datamatrix=protdata, 
                                     primary_columns=shortlist[1],
                                     secondary_columns=longlist[1])
@@ -156,12 +156,12 @@ genelist = rownames(protdata)[which(protdata[,1]>0.5)]
 background = rownames(protdata)
 
 ###using enrichment_wrapper function
-protdata.enrichment.fishers = leapR(geneset=ncipid,
-                                   enrichment_method="enrichment_by_fishers",
+protdata.enrichment.order = leapR(geneset=ncipid,
+                                   enrichment_method="enrichment_in_order",
                                    datamatrix=protdata, threshold=.5,
                                    primary_columns="TCGA-13-1484")
 
-knitr::kable(protdata.enrichment.fishers[order(protdata.enrichment.fishers[,"pvalue"]),][1:10,])
+knitr::kable(protdata.enrichment.order[order(protdata.enrichment.order[,"pvalue"]),][1:10,])
 
 # in this example we construct some modules from the hierarchical clustering of the
 #     data
@@ -181,22 +181,12 @@ modules = cutree(protdata_hc, k=5)
 #         number and the name is the gene name
 
 # To do enrichment for one module (module 1 in this case) do this
-protdata.enrichment.fishers.module_1 = leapR(geneset=ncipid, enrichment_method="enrichment_by_fishers",
+protdata.enrichment.sets.module_1 = leapR(geneset=ncipid, enrichment_method="enrichment_in_sets",
                                              background=names(modules), targets=names(modules[which(modules==1)]))
 
-# To do enrichment for all modules and dump the results into text files
-# do this
+# To do enrichment on all modules and return the list of enrichment results tables do this
+protdata.enrichment.sets.modules = cluster_enrichment(geneset=ncipid, clusters=modules)
 
-for (i in 1:5) {
-  # step through each module
-  results = leapR(geneset=ncipid, enrichment_method="enrichment_by_fishers",
-                  background=names(modules), targets=names(modules[which(modules==i)]))
-  
-  knitr::kable(results[order(results[,"pvalue"]),][1:10,])
-
-  #fname = sprintf("protdata.enrichment.fishers.module_%d", i)
-  #write.table(results, file=fname, sep="\t", quote=F)
-}
 
 ```
 
@@ -212,10 +202,10 @@ Similar to the other examples be cautious of pathways with good p values that co
 ``` {r ks, echo=FALSE, warning = F}
 # This is how you calculate enrichment in a ranked list (for example from topology)
 ###using enrichment_wrapper function
-protdata.enrichment.ks = leapR(geneset=ncipid, "enrichment_by_ks", 
+protdata.enrichment.sets = leapR(geneset=ncipid, "enrichment_in_sets", 
                                             datamatrix=protdata, 
                                             primary_columns=shortlist[1])
-knitr::kable(protdata.enrichment.ks[order(protdata.enrichment.ks[,"pvalue"]),][1:10,])
+knitr::kable(protdata.enrichment.sets[order(protdata.enrichment.sets[,"pvalue"]),][1:10,])
 ```
 
 In this section I'll go through the ideas behind and use of several different kinds of enrichment that I've been working on. Consider this section to be under development and so use at your risk.

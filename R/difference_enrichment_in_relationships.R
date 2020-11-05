@@ -1,6 +1,18 @@
 #' difference_enrichment_in_relationships
 #'
-#' # access through leapr wrapper
+#' difference_enrichment_in_relationships function description is...
+#'
+#' @param geneset is...
+#' @param relationships1 is...
+#' @param relationships2 is...
+#' @param idmap defaults to an NA
+#' @param tag defaults to an NA
+#'
+#' @examples
+#' dontrun{
+#'
+#'
+#' }
 #'
 
 difference_enrichment_in_relationships <- function(geneset, relationships1, relationships2, idmap=NA, tag=NA,

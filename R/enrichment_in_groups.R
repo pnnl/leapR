@@ -6,7 +6,7 @@
 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
                                  mapping_column=NULL, abundance_column=NULL, randomize=F) {
-
+  
   resultp = c()
   resultf = c()
   results = data.frame(row.names = geneset$names,
@@ -16,7 +16,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
                        pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
                        SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
                        bacground_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
-
+  
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
     thissize = geneset$size[i]
@@ -30,7 +30,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       grouplist = sample(unlist(geneset$matrix), length(grouplist))
     }
     in_back = length(background)
-
+    
     if (method == "fishers") {
       enr = enrichment_by_fishers(targets, background, grouplist)
       p = enr$fisher$p.value
@@ -50,7 +50,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
     else if (method == "ks") {    #Kolmogorov-Smirnov test
       # in this case "background" must be the continuous variable from which grouplist can be drawn
       backlist = background
-
+      
       if (is.null(mapping_column)) {
         in_group = background[grouplist[which(grouplist %in% rownames(background))],abundance_column]
         in_group_name = paste(intersect(grouplist, rownames(background)), collapse = ", ")
@@ -65,13 +65,13 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         in_group_name = paste(intersect(background[,mapping_column], grouplist), collapse = ", ")
         backlist = background[,abundance_column]
       }
-
+      
       in_path = length(in_group)
-
-
+      
+      
       if (in_path > minsize) {
         in_back = length(backlist)
-
+        
         enr = try(ks.test(in_group, backlist))
         if (class(enr) == "try-error") {
           enr = NA
@@ -80,20 +80,20 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         else {
           p.value = enr$p.value
         }
-
+        
         # this expression of foldx might be subject to some weird pathological conditions
         # e.g. one sample has a background that is always negative, another that's positive
         # may pertain to zscore too (although not sure it should)
         #foldx = mean(in_group, na.rm=T)/mean(background, na.rm=T)
-
+        
         # rank from largest to smallest
         if (is.null(mapping_column)) in_rank = rank(backlist)[grouplist[which(grouplist %in% names(background))]]
         else in_rank = rank(backlist)[which(background[,mapping_column] %in% grouplist)]
-
+        
         foldx = mean(in_rank, na.rm=T)/length(backlist)
-
+        
         zscore = (mean(in_group, na.rm=T)-mean(backlist, na.rm=T))/sd(in_group, na.rm=T)
-
+        
         results[thisname,"ingroup_n"] = in_path
         results[thisname,"ingroupnames"] = in_group_name
         results[thisname,"ingroup_mean"] = mean(in_group, na.rm=T)
