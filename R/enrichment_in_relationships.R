@@ -1,22 +1,12 @@
 #' enrichment_in_relationships
 #'
-#' enrichment_in_relationships function description is...
-#'
-#' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??
-#' @param relationships Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
-#' @param idmap defaults to an NA
-#' @param tag defaults to an NA
-#' @param mode defaults to 'original'
-#'
-#' @examples
-#' dontrun{
+#' enrichment_in_relationships function description is a general way to determine if a pathway
+#' is enriched in relationships (interactions, correlation) between its members
+#' # access through leapr wrapper
 #'
 #'
-#' }
-#'
-#' @export
-#'
-
+#' @noRd
+#' 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original") {
   # for each category in geneset calculates enrichment of within-group
   #     relationships relative to between-group relationships, where
@@ -26,10 +16,10 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
   results = data.frame(row.names = geneset$names,
                        ingroup_n=rep(NA_real_, length(geneset$names)), ingroupnames=rep(NA_character_, length(geneset$names)), 
                        ingroup_mean=rep(NA_real_, length(geneset$names)), outgroup_n=rep(NA_real_, length(geneset$names)), 
-                       zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
+                       outgroup_mean=rep(NA_real_, length(geneset$names)), zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
                        pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
                        SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
-                       bacground_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
   
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
@@ -108,7 +98,7 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
     delta = in_mean - out_mean
     
     results[thisname,"ingroup_n"] = length(ingroup)
-    #results[thisname,"ingroupnames"] = in_group_name
+    results[thisname,"ingroupnames"] = ingroup_ids
     results[thisname,"ingroup_mean"] = in_mean
     results[thisname,"outgroup_n"] = length(outgroup)
     results[thisname,"outgroup_mean"] = out_mean

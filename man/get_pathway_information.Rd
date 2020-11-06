@@ -7,18 +7,21 @@
 get_pathway_information(geneset, path, remove.tags = F)
 }
 \arguments{
-\item{geneset}{is...}
+\item{geneset}{is a GeneSet object for pathway annotation}
 
-\item{path}{is...}
-
-\item{remove.tags}{logical, defaults to FALSE}
+\item{name}{is the name of the gene set to be returned}
 }
 \description{
-get_pathway_information function description is...
+get_pathway_information extracts information about a pathway from a GeneSet object
 }
 \examples{
 dontrun{
-
+     library(leapr)
+     
+     # load example gene set
+     data("ncipid")
+     
+     tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 
 }
 

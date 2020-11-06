@@ -7,7 +7,8 @@
 \format{
 A list with 4 items
 \describe{
-\item{names} The names of the signling pathways
+
+\item{names} The names of the signaling pathways
 \item{desc}
 \item{sizes}
 \item{matrix}
