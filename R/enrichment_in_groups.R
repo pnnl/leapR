@@ -3,7 +3,7 @@
 #' Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
 #' # access through leapr wrapper
 #'
-#' @noRd
+#' @export
 #' 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
                                  mapping_column=NULL, abundance_column=NULL, randomize=F) {

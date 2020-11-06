@@ -2,6 +2,9 @@
 
 export(cluster_enrichment)
 export(combine_omics)
+export(enrichment_in_abundance)
+export(enrichment_in_groups)
+export(enrichment_in_relationships)
 export(get_pathway_information)
 export(leapR)
 export(read_abundance_data)
