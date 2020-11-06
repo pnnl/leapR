@@ -38,15 +38,7 @@ This combines matrices of different omics types together and adds prefix tags to
 }
 \examples{
 dontrun{
-        library(leapr)
-
-        # read in the example protein data
-        data("protdata")
-        # read in the example transcriptomics data
-        data("transdata")
-        
-        # merge the two datasets by rows and add prefix tags for different omics types
-        multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
+  multi_omics = comibine_omics(protmatrix, transcriptmatrix)
 
 }
 
