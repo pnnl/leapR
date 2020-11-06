@@ -13,10 +13,10 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
   results = data.frame(row.names = geneset$names,
                        ingroup_n=rep(NA_real_, length(geneset$names)), ingroupnames=rep(NA_character_, length(geneset$names)), 
                        ingroup_mean=rep(NA_real_, length(geneset$names)), outgroup_n=rep(NA_real_, length(geneset$names)), 
-                       zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
+                       outgroup_mean=rep(NA_real_, length(geneset$names)), score=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
                        pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
                        SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
-                       bacground_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
   
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
