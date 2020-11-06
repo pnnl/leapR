@@ -108,8 +108,34 @@ dontrun{
         # read in the patient groups
         data("shortlist")
         data("longlist")
-
-        protdata.enrichment.svl = leapR(geneset=ncipid, enrichment_method='enrichment_in_abundance', datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)
+        
+        # use enrichment_comparison to calculate enrichment in one set of conditions (shortlist) and another
+        # (longlist)
+        short_v_long = leapR(geneset=ncipid, enrichment_method='enrichment_comparison', 
+              datamatrix=protdata, primary_columns=shortlist, secondary_columns=longlist)
+        
+        # use enrichment_in_sets to calculate the most enriched pathways from the highest abundance proteins
+        #     from one condition
+        onept_sets = leapR(geneset=ncipid, enrichment_method='enrichment_in_sets',
+               datamatrix=protdata, primary_columns="TCGA-13-1484", threshold=1.5)
+               
+         # use enrichment_in_order to calculate the most enriched pathways from the same condition
+         #     Note: that this uses the entire set of abundance values and their order - whereas
+         #     the previous example uses a hard threshold to get a short list of most abundant proteins
+         #     and calculates enrichment based on set overlap. The results are likely to be similar - but
+         #     with some notable differences.
+         onept_order = leapR(geneset=ncipid, enrichment_method='enrichment_in_order',
+               datamatrix=protdata, primary_columns="TCGA-13-1484")
+               
+         # use enrichment_in_pathways to calculate the most enriched pathways in a set of conditions
+         #     based on abundance in the pathway members versus abundance in non-pathway members
+         short_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_pathways',
+               datamatrix=protdata, primary_columns=shortlist)
+               
+         # use correlation_enrichment to calculate the most enriched pathways in correlation across
+         #     the shortlist conditions
+         short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_correlation',
+                datamatrix=protdata, primary_columns=shortlist)
 
 }
 
