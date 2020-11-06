@@ -98,7 +98,7 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
     delta = in_mean - out_mean
     
     results[thisname,"ingroup_n"] = length(ingroup)
-    results[thisname,"ingroupnames"] = ingroup_ids
+    #results[thisname,"ingroupnames"] = ingroup_ids
     results[thisname,"ingroup_mean"] = in_mean
     results[thisname,"outgroup_n"] = length(outgroup)
     results[thisname,"outgroup_mean"] = out_mean
