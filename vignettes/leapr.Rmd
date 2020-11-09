@@ -235,3 +235,17 @@ protdata.enrichment.correlation.long = leapR(geneset=ncipid,
                                             datamatrix=protdata[,longlist])
 knitr::kable(head(protdata.enrichment.correlation.long[order(protdata.enrichment.correlation.long[,"pvalue"]),]))
 ```
+
+## Example 5. Phosphoproteomics data analysis
+
+
+``` {r phosphoproteomics, echo=FALSE}
+
+# load phosphoproteomics data for 69 tumors
+data(phosphodata)
+
+
+
+
+
+```

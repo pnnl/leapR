@@ -13,6 +13,8 @@
 
 read_gene_sets <- function(gsfile, gene.labels=NA, gs.size.threshold.min=5, gs.size.threshold.max=15000) {
   # Read input gene set database
+  library(readr)
+  
   temp <- read_lines(gsfile)
 
   max.Ng <- length(temp)

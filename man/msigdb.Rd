@@ -14,7 +14,7 @@ A list with 4 items
 }
 }
 \source{
-from where?
+MSIGDB
 }
 \usage{
 msigdb

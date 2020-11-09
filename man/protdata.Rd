@@ -8,7 +8,7 @@
 A data frame with 1999 rows and 174 columns
 }
 \source{
-Where did this come from?
+H. Zhang et al., Integrated Proteogenomic Characterization of Human High-Grade Serous Ovarian Cancer. Cell 166, 755-765 (2016)
 }
 \usage{
 protdata
