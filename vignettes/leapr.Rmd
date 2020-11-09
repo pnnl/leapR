@@ -238,14 +238,32 @@ knitr::kable(head(protdata.enrichment.correlation.long[order(protdata.enrichment
 
 ## Example 5. Phosphoproteomics data analysis
 
+In this example we will use phosphoproteomics data to assess the 
 
 ``` {r phosphoproteomics, echo=FALSE}
 
 # load phosphoproteomics data for 69 tumors
-data(phosphodata)
+data("phosphodata")
+data("kinasesubstrates")
+
+# for an individual tumor calculate the Kinase-Substrate Enrichment (similar to KSEA)
+#     This uses the site-specific phosphorylation data to determine which kinases
+#     might be active by assessing the enrichment of the phosphorylation of their known substrates
+
+phosphodata.ksea.order = leapR(geneset=kinasesubstrates,
+                               enrichment_method="enrichment_in_order",
+                               datamatrix=phosphodata,
+                               primary_columns="TCGA-13-1484")
+
+knitr::kable(phosphodata.ksea.order[order(phosphodata.ksea.order[,"pvalue"]),][1:10,])
 
 
+# now do the same thing but use a threshold
+phosphodata.sets.order = leapR(geneset=kinasesubstrates,
+                               enrichment_method="enrichment_in_sets",
+                               datamatrix=phosphodata, threshold=1.0,
+                               primary_columns="TCGA-13-1484")
 
-
+knitr::kable(phosphodata.sets.order[order(phosphodata.sets.order[,"pvalue"]),][1:10,])
 
 ```
