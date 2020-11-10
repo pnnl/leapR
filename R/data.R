@@ -36,18 +36,18 @@
 #'
 "ncipid"
 
-#' MSigDB Gene Lists
+#' Multi-Omic KEGG, Reactome, BioCarta Pathways
 #' 
 #' @format A list with 4 items
 #'\describe{
-#' \item{names} The names of the signaling pathways
+#' \item{names} The names of the pathways
 #' \item{desc} Short description of the pathways
 #' \item{sizes} Number of genes in the signaling pathways
-#' \item{matrix} Matrix containing the genes in the pathways
+#' \item{matrix} Matrix containing the genes in the pathways with multi-omic prefixes
 #' }
 #' @source MSIGDB
 #' 
-"msigdb"
+"mo_krbpaths"
 
 #' Kinase substrate lists
 #' 
