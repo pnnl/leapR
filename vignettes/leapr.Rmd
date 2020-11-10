@@ -267,3 +267,38 @@ phosphodata.sets.order = leapR(geneset=kinasesubstrates,
 knitr::kable(phosphodata.sets.order[order(phosphodata.sets.order[,"pvalue"]),][1:10,])
 
 ```
+
+### Example 6: Figure 1
+We will compare the ability of transcriptomics, proteomics, and phosphoproteomics to inform about
+differences between short and long surviving patient groups
+
+
+
+
+
+``` {r figure_1, echo=F}
+
+# enrichment in transcriptional data
+transdata.enrichment.svl = leapR(geneset=ncipid, 
+                                enrichment_method='enrichment_comparison',
+                                datamatrix=transdata, primary_columns=shortlist,
+                                secondary_columns=longlist)
+
+# enrichmetn in proteomics data
+# this is the same code used above, just repeated here for clarity
+protdata.enrichment.svl = leapR(geneset=ncipid, 
+                                enrichment_method='enrichment_comparison',
+                                datamatrix=protdata, primary_columns=shortlist,
+                                secondary_columns=longlist)
+
+# enrichment in phosphoproteomics data
+phosphodata.enrichment.svl = leapR(geneset=ncipid,
+                                   enrichment_method='enrichment_comparison',
+                                   datamatrix=phosphodata, primary_columns=shortlist,
+                                   secondary_columns=longlist, id_column=1)
+
+resultsmat = cbind(transdata.enrichment.svl[,"pvalue"], protdata.enrichment.svl[,"pvalue"], phosphodata.enrichment.svl[,"pvalue"])
+rownames(resultsmat) = rownames(phosphodata.enrichment.svl)
+colnames(resultsmat) = c("TXN", "PROT", "PHOSPHO")
+
+```
