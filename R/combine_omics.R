@@ -46,27 +46,28 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
       common_conditions = common_conditions[which(common_conditions %in% that)]
     }
   }
-  if (!common_conditions) stop("No common conditions found")
+  if (length(common_conditions)==0) stop("No common conditions found")
   
   result = NA
-  for (i in 1:4) {
-    this = list(proteomics, transcriptomics, methylation, cnv, phospho)[i]
-    tag = list(proteomics_tag, transcriptomics_tag, methylation_tag, cnv_tag, phospho_tag)[i]
-    
-    this = this[,common_conditions]
-    if (!is.na(id_column)) {
-      # we need to add an id_column or use one that's here
-      if (tag == "phospho_tag") {
-        # add the idcolumn from the input phospho data
-        if (!is.na(phospho)) this = cbind(phospho[,id_column], this)
-      }
-      else {
-        # add an idcolumn that is the rownames
-        this = cbind(rownames(this), this)
-      }
-    }
+  for (i in 1:5) {
+    this = list(proteomics, transcriptomics, methylation, cnv, phospho)[[i]]
+    tag = c(proteomics_tag, transcriptomics_tag, methylation_tag, cnv_tag, phospho_tag)[i]
     
     if (!is.na(this)) {
+      this = this[,common_conditions]
+      if (!is.na(id_column)) {
+        # we need to add an id_column or use one that's here
+        if (tag == phospho_tag) {
+          # add the idcolumn from the input phospho data
+          if (!is.na(phospho)) this = cbind(phospho[,id_column], this)
+        }
+        else {
+          # add an idcolumn that is the rownames
+          this = cbind(rownames(this), this)
+        }
+        colnames(this)[1] = "id"
+      }
+      
       # tag all the ids appropriately
       rownames(this) = sapply(rownames(this), function (n) paste(tag, n, sep=""))
       
@@ -76,8 +77,7 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
       }
       if (is.na(result)) result = this
       else result = rbind(result, this)
-    }
-    
-    return(result)
+          }
   }
+  return(result)
 }
