@@ -1,15 +1,18 @@
-Package: LEAP
-Title: What the Package Does (one line, title case)
+Package: leapr
+Title: Layered enrichment analysis of pathways R
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Jason", "McDermott", email = "jason.mcdermott@pnnl.gov", role = c("aut", "cre"))
+Description: leapr is a package that identifies pathways that are enriched across diverse 'omics experiments..
 Depends: R (>= 3.5.2)
-License: What license is it under?
+License: BSD-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports:
     stats,
-    readr,
-    survival
+    readr
 LinkingTo: readr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

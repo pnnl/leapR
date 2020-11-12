@@ -27,8 +27,26 @@ a list of results matrices in the order of the input clusters.
 }
 \examples{
 dontrun{
+        library(leapr)
 
+        # read in the example transcriptomic data
+        data("transdata")
 
+        # read in the pathways
+        data("ncipid")
+        
+        # for the example we will limit the number of transcripts considered - arbitrarily in this case
+        transdata = transdata[1:3000,]
+
+        # perform heirarchical clustering on the  data
+        transdata.hc = hclust(dist(transdata), method="ward.D2")
+        
+        transdata.hc.clusters = cutree(transdata.hc, k=5)
+        
+        #calculates enrichment for each of the clusters individually and returns a list
+        #   of enrichment results
+        transdata.hc.enrichment = cluster_enrichment(geneset=ncipid, clusters=transdata.hc.clusters, background=rownames(transdata))
+        
 }
 
 }

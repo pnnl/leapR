@@ -16,10 +16,3 @@ read_abundance_data(filename, data_type, infocol_name = NULL)
 \description{
 This function reads in abundance data
 }
-\examples{
-dontrun{
-        read_abundance_data("/OvarianSitePhosphorylation.txt", data_type = "phospho_protdata", infocol_name = "hgnc_symbol")
-
-}
-
-}

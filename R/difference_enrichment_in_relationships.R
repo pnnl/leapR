@@ -14,8 +14,7 @@
 #'
 #' }
 #'
-#' @export
-#'
+#' @noRd
 
 difference_enrichment_in_relationships <- function(geneset, relationships1, relationships2, idmap=NA, tag=NA,
                                                    mode="original") {

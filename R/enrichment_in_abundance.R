@@ -1,67 +1,9 @@
 #' enrichment_in_abundance
 #'
 #' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
+# # access through leapr wrapper
 #'
-#' @param geneset is a GeneSet object for pathway annotation
-#' @param Is a \emph{mxn} matrix of abundance data (protein, gene, etc.), with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).
-#' @param mapping_column Is an optional character string, a column name of \code{abundance}, for specifying gene mapping (e.g. for phosphoproteomics data). Defaults to NULL
-#' @param abundance_column Is a character vector composed of column names from \code{abundance}, that identifies which conditions should be tested.
-#' @param fdr A numerical value which specifies how many times to randomly sample genes, defaults to 0.
-#' @param matchset defaults to NULL
-#' @param sample_comparison Is a character vector composed of column names from \code{abundance}, that identifies which conditions should be compared. Defaults to NULL
-#' @param min_p_threshold Is a numeric value, a lower p-value threshold for returning results, defaults to NULL.
-#' @param a prefix tag (optional) for specifying source of data default is NA
-#' @param sample_n If set specifies the number of randomizations to perform to calculate an FDR [warning: time intensive], default is NA
-#' 
-#' @details Case 1: Single condition compatison (sample_comparison = NULL). This usage applies a T test to 
-#' @details assess the significance of the abundance of pathway members relative to
-#' @details genes/proteins for a condition or conditions that are not in the pathway for a single condition
-#' @details Case 2: Case/control comparison (sample_comparison is specified. Compare the abundance of
-#' @details the members in the pathway for one set of conditions (abundance_column - which can be a vector) versus
-#' @details another set of conditions (sample_comparison - also a vector). 
-#' @details 
-#' @details These are calculated for every pathway in geneset.
-#' @details 
-#' @details The significance of this is based on the hypothesis that pathway activity is related to abdundance,
-#' @details so that if the members of a praticular pathway are higher abundance than everything else, then it
-#' @details can be considered more 'active' (Case 1). Or in Case 2, if the abundance in pathway members is higher
-#' @details in one set of conditions (case) relative to in another set of conditions (controls) then it is more
-#' @details 'active' in that case.
-#' @details 
-#' @details Note that the use of the T test to statistically test the difference between the two sets of abundance
-#' @details measures is very simple and may be subject to caveats (e.g. low number of comparisons, not-normally 
-#' @details distributed abundance values, etc.)
-#' @details 
-#' @details Providing a number for \code{sample_n} specifies the number of times the pathway membership will be
-#' @details randomized to calculate a fasle discovery rate for the enrichment. This is a time-intensive option
-#' @details since it requires running the enrichment sample_n+1 times.
-#' @details 
-#' @details The interpretation of results from Case 1 to Case 2 should vary considerably.
-#'
-#' @examples
-#' dontrun{
-#'         library(LEAP)
-#'
-#'         # read in the example abundance data
-#'         data("protdata")
-#'
-#'         # read in the pathways
-#'         data("ncipid")
-#'
-#'         # read in the patient groups
-#'         data("short_list")
-#'         data("longlist")
-#'
-#'         #in this example we lump a bunch of patients together (the 'short survivors') and compare them to another group (the 'long survivors')
-#'         protdata.enrichment.svl = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist, sample_comparison=longlist)
-#'
-#'         #another application is to compare just one patient against another (this would be the equivalent of comparing one time point to another)
-#'         protdata.enrichment.svl.ovo = enrichment_in_abundance(ncipid, protdata, abundance_column=shortlist[1], sample_comparison=longlist[1])
-#'
-#' }
-#'
-#'
-#'
+#' @export
 
 enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abundance_column=NULL,
                                     fdr=0, matchset=NULL, longform=F, sample_comparison=NULL,
@@ -75,10 +17,10 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
   results = data.frame(row.names = geneset$names,
                        ingroup_n=rep(NA_real_, length(geneset$names)), ingroupnames=rep(NA_character_, length(geneset$names)), 
                        ingroup_mean=rep(NA_real_, length(geneset$names)), outgroup_n=rep(NA_real_, length(geneset$names)), 
-                       zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
+                       outgroup_mean=rep(NA_real_, length(geneset$names)), zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
                        pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
                        SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
-                       bacground_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
   
   
   if (!is.null(mapping_column)) groupnames = unique(abundance[,mapping_column])

@@ -21,19 +21,5 @@ read_gene_sets(
 \item{gs.size.threshold.max}{defaults to 15000}
 }
 \description{
-read_gene_sets function description is...
-}
-\examples{
-dontrun{
-        library(readr)
-        data("protdata")
-
-        #we have to update the colnames slightly to match what we have in the patient groups
-        colnames(protdata) = sapply(colnames(protdata), function (r) {a=strsplit(r,"\\\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
-
-        #read in the pathways
-        ncipid = read_gene_sets(gsfile = "/example/NCI_PID_genesymbol_corrected.gmt")
-
-}
-
+read_gene_sets is a function to import external pathway database files in .gmt format
 }

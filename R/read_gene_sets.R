@@ -1,30 +1,20 @@
 #' read_gene_sets
 #'
-#' read_gene_sets function description is...
+#' read_gene_sets is a function to import external pathway database files in .gmt format
 #'
 #' @param gsfile is a gene set file, for example a .gmt file (gene matrix transposed file format)
 #' @param gene.labels defaults to NA
 #' @param gs.size.threshold.min defaults to 5
 #' @param gs.size.threshold.max defaults to 15000
 #'
-#' @examples
-#' dontrun{
-#'         library(readr)
-#'         data("protdata")
-#'
-#'         #we have to update the colnames slightly to match what we have in the patient groups
-#'         colnames(protdata) = sapply(colnames(protdata), function (r) {a=strsplit(r,"\\.");paste("TCGA",a[[1]][2], a[[1]][3], sep="-")})
-#'
-#'         #read in the pathways
-#'         ncipid = read_gene_sets(gsfile = "/example/NCI_PID_genesymbol_corrected.gmt")
-#'
-#' }
 #'
 #' @export
 #'
 
 read_gene_sets <- function(gsfile, gene.labels=NA, gs.size.threshold.min=5, gs.size.threshold.max=15000) {
   # Read input gene set database
+  library(readr)
+  
   temp <- read_lines(gsfile)
 
   max.Ng <- length(temp)

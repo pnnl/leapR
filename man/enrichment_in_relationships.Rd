@@ -12,24 +12,8 @@ enrichment_in_relationships(
   mode = "original"
 )
 }
-\arguments{
-\item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix...??}
-
-\item{relationships}{Is a \emph{mxn} matrix of gene expression data, with \emph{m} gene names (rows) and \emph{n} sample/condition (columns).}
-
-\item{idmap}{defaults to an NA}
-
-\item{tag}{defaults to an NA}
-
-\item{mode}{defaults to 'original'}
-}
 \description{
-enrichment_in_relationships function description is...
-}
-\examples{
-dontrun{
-
-
-}
-
+enrichment_in_relationships function description is a general way to determine if a pathway
+is enriched in relationships (interactions, correlation) between its members
+# access through leapr wrapper
 }
