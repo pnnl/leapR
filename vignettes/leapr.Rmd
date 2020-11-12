@@ -106,7 +106,7 @@ p-values when the algorithm only considers a limited number of components from a
 
 It is VERY important to also consider the effect size. That is, the difference between the mean of one group and the mean of the other group. If there are large numbers of components in the pathway being compared it is relatively easy to get a significant p value with small effect size. Though this may be a real difference it is often not as interesting as a smaller group with worse p value and greater effect size. You can look at the effect size by comparing the `ingroup_mean` and `outgroup_mean` columns.
 
-```{r abundance, echo=FALSE}
+```{r abundance, echo=TRUE, warning=FALSE}
 
 
 # in this example we lump a bunch of patients together (the 'short survivors') and compare
@@ -149,14 +149,14 @@ then use a background of all the genes in the example dataset (which is a limite
 ### Interpretation
 As with the t test comparison above it is important to look at the number of pathway members included in the comparison (look at the in_path column). There is no 'effect size' problem with Fisher's exact since it's just a set comparison, but it's important to note that significant p values can arise from a pathway being *underrepresented* in the genelist, which often times is not the desired result. The foldx column gives a ratio of in versus not in the genelist, values > 1 being enriched and <1 being depleted.
 
-``` {r fishers, echo=FALSE}
+``` {r fishers, echo=TRUE, warning=FALSE}
 # for this example we will construct a list of genes from the expression data
 #     to emulate what you might be inputting
 genelist = rownames(protdata)[which(protdata[,1]>0.5)]
 background = rownames(protdata)
 
 ###using enrichment_wrapper function
-protdata.enrichment.order = leapR(geneset=ncipid,
+protdata.enrichment.order = leapR(geneset=ncipid, 
                                    enrichment_method="enrichment_in_order",
                                    datamatrix=protdata, threshold=.5,
                                    primary_columns="TCGA-13-1484")
@@ -177,17 +177,22 @@ protdata_hc = hclust(dist(protdata_naf), method="ward.D2")
 
 # arbitrarily we'll chop the clusters into 5 modules
 modules = cutree(protdata_hc, k=5)
+
+##sara: created list
+clusters = lapply(unique(modules),function(x) names(which(modules==x)))
+
 # modules is a named list of values where each value is a module
 #         number and the name is the gene name
 
 # To do enrichment for one module (module 1 in this case) do this
 protdata.enrichment.sets.module_1 = leapR(geneset=ncipid, enrichment_method="enrichment_in_sets",
-                                             background=names(modules), targets=names(modules[which(modules==1)]))
+                                             background=names(modules), 
+                                          targets=names(modules[which(modules==1)]))
 
 # To do enrichment on all modules and return the list of enrichment results tables do this
-protdata.enrichment.sets.modules = cluster_enrichment(geneset=ncipid, clusters=modules)
+protdata.enrichment.sets.modules = cluster_enrichment(geneset=ncipid, clusters=clusters, background=names(modules))
 
-
+knitr::kable(head(protdata.enrichment.sets.modules))
 ```
 
 ## Example 3. The Kolmogorov–Smirnov test (KS)
@@ -199,12 +204,13 @@ In the example below I'm simply calculating enrichment for one of the patients i
 ### Interpretation
 Similar to the other examples be cautious of pathways with good p values that consider a small number of pathway numbers (in_path column). The MeanPath column gives a measure that shows how far above or below the median the mean rank of the pathway is (normalized to -1,1). The Zscore column is a Zscore calculated on the basis of the mean percentage rank of the pathway relative to the mean of the entire list divided by the standard deviation of the pathway rank. The foldx column expresses the mean percentage rank of the pathway relative to the entire list - closer to 0 is higher in the list and closer to 1 is closer to the bottom of the list. Each of these should give consistent results, but will be somewhat different.
 
-``` {r ks, echo=FALSE, warning = F}
+``` {r ks, echo=TRUE, warning = FALSE}
 # This is how you calculate enrichment in a ranked list (for example from topology)
 ###using enrichment_wrapper function
 protdata.enrichment.sets = leapR(geneset=ncipid, "enrichment_in_order", 
                                             datamatrix=protdata, 
                                             primary_columns=shortlist[1])
+
 knitr::kable(protdata.enrichment.sets[order(protdata.enrichment.sets[,"pvalue"]),][1:10,])
 ```
 
@@ -216,7 +222,7 @@ The idea here is to use the correlation of pathway members to each other versus 
 ### Interpretation
 The `ingroup_mean` gives the mean correlation of the pathway members to each other and outgroup_mean gives the correlation of the pathway members to non-pathway members. Background_mean gives the mean correlation of all non-pathway members. The `pvalue` and `BH_pvalue` are for the pathway members to each other versus those pathway members to non-pathway components. The `pvalue_background` and `BH_pvalue_background` are for the pathway member correlation relative to non-pathway member correlation (which is similar but slightly different than the other p-values).
 
-``` {r correlation, echo=FALSE}
+``` {r correlation, echo=TRUE, warning=FALSE}
 
 
 ###using enrichment_wrapper function
@@ -240,7 +246,7 @@ knitr::kable(head(protdata.enrichment.correlation.long[order(protdata.enrichment
 
 In this example we will use phosphoproteomics data to assess the 
 
-``` {r phosphoproteomics, echo=FALSE}
+``` {r phosphoproteomics, echo=TRUE, warning=FALSE}
 
 # load phosphoproteomics data for 69 tumors
 data("phosphodata")
@@ -276,7 +282,7 @@ differences between short and long surviving patient groups
 
 
 
-``` {r figure_1, echo=F}
+``` {r figure_1, echo=TRUE, warning=FALSE}
 
 # enrichment in transcriptional data
 transdata.enrichment.svl = leapR(geneset=ncipid, 
