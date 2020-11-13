@@ -40,15 +40,23 @@
 
 cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05) {
   x = length(clusters)-1
-  if (is.na(background))  background = clusters[[x+1]]
-  this = sapply(1:x, function (i) list(enrichment_in_groups(geneset, clusters[[i]], background)))
+  
+  # The default background is all the genes that are in all the clusters
+  # the user can submit their own background list if they want to do something different
+  if (is.na(background))  background = sapply(1:x, function (n) unlist(clusters[[n]]))
+  
+  #this = sapply(1:x, function (i) list(enrichment_in_groups(geneset, clusters[[i]], background)))
+  this = sapply(1:x, function (i) list(leapR(geneset=geneset, enrichment_method="enrichment_in_sets", 
+                                             targets=clusters[[i]], background=background)))
+  
+  # if the sigfilter is set we'll only return those functions that have a p-value
+  #   lower than the threshold
+  if (is.na(sigfilter)) return(this)
+  
   outlist = list()
   for (i in 1:x) {
-    these = this[[i]][which(this[[i]][,7]<sigfilter),]
-    if (length(which(this[[i]][,7]<sigfilter)) == 1) {
-      these = as.matrix(t(these))
-      rownames(these)[[1]] = rownames(this[[i]])[which(this[[i]][,7]<sigfilter)]
-    }
+    these = this[[i]]
+    these = these[which(these[,"BH_pvalue"]<sigfilter),]
     outlist = c(outlist, list(these))
   }
   return(outlist)
