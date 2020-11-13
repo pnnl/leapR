@@ -126,6 +126,10 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
     results[thisname,"pvalue"] = pvalue
     
     #question : do we want to calculate an oddsratio for this too?
+    # answer: yes, but for now we'll use the mean of the ingroup compared with the
+    #        distribution of the background as a zscore
+    zscore = (out_mean-in_mean)/sd(unlist(outgroup), na.rm=T)
+    results[thisname,"zscore"] = zscore
   }
   #update
   results[,"BH_pvalue"] = p.adjust(results[,"pvalue"], method="BH")
