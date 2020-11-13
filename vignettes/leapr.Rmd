@@ -190,7 +190,7 @@ protdata.enrichment.sets.module_1 = leapR(geneset=ncipid, enrichment_method="enr
                                           targets=names(modules[which(modules==1)]))
 
 # To do enrichment on all modules and return the list of enrichment results tables do this
-protdata.enrichment.sets.modules = cluster_enrichment(geneset=ncipid, clusters=clusters, background=names(modules))
+protdata.enrichment.sets.modules = cluster_enrichment(geneset=ncipid, clusters=clusters, background=names(modules), sigfilter=0.5)
 
 knitr::kable(head(protdata.enrichment.sets.modules))
 ```
@@ -278,15 +278,7 @@ knitr::kable(phosphodata.sets.order[order(phosphodata.sets.order[,"pvalue"]),][1
 We will compare the ability of transcriptomics, proteomics, and phosphoproteomics to inform about
 differences between short and long surviving patient groups
 
-
-<<<<<<< HEAD
-``` {r figure_1, echo=F}
-=======
-
-
-
 ``` {r figure_1, echo=TRUE, warning=FALSE}
->>>>>>> 26b93e692f35544a3ad29cfe4ca89cb4b5fa9210
 
 #load the single omic and multi-omic pathway databases
 data("krbpaths")
