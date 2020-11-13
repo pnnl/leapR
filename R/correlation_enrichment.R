@@ -3,7 +3,7 @@
 #' # calculate enrichment in correlation between pathway members
 #' # access through leapr wrapper
 #'
-#'@noRd
+#'@export
 
 correlation_enrichment <- function(geneset, abundance, mapping_column=NA, tag=NA) {
   allgenes = unique(unlist(as.list(geneset$matrix)))
