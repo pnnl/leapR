@@ -273,32 +273,46 @@ We will compare the ability of transcriptomics, proteomics, and phosphoproteomic
 differences between short and long surviving patient groups
 
 
-
-
-
 ``` {r figure_1, echo=F}
 
+#load the single omic and multi-omic pathway databases
+data("krbpaths")
+data("mo_krbpaths")
+
 # enrichment in transcriptional data
-transdata.enrichment.svl = leapR(geneset=ncipid, 
+transdata.enrichment.svl = leapR(geneset=krbpaths, 
                                 enrichment_method='enrichment_comparison',
                                 datamatrix=transdata, primary_columns=shortlist,
                                 secondary_columns=longlist)
 
-# enrichmetn in proteomics data
+# enrichment in proteomics data
 # this is the same code used above, just repeated here for clarity
-protdata.enrichment.svl = leapR(geneset=ncipid, 
+protdata.enrichment.svl = leapR(geneset=krbpaths, 
                                 enrichment_method='enrichment_comparison',
                                 datamatrix=protdata, primary_columns=shortlist,
                                 secondary_columns=longlist)
 
 # enrichment in phosphoproteomics data
-phosphodata.enrichment.svl = leapR(geneset=ncipid,
+phosphodata.enrichment.svl = leapR(geneset=krbpaths,
                                    enrichment_method='enrichment_comparison',
                                    datamatrix=phosphodata, primary_columns=shortlist,
                                    secondary_columns=longlist, id_column=1)
 
-resultsmat = cbind(transdata.enrichment.svl[,"pvalue"], protdata.enrichment.svl[,"pvalue"], phosphodata.enrichment.svl[,"pvalue"])
-rownames(resultsmat) = rownames(phosphodata.enrichment.svl)
-colnames(resultsmat) = c("TXN", "PROT", "PHOSPHO")
+#combine the omics data into one with prefix tags
+combodata = combine_omics(proteomics=protdata, transcriptomics=transdata, phospho=phosphodata, id_column=1)
+combodata.enrichment.svl = leapR(geneset=mo_krbpaths,
+                                 enrichment_method='enrichment_comparison',
+                                 datamatrix=combodata, primary_columns=shortlist,
+                                 secondary_columns=longlist, id_column=1)
+
+pvaluesmat = cbind(transdata.enrichment.svl[,"pvalue"], protdata.enrichment.svl[,"pvalue"], phosphodata.enrichment.svl[,"pvalue"], combodata.enrichment.svl[,"pvalue"])
+rownames(pvaluesmat) = rownames(phosphodata.enrichment.svl)
+colnames(pvaluesmat) = c("TXN", "PROT", "PHOSPHO", "COMBO")
+
+zscoresmat = cbind(transdata.enrichment.svl[,"zscore"], protdata.enrichment.svl[,"zscore"], phosphodata.enrichment.svl[,"zscore"], combodata.enrichment.svl[,"zscore"])
+rownames(zscoresmat) = rownames(phosphodata.enrichment.svl)
+colnames(zscoresmat) = c("TXN", "PROT", "PHOSPHO", "COMBO")
+zscoresmat[which(is.na(zscoresmat))] = 0
+zscoresmat[which(abs(zscoresmat)>1000)] = 0
 
 ```

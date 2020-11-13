@@ -265,7 +265,7 @@ leapR = function(geneset, enrichment_method, ...){
     #message("'enrichment_comparison' has the following optional arguments: id_column=NULL, primary_columns=NULL,fdr=0, secondary_columns=NULL,
     #                                      min_p_threshold=NULL, sample_n=NULL")
     
-    result = leapr::enrichment_in_abundance(geneset=geneset, abundance=datamatrix, mapping_column=id_column,
+    result = enrichment_in_abundance(geneset=geneset, abundance=datamatrix, mapping_column=id_column,
                                      abundance_column=primary_columns, sample_comparison=secondary_columns,
                                      fdr=fdr, min_p_threshold=min_p_threshold, sample_n=sample_n)
     
