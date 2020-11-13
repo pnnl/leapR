@@ -9,16 +9,21 @@ combine_omics(
   transcriptomics = NA,
   methylation = NA,
   cnv = NA,
+  phospho = NA,
   proteomics_tag = "prot_",
   transcriptomics_tag = "txn_",
   methylation_tag = "meth_",
-  cnv_tag = "cnv_"
+  cnv_tag = "cnv_",
+  phospho_tag = "phospho_",
+  id_column = NA
 )
 }
 \arguments{
 \item{proteomics}{is a matrix of transcript values where rownames are ids and columns are conditions}
 
 \item{methylation}{is a matrix of methylation values where rownames are ids and columns are conditions}
+
+\item{phospho}{is a dataframe of phosphorylation data}
 
 \item{proteomics_tag}{is a text prefix to be added to protein ids}
 
@@ -27,6 +32,10 @@ combine_omics(
 \item{methylation_tag}{is a text prefix to be added to methylation ids}
 
 \item{cnv_tag}{is a text prefix to be added to cnv ids}
+
+\item{phospho_tag}{is a text prefix to be added to phospho ids}
+
+\item{id_column}{is an optional column number for identifiers for the phospho data}
 
 \item{CNV}{is a matrix of copy number variant(CNV) values where rownames are ids and columns are conditions}
 }

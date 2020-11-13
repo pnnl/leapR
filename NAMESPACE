@@ -2,6 +2,7 @@
 
 export(cluster_enrichment)
 export(combine_omics)
+export(correlation_enrichment)
 export(enrichment_in_abundance)
 export(enrichment_in_groups)
 export(enrichment_in_relationships)
