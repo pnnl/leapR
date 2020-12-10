@@ -1,0 +1,125 @@
+---
+title: "leapr_enrichment_trelliscope"
+author: "Iobani Godinez"
+date: "Dec 9, 2020"
+output: html_document
+---
+
+
+```{r setup1, include = F, results= F, warning = F}
+#Trelliscope display
+library(trelliscopejs)
+library(dplyr)
+library(tidyr)
+library(reshape2)
+library(plotly)
+library(leapr)
+```
+
+
+```{r enrichment, include=F, results=F, warning=F}
+
+#Pathway databases
+data(msigdb)
+data(ncipid)
+
+#A sample data set is included that is from the CPTAC study of 169 ovarian tumors.
+data(protdata)
+data(transdata)
+
+#We also include some groups of patients to compare:
+data(shortlist)
+data(longlist)
+
+###using enrichment_wrapper function
+protdata.enrichment.svl = leapR(geneset=ncipid, 
+                                enrichment_method='enrichment_comparison',
+                                datamatrix=protdata, primary_columns=shortlist,
+                                secondary_columns=longlist)
+
+```
+
+```{r helper, include=F, results=F, warning=F}
+#helper function takes in enrichment results and expands the "gene" column into multiple rows since each pathway contains a list of genes and not a single gene
+
+helper_function = function(enrichment_df){
+  
+enrichment_df = cbind(rownames(enrichment_df), enrichment_df)
+colnames(enrichment_df)[1] = "pathway"
+
+empty_gene = which(enrichment_df$ingroupnames == "")
+enrichment_df = enrichment_df[-empty_gene,]
+  
+  tessa = mapply(function(path, gene){
+  gene = unlist(strsplit(gene, ","))
+  path = as.character(path)
+    if(length(gene) > 1){
+
+    col1 = rep(path, length(gene))
+
+    result = cbind(col1, gene)
+  }else{
+    result = cbind(path, gene)
+  }
+
+  return(result)
+}, enrichment_df$pathway, enrichment_df$ingroupnames)
+
+tessa = do.call(rbind, tessa)
+tessa = as.data.frame(tessa)
+colnames(tessa)[1] = "pathway"
+
+enrichment_df = enrichment_df[,-which(colnames(enrichment_df) == "ingroupnames")]
+
+new_data = merge(enrichment_df, tessa, by= "pathway")
+
+return(new_data)
+  
+}
+
+new_data = helper_function(protdata.enrichment.svl)
+
+```
+
+```{r myfunction, include=F, results=F, warning=F}
+
+#here we work on a function to take in the enrichment results dataframe and return a trelliscope display where each panel is a pathway that displays enrichment statistics
+
+make_trell = function(enrichment_df){
+  
+  #replace na and nan values with zeros
+ # enrichment_df[is.na(enrichment_df)] = 0
+  
+  #we need to subset data for each pathway
+   tess2 = enrichment_df %>%
+   group_by(pathway) %>%
+   nest() %>%
+   ungroup() %>%
+   mutate(cogs = map_cog(data, ~tibble(
+                                   
+                                           ingroup_mean = cog(.$ingroup_mean[1], desc = "ingroup mean"),
+                                           outgroup_mean = cog(.$outgroup_mean[1], desc = "outgroup mean"),
+                                          
+                                           )
+                        ),
+         panel = map_plot(data, ~qplot(.$ingroup_n[1], geom="histogram")
+                          )
+         )
+   
+final2 = trelliscope(tess2, name = "first trelliscopejs", self_contained = T)
+return(final2)
+   
+  
+}
+
+
+#make_trell(new_data)
+
+```
+
+
+
+
+
+
+
