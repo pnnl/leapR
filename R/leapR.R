@@ -149,7 +149,7 @@ leapR = function(geneset, enrichment_method, ...){
   #if(!inherits(geneset, "geneset_data")) stop("geneset must be of class 'geneset_data")
 
   #check that enrichment_method is one of the designated methods
-  if(!is.element(enrichment_method, c("correlation_enrichment",
+  if(!is.element(enrichment_method, c("correlation_enrichment", "correlation_comparison",
                                       "enrichment_in_relationships", 
                                       "enrichment_in_order", "enrichment_comparison", "enrichment_in_pathway",
                                       "enrichment_in_sets")))
@@ -299,6 +299,17 @@ leapR = function(geneset, enrichment_method, ...){
     result = as.data.frame(temp_result$enrichment)
     attr(result, "corrmat") = temp_result$corrmat
   }
+  
+  else if (enrichment_method == "correlation_comparison") {
+    if (is.null(datamatrix)){stop("'datamatrix' argument is required")}
+    if(is.null(id_column)){id_column = NA}
+    
+    temp_result = correlation_comparison_enrichment(geneset=geneset, abundance=datamatrix, 
+                                               set1=primary_columns, set2=secondary_columns,
+                                               mapping_column=id_column)
+    result = as.data.frame(temp_result)
+  }
+  
   return(result)
 }
 

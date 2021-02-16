@@ -77,6 +77,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         if (class(enr) == "try-error") {
           enr = NA
           p.value = NA
+          browser()
         }
         else {
           p.value = enr$p.value

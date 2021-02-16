@@ -23,10 +23,18 @@ difference_enrichment_in_relationships <- function(geneset, relationships1, rela
   #     'relationships' are in the form of a square matrix (NxN) of
   #     continuous similarity metrics
   #     Currently uses a two-tailed t-test to assess this difference
-  results = matrix(nrow=length(geneset$names), ncol=6)
-  rownames(results) = geneset$names
-  colnames(results) = c("group_mean_1", "group_mean_2", "ingroup1_n",
-                        "ingroup2_n", "pvalue", "BH_pvalue")
+  results = data.frame(row.names = geneset$names,
+                       ingroup_n=rep(NA_real_, length(geneset$names)), ingroupnames=rep(NA_character_, length(geneset$names)), 
+                       ingroup_mean=rep(NA_real_, length(geneset$names)), outgroup_n=rep(NA_real_, length(geneset$names)), 
+                       outgroup_mean=rep(NA_real_, length(geneset$names)), zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
+                       pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
+                       SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
+                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+  
+  #results = matrix(nrow=length(geneset$names), ncol=6)
+  #rownames(results) = geneset$names
+  #colnames(results) = c("group_mean_1", "group_mean_2", "ingroup1_n",
+  #                      "ingroup2_n", "pvalue", "BH_pvalue")
 
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
@@ -87,11 +95,12 @@ difference_enrichment_in_relationships <- function(geneset, relationships1, rela
       if (class(pvalue)=="try-error") pvalue = NA;
     }
 
-    this = c(in_mean1, in_mean2,
-             length(ingroup1), length(ingroup2),
-             pvalue, NA)
-
-    results[thisname,] = this
+    results[thisname,"ingroup_mean"] = in_mean1
+    results[thisname,"outgroup_mean"] = in_mean2
+    results[thisname,"ingroup_n"] = length(ingroup1)
+    results[thisname,"outgroup_n"] = length(ingroup2)
+    results[thisname,"oddsratio"] = in_mean1-in_mean2
+    results[thisname,"pvalue"] = pvalue
   }
 
   results[,"BH_pvalue"] = p.adjust(results[,"pvalue"], method="BH")

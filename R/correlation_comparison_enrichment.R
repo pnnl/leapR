@@ -29,5 +29,5 @@ correlation_comparison_enrichment <- function(geneset, abundance, set1, set2, ma
   allgenes_cor1 = cor(t(abundance[allgenes_present,cols1]), use="p")
   allgenes_cor2 = cor(t(abundance[allgenes_present,cols2]), use="p")
 
-  return(enrichment=difference_enrichment_in_relationships(geneset, allgenes_cor1, allgenes_cor2, idmap=map, tag=tag, mode=mode))
+  return(difference_enrichment_in_relationships(geneset, allgenes_cor1, allgenes_cor2, idmap=map, tag=tag, mode=mode))
 }
