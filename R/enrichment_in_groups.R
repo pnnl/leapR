@@ -77,7 +77,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         if (class(enr) == "try-error") {
           enr = NA
           p.value = NA
-          browser()
+          #browser()
         }
         else {
           p.value = enr$p.value
@@ -89,17 +89,21 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         #foldx = mean(in_group, na.rm=T)/mean(background, na.rm=T)
         
         # rank from largest to smallest
-        if (is.null(mapping_column)) in_rank = rank(backlist)[grouplist[which(grouplist %in% names(background))]]
+        if (is.null(mapping_column)) in_rank = rank(backlist)[which(rownames(background) %in% grouplist)]
         else in_rank = rank(backlist)[which(background[,mapping_column] %in% grouplist)]
         
-        foldx = mean(in_rank, na.rm=T)/length(backlist)
+        # this will give not a fold enrichment - but a score that ranges from 1 (most in top)
+        #      to -1 (most in bottom).
+        foldx = 1-((mean(in_rank, na.rm=T)/length(backlist))/0.5)
         
         zscore = (mean(in_group, na.rm=T)-mean(backlist, na.rm=T))/sd(in_group, na.rm=T)
+        #browser()
         
         results[thisname,"ingroup_n"] = in_path
         results[thisname,"ingroupnames"] = in_group_name
         results[thisname,"ingroup_mean"] = mean(in_group, na.rm=T)
         results[thisname,"outgroup_n"] = in_back
+        results[thisname,"outgroup_mean"] = mean(backlist, na.rm=T)
         results[thisname,"zscore"] = zscore
         results[thisname,"pvalue"] = p.value
         results[thisname,"oddsratio"] = foldx

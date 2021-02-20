@@ -276,7 +276,9 @@ knitr::kable(phosphodata.sets.order[order(phosphodata.sets.order[,"pvalue"]),][1
 
 ### Example 6: Figure 1
 We will compare the ability of transcriptomics, proteomics, and phosphoproteomics to inform about
-differences between short and long surviving patient groups
+differences between short and long surviving patient groups.
+
+The resulting heatmap is presented as Figure 2 in the paper.
 
 ``` {r figure_1, echo=TRUE, warning=FALSE}
 
@@ -485,10 +487,10 @@ results.frame.or = data.frame(pathway=pathways_of_interest,
                            pd.set=log(all_results[[6]][pathways_of_interest,"oddsratio"],2),
                            fd.set=log(all_results[[7]][pathways_of_interest,"oddsratio"],2),
                            cd.set=log(all_results[[8]][pathways_of_interest,"oddsratio"],2),
-                           td.order=all_results[[9]][pathways_of_interest,"zscore"],
-                           pd.order=all_results[[10]][pathways_of_interest,"zscore"],
-                           fd.order=all_results[[11]][pathways_of_interest,"zscore"],
-                           cd.order=all_results[[12]][pathways_of_interest,"zscore"],
+                           td.order=all_results[[9]][pathways_of_interest,"oddsratio"],
+                           pd.order=all_results[[10]][pathways_of_interest,"oddsratio"],
+                           fd.order=all_results[[11]][pathways_of_interest,"oddsratio"],
+                           cd.order=all_results[[12]][pathways_of_interest,"oddsratio"],
                            td.corr=all_results[[13]][pathways_of_interest,"oddsratio"],
                            pd.corr=all_results[[14]][pathways_of_interest,"oddsratio"],
                            fd.corr=all_results[[15]][pathways_of_interest,"oddsratio"],
@@ -501,6 +503,46 @@ results.frame.sig = results.frame[,2:17]*results.frame.or[,2:17]
 library(gplots)
 heatmap.2(as.matrix(results.frame.sig[,c(1:4,9:16)]), Colv=NA, trace="none", breaks=c(-1,-.1,-0.0001,0,0.1,1), col=c("blue","lightblue", "grey","pink", "red"), dendrogram="none")
 
-heatmap(results.frame.sig)
+```
+Figure 3. An application of the KSEA-like approach in leapR as applied to our
+          example data. In this example we are looking for known substrate sets
+          of kinases (from Phosphosite Plus) that are enriched in the short vs
+          long comparison of phosphopeptides.
+``` {r figure_3}
+
+# this comparison of abundance in substrates between case and control
+#     is lopsided in the sense that phosphorylation levels were previously
+#     reported to be overall higher in the short survivors. Thus the
+#     results are not terribly interesting (all kinases are in the same direction)
+phosphodata.ksea.comp.svl = leapR(geneset=kinasesubstrates,
+                              enrichment_method="enrichment_comparison",
+                              datamatrix=phosphodata,
+                              primary_columns=shortlist, secondary_columns=longlist)
+
+
+# thus for the example we'll look at correlation between known substrates in the
+#      case v control conditions
+phosphodata.ksea.corr.svl = leapR(geneset=kinasesubstrates,
+                                  enrichment_method="correlation_comparison",
+                                  datamatrix=phosphodata, primary_columns=shortlist,
+                                  secondary_columns=longlist)
+
+# for the example we are using an UNCORRECTED PVALUE
+#     which will allow us to plot more values, but 
+#     for real applications it's necessary to use the
+#     CORRECTED PVALUE
+
+# here are all the kinases that are *significant (*uncorrected) from the analysis
+ksea_result = phosphodata.ksea.corr.svl[order(phosphodata.ksea.corr.svl[,"pvalue"]),][1:9,]
+ksea_cols = rep("grey", 9)
+ksea_cols[which(ksea_result[,"oddsratio"]>0)] = "black"
+
+# plot left panel: correlation significance of top most significant kinases
+barplot2(ksea_result[,"oddsratio"], horiz=TRUE, xlim=c(-1,0.5),
+         names.arg=rownames(ksea_result), las=1, col=ksea_cols)
+
+# plot right panel: abundance comparison results of the same kinases
+barplot2(phosphodata.ksea.comp.svl[rownames(ksea_result),"oddsratio"],
+         horiz=TRUE, names.arg=rownames(ksea_result), las=1, col="black")
 
 ```

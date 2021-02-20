@@ -63,7 +63,7 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
       ingroup = unlist(abundance[ingroupnames,
                                  abundance_column[which(abundance_column %in% colnames(abundance))]])
 
-      if (!is.null(sample_comparison)) outgroup = abundance[which(rownames(abundance) %in% grouplist),
+      if (!is.null(sample_comparison)) outgroup = abundance[ingroupnames,
                                                             sample_comparison[which(sample_comparison %in% colnames(abundance))]]
       else outgroup = abundance[which(!rownames(abundance) %in% grouplist),
                                 abundance_column[which(abundance_column %in% colnames(abundance))]]
