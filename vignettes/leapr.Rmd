@@ -1,6 +1,7 @@
 ---
 title: "leapr"
-output: rmarkdown::html_vignette
+#output: rmarkdown::html_vignette
+output: pdf_document
 vignette: >
   %\VignetteIndexEntry{leapr}  
   %\VignetteEngine{knitr::rmarkdown}
@@ -501,7 +502,6 @@ rownames(results.frame.or) = results.frame.or[,1]
 results.frame.sig = results.frame[,2:17]*results.frame.or[,2:17]
 
 library(gplots)
-par(oma = c(0, 0, 0, 0))
 heatmap.2(as.matrix(results.frame.sig[,c(1:4,9:16)]), Colv=NA, trace="none", breaks=c(-1,-.1,-0.0001,0,0.1,1), col=c("blue","lightblue", "grey","pink", "red"), dendrogram="none")
 
 ```
@@ -538,7 +538,6 @@ ksea_result = phosphodata.ksea.corr.svl[order(phosphodata.ksea.corr.svl[,"pvalue
 ksea_cols = rep("grey", 9)
 ksea_cols[which(ksea_result[,"oddsratio"]>0)] = "black"
 
-par(oma = c(0, 0, 0, 0))
 # plot left panel: correlation significance of top most significant kinases
 barplot2(ksea_result[,"oddsratio"], horiz=TRUE, xlim=c(-1,0.5),
          names.arg=rownames(ksea_result), las=1, col=ksea_cols)
