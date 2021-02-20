@@ -155,6 +155,7 @@ leapR = function(geneset, enrichment_method, ...){
                                       "enrichment_in_sets")))
     stop("enrichment_method must be one of the methods designated in the function documentation")
   
+  
   #checking each enrichment method
   # JEM: changed here - moved these around so that the most important ones are first
   #      There are two different modes this can be run in and we can just have the user specify in the enrichment_method
