@@ -525,7 +525,8 @@ phosphodata.ksea.comp.svl = leapR(geneset=kinasesubstrates,
 #      case v control conditions
 phosphodata.ksea.corr.svl = leapR(geneset=kinasesubstrates,
                                   enrichment_method="correlation_comparison",
-                                  datamatrix=phosphodata, primary_columns=shortlist,
+                                  datamatrix=phosphodata, 
+                                  primary_columns=shortlist,
                                   secondary_columns=longlist)
 
 # for the example we are using an UNCORRECTED PVALUE
