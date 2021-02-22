@@ -118,11 +118,11 @@ ksea_cols = rep("grey", 9)
 ksea_cols[which(ksea_result[,"oddsratio"]>0)] = "black"
 
 # plot left panel: correlation significance of top most significant kinases
-barplot2(ksea_result[,"oddsratio"], horiz=TRUE, xlim=c(-1,0.5),
+barplot(ksea_result[,"oddsratio"], horiz=TRUE, xlim=c(-1,0.5),
          names.arg=rownames(ksea_result), las=1, col=ksea_cols)
 
 # plot right panel: abundance comparison results of the same kinases
-barplot2(phosphodata.ksea.comp.svl[rownames(ksea_result),"oddsratio"],
+barplot(phosphodata.ksea.comp.svl[rownames(ksea_result),"oddsratio"],
          horiz=TRUE, names.arg=rownames(ksea_result), las=1, col="black")
 
 ```
