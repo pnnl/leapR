@@ -1,11 +1,10 @@
 ---
 title: "leapr"
-#output: rmarkdown::html_vignette
-output: pdf_document
-vignette: >
-  %\VignetteIndexEntry{leapr}  
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output:
+  html_document:
+    df_print: paged
+vignette: |
+  %\VignetteIndexEntry{leapr}   %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -110,7 +109,7 @@ p-values when the algorithm only considers a limited number of components from a
 
 It is VERY important to also consider the effect size. That is, the difference between the mean of one group and the mean of the other group. If there are large numbers of components in the pathway being compared it is relatively easy to get a significant p value with small effect size. Though this may be a real difference it is often not as interesting as a smaller group with worse p value and greater effect size. You can look at the effect size by comparing the `ingroup_mean` and `outgroup_mean` columns.
 
-```{r abundance, echo=TRUE, warning=FALSE}
+```{r abundance, echo=TRUE, warning=FALSE, message=FALSE}
 
 
 # in this example we lump a bunch of patients together (the 'short survivors') and compare
@@ -153,7 +152,7 @@ then use a background of all the genes in the example dataset (which is a limite
 ### Interpretation
 As with the t test comparison above it is important to look at the number of pathway members included in the comparison (look at the in_path column). There is no 'effect size' problem with Fisher's exact since it's just a set comparison, but it's important to note that significant p values can arise from a pathway being *underrepresented* in the genelist, which often times is not the desired result. The foldx column gives a ratio of in versus not in the genelist, values > 1 being enriched and <1 being depleted.
 
-``` {r fishers, echo=TRUE, warning=FALSE}
+``` {r fishers, echo=TRUE, warning=FALSE, message=FALSE}
 # for this example we will construct a list of genes from the expression data
 #     to emulate what you might be inputting
 genelist = rownames(protdata)[which(protdata[,1]>0.5)]
@@ -208,7 +207,7 @@ In the example below I'm simply calculating enrichment for one of the patients i
 ### Interpretation
 Similar to the other examples be cautious of pathways with good p values that consider a small number of pathway numbers (in_path column). The MeanPath column gives a measure that shows how far above or below the median the mean rank of the pathway is (normalized to -1,1). The Zscore column is a Zscore calculated on the basis of the mean percentage rank of the pathway relative to the mean of the entire list divided by the standard deviation of the pathway rank. The foldx column expresses the mean percentage rank of the pathway relative to the entire list - closer to 0 is higher in the list and closer to 1 is closer to the bottom of the list. Each of these should give consistent results, but will be somewhat different.
 
-``` {r ks, echo=TRUE, warning = FALSE}
+``` {r ks, echo=TRUE, warning = FALSE, message=FALSE}
 # This is how you calculate enrichment in a ranked list (for example from topology)
 ###using enrichment_wrapper function
 protdata.enrichment.sets = leapR(geneset=ncipid, "enrichment_in_order", 
@@ -226,7 +225,7 @@ The idea here is to use the correlation of pathway members to each other versus 
 ### Interpretation
 The `ingroup_mean` gives the mean correlation of the pathway members to each other and outgroup_mean gives the correlation of the pathway members to non-pathway members. Background_mean gives the mean correlation of all non-pathway members. The `pvalue` and `BH_pvalue` are for the pathway members to each other versus those pathway members to non-pathway components. The `pvalue_background` and `BH_pvalue_background` are for the pathway member correlation relative to non-pathway member correlation (which is similar but slightly different than the other p-values).
 
-``` {r correlation, echo=TRUE, warning=FALSE}
+``` {r correlation, echo=TRUE, warning=FALSE, message=FALSE}
 
 
 ###using enrichment_wrapper function
@@ -248,9 +247,9 @@ knitr::kable(head(protdata.enrichment.correlation.long[order(protdata.enrichment
 
 ## Example 5. Phosphoproteomics data analysis
 
-In this example we will use phosphoproteomics data to assess the 
+In this example we will use phosphoproteomics data to assess the enrichment in known kinase substrates (a proxy for kinase activity)
 
-``` {r phosphoproteomics, echo=TRUE, warning=FALSE}
+``` {r phosphoproteomics, echo=TRUE, warning=FALSE, message=FALSE, include=FALSE}
 
 # load phosphoproteomics data for 69 tumors
 data("phosphodata")
@@ -271,20 +270,22 @@ knitr::kable(phosphodata.ksea.order[order(phosphodata.ksea.order[,"pvalue"]),][1
 # now do the same thing but use a threshold
 phosphodata.sets.order = leapR(geneset=kinasesubstrates,
                                enrichment_method="enrichment_in_sets",
-                               datamatrix=phosphodata, threshold=1.0,
+                               datamatrix=phosphodata, threshold=0.5,
                                primary_columns="TCGA-13-1484")
 
 knitr::kable(phosphodata.sets.order[order(phosphodata.sets.order[,"pvalue"]),][1:10,])
 
 ```
 
-### Example 6: Figure 1
+### Figure 2
 We will compare the ability of transcriptomics, proteomics, and phosphoproteomics to inform about
 differences between short and long surviving patient groups.
 
+This spans the multiple enrichment methods in leapR and also includes multi-omics
+
 The resulting heatmap is presented as Figure 2 in the paper.
 
-``` {r figure_1, echo=TRUE, warning=FALSE}
+``` {r figure_2, echo=TRUE, warning=FALSE, message=FALSE}
 
 #load the single omic and multi-omic pathway databases
 data("krbpaths")
@@ -514,7 +515,7 @@ Figure 3. An application of the KSEA-like approach in leapR as applied to our
           example data. In this example we are looking for known substrate sets
           of kinases (from Phosphosite Plus) that are enriched in the short vs
           long comparison of phosphopeptides.
-``` {r figure_3}
+``` {r figure_3, warning=FALSE, message=FALSE}
 # this comparison of abundance in substrates between case and control
 #     is lopsided in the sense that phosphorylation levels were previously
 #     reported to be overall higher in the short survivors. Thus the
