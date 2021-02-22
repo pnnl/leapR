@@ -77,6 +77,56 @@ data(shortlist)
 data(longlist)
 ```
 
+
+
+
+Figure 3. An application of the KSEA-like approach in leapR as applied to our
+          example data. In this example we are looking for known substrate sets
+          of kinases (from Phosphosite Plus) that are enriched in the short vs
+          long comparison of phosphopeptides.
+``` {r figure_3}
+
+data(phosphodata)
+data("kinasesubstrates")
+
+# this comparison of abundance in substrates between case and control
+#     is lopsided in the sense that phosphorylation levels were previously
+#     reported to be overall higher in the short survivors. Thus the
+#     results are not terribly interesting (all kinases are in the same direction)
+phosphodata.ksea.comp.svl = leapR(geneset=kinasesubstrates,
+                              enrichment_method="enrichment_comparison",
+                              datamatrix=phosphodata,
+                              primary_columns=shortlist, secondary_columns=longlist)
+
+
+# thus for the example we'll look at correlation between known substrates in the
+#      case v control conditions
+phosphodata.ksea.corr.svl = leapR(geneset=kinasesubstrates,
+                                  enrichment_method="correlation_comparison",
+                                  datamatrix=phosphodata, 
+                                  primary_columns=shortlist,
+                                  secondary_columns=longlist)
+
+# for the example we are using an UNCORRECTED PVALUE
+#     which will allow us to plot more values, but 
+#     for real applications it's necessary to use the
+#     CORRECTED PVALUE
+
+# here are all the kinases that are *significant (*uncorrected) from the analysis
+ksea_result = phosphodata.ksea.corr.svl[order(phosphodata.ksea.corr.svl[,"pvalue"]),][1:9,]
+ksea_cols = rep("grey", 9)
+ksea_cols[which(ksea_result[,"oddsratio"]>0)] = "black"
+
+# plot left panel: correlation significance of top most significant kinases
+barplot2(ksea_result[,"oddsratio"], horiz=TRUE, xlim=c(-1,0.5),
+         names.arg=rownames(ksea_result), las=1, col=ksea_cols)
+
+# plot right panel: abundance comparison results of the same kinases
+barplot2(phosphodata.ksea.comp.svl[rownames(ksea_result),"oddsratio"],
+         horiz=TRUE, names.arg=rownames(ksea_result), las=1, col="black")
+
+```
+
 The data are now loaded and ready to go through some of the examples. 
 
 # Examples
@@ -505,46 +555,4 @@ library(gplots)
 heatmap.2(as.matrix(results.frame.sig[,c(1:4,9:16)]), Colv=NA, trace="none", breaks=c(-1,-.1,-0.0001,0,0.1,1), col=c("blue","lightblue", "grey","pink", "red"), dendrogram="none")
 
 ```
-Figure 3. An application of the KSEA-like approach in leapR as applied to our
-          example data. In this example we are looking for known substrate sets
-          of kinases (from Phosphosite Plus) that are enriched in the short vs
-          long comparison of phosphopeptides.
-``` {r figure_3}
 
-# this comparison of abundance in substrates between case and control
-#     is lopsided in the sense that phosphorylation levels were previously
-#     reported to be overall higher in the short survivors. Thus the
-#     results are not terribly interesting (all kinases are in the same direction)
-phosphodata.ksea.comp.svl = leapR(geneset=kinasesubstrates,
-                              enrichment_method="enrichment_comparison",
-                              datamatrix=phosphodata,
-                              primary_columns=shortlist, secondary_columns=longlist)
-
-
-# thus for the example we'll look at correlation between known substrates in the
-#      case v control conditions
-phosphodata.ksea.corr.svl = leapR(geneset=kinasesubstrates,
-                                  enrichment_method="correlation_comparison",
-                                  datamatrix=phosphodata, 
-                                  primary_columns=shortlist,
-                                  secondary_columns=longlist)
-
-# for the example we are using an UNCORRECTED PVALUE
-#     which will allow us to plot more values, but 
-#     for real applications it's necessary to use the
-#     CORRECTED PVALUE
-
-# here are all the kinases that are *significant (*uncorrected) from the analysis
-ksea_result = phosphodata.ksea.corr.svl[order(phosphodata.ksea.corr.svl[,"pvalue"]),][1:9,]
-ksea_cols = rep("grey", 9)
-ksea_cols[which(ksea_result[,"oddsratio"]>0)] = "black"
-
-# plot left panel: correlation significance of top most significant kinases
-barplot2(ksea_result[,"oddsratio"], horiz=TRUE, xlim=c(-1,0.5),
-         names.arg=rownames(ksea_result), las=1, col=ksea_cols)
-
-# plot right panel: abundance comparison results of the same kinases
-barplot2(phosphodata.ksea.comp.svl[rownames(ksea_result),"oddsratio"],
-         horiz=TRUE, names.arg=rownames(ksea_result), las=1, col="black")
-
-```

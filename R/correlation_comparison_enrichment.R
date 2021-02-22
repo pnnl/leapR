@@ -26,10 +26,16 @@ correlation_comparison_enrichment <- function(geneset, abundance, set1, set2, ma
   }
   cols1 = colnames(abundance)[which(colnames(abundance) %in% set1)]
   cols2 = colnames(abundance)[which(colnames(abundance) %in% set2)]
-
+  
   allgenes_present = allgenes[which(allgenes %in% ids)]
-  allgenes_cor1 = cor(t(abundance[allgenes_present,cols1]), use="p")
-  allgenes_cor2 = cor(t(abundance[allgenes_present,cols2]), use="p")
+  abcols1 = abundance[allgenes_present,cols1]
+  abcols2 = abundance[allgenes_present,cols2]
+  
+  abcols1 = abcols1[which(rowSums(!is.na(abcols1))>0),]
+  abcols2 = abcols2[which(rowSums(!is.na(abcols2))>0),]
+  
+  allgenes_cor1 = cor(t(abcols1), use="p")
+  allgenes_cor2 = cor(t(abcols2), use="p")
 
   return(difference_enrichment_in_relationships(geneset, allgenes_cor1, allgenes_cor2, idmap=map, tag=tag, mode=mode))
 }
