@@ -10,6 +10,7 @@ LazyData: true
 RoxygenNote: 7.1.1
 Imports:
     stats,
+    gplots,
     readr
 LinkingTo: readr
 Suggests: 
