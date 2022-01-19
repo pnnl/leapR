@@ -1,8 +1,8 @@
-Package: leapr
+Package: leapR
 Title: Layered enrichment analysis of pathways R
 Version: 0.0.0.9000
 Authors@R: person("Jason", "McDermott", email = "jason.mcdermott@pnnl.gov", role = c("aut", "cre"))
-Description: leapr is a package that identifies pathways that are enriched across diverse 'omics experiments..
+Description: leapR is a package that identifies pathways that are enriched across diverse 'omics experiments..
 Depends: R (>= 3.5.2)
 License: BSD-3
 Encoding: UTF-8

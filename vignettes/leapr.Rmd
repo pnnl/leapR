@@ -1,5 +1,5 @@
 ---
-title: "leapr"
+title: "leapR"
 output:
   html_document:
     df_print: paged
