@@ -4,7 +4,7 @@ output:
   html_document:
     df_print: paged
 vignette: |
-  %\VignetteIndexEntry{leapr}   
+  %\VignetteIndexEntry{leapR}   
   %\VignetteEngine{knitr::rmarkdown} 
   %\VignetteEncoding{UTF-8}
 ---
