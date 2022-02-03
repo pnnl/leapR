@@ -7,7 +7,8 @@
 #'
 #' @export
 #' 
-enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original") {
+enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original",
+                                        silence_try_errors=T) {
   # for each category in geneset calculates enrichment of within-group
   #     relationships relative to between-group relationships, where
   #     'relationships' are in the form of a square matrix (NxN) of
@@ -89,9 +90,9 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
     pvalue = NA
     pvalue_2 = NA
     if (length(ingroup)>1) {
-      pvalue = try(t.test(ingroup, outgroup)$p.value, silent=T);
+      pvalue = try(t.test(ingroup, outgroup)$p.value, silent=silence_try_errors);
       if (class(pvalue)=="try-error") pvalue = NA;
-      pvalue_2 = try(t.test(ingroup, outgroup_2)$p.value, silent=T)
+      pvalue_2 = try(t.test(ingroup, outgroup_2)$p.value, silent=silence_try_errors)
       if (class(pvalue_2)=="try-error") pvalue_2 = NA
     }
 

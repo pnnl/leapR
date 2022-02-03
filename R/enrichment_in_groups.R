@@ -6,7 +6,8 @@
 #' @export
 #' 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
-                                 mapping_column=NULL, abundance_column=NULL, randomize=F) {
+                                 mapping_column=NULL, abundance_column=NULL, randomize=F,
+                                 silence_try_errors=T) {
   
   resultp = c()
   resultf = c()
@@ -73,7 +74,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       if (in_path > minsize) {
         in_back = length(backlist)
         
-        enr = try(ks.test(in_group, backlist))
+        enr = try(ks.test(in_group, backlist), silent=silence_try_errors)
         if (class(enr) == "try-error") {
           enr = NA
           p.value = NA

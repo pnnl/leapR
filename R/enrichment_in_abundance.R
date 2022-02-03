@@ -7,7 +7,8 @@
 
 enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abundance_column=NULL,
                                     fdr=0, matchset=NULL, longform=F, sample_comparison=NULL,
-                                    min_p_threshold=NULL, tag=NA, sample_n=NULL) {
+                                    min_p_threshold=NULL, tag=NA, sample_n=NULL,
+                                    silence_try_errors=T) {
   # for each category in geneset calculates the abundance level
   #     of the genes/proteins in the category versus those
   #     not in the category and calculate a pvalue based on a
@@ -73,7 +74,7 @@ enrichment_in_abundance <- function(geneset, abundance, mapping_column=NULL, abu
     out_mean = mean(unlist(outgroup), na.rm=T)
     pvalue = NA
     if (length(ingroup)>1) {
-      pvalue = try(t.test(unlist(ingroup), unlist(outgroup))$p.value, silent=T);
+      pvalue = try(t.test(unlist(ingroup), unlist(outgroup))$p.value, silent=silence_try_errors);
       if (class(pvalue)=="try-error") pvalue = NA;
 
       # we step through all components to calculate the number
