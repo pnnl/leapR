@@ -39,7 +39,7 @@
 #'
 
 cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05) {
-  x = length(clusters)-1
+  x = length(clusters)
   
   # The default background is all the genes that are in all the clusters
   # the user can submit their own background list if they want to do something different
