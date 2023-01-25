@@ -90,8 +90,11 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         #foldx = mean(in_group, na.rm=T)/mean(background, na.rm=T)
         
         # rank from largest to smallest
-        if (is.null(mapping_column)) in_rank = rank(backlist)[which(rownames(background) %in% grouplist)]
-        else in_rank = rank(backlist)[which(background[,mapping_column] %in% grouplist)]
+        # NOTE: By default, the function 'rank' outputs the position in the list from smallest to largest.
+        # that is, rank(backlist) has the most negative values at the top, with the most positive at the bottom.
+        # To get the positive entries at the top, negative at the bottom, we use rank(-backlist) instead.
+        if (is.null(mapping_column)) in_rank = rank(-backlist)[which(rownames(background) %in% grouplist)]
+        else in_rank = rank(-backlist)[which(background[,mapping_column] %in% grouplist)]
         
         # this will give not a fold enrichment - but a score that ranges from 1 (most in top)
         #      to -1 (most in bottom).
