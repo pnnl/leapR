@@ -89,11 +89,12 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         tryCatch(
           {
             enr <- ks.test(in_group, backlist)
-            return(enr)
+           
           },
           error=function(e) {
             message('An Error Occurred')
             print(e)
+            enr<-NA
           },
           warning=function(w) {
             #message('A Warning Occurred') # No need to print this out for the user.
