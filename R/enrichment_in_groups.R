@@ -74,34 +74,15 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       if (in_path > minsize) {
         in_back = length(backlist)
         
-        # enr = try(ks.test(in_group, backlist), silent=silence_try_errors)
-        # if (class(enr) == "try-error") {
-        #   enr = NA
-        #   p.value = NA
-        #   #browser()
-        # }
-        # else {
-        #   p.value = enr$p.value
-        # }
-        # The above block of code was replaced by the tryCatch block below to handle errors and warnings more elegantly.
-        # The if(class(enr)) statement causes an error which doesn't let the rest of the code run.
-        # Proposed change by Harkirat Sohi:
-        tryCatch(
-          {
-            enr = ks.test(in_group, backlist)
-            return(enr)
-          },
-          error=function(e) {
-            message('An Error Occurred')
-            print(e)
-          },
-          warning=function(w) {
-            #message('A Warning Occurred') # No need to print this out for the user.
-            #print(w) # No need to print this out for the user.
-            return(enr)
-          }
-        )
-        p.value = enr$p.value
+        enr = try(ks.test(in_group, backlist), silent=silence_try_errors)
+        if (class(enr) == "try-error") {
+          enr = NA
+          p.value = NA
+          #browser()
+        }
+        else {
+          p.value = enr$p.value
+        }
         
         # this expression of foldx might be subject to some weird pathological conditions
         # e.g. one sample has a background that is always negative, another that's positive
