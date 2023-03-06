@@ -74,6 +74,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       if (in_path > minsize) {
         in_back = length(backlist)
         enr = NA
+        p.value = NA
         # enr = try(ks.test(in_group, backlist), silent=silence_try_errors)
         # if (class(enr) == "try-error") {
         #   enr = NA
@@ -89,13 +90,12 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         tryCatch(
           {
             enr <- ks.test(in_group, backlist)
-           
+            p.value<-enr$p.value
           },
           error=function(e) {
             message('An Error Occurred')
             print(e)
-            enr<-NA
-          },
+                      },
           warning=function(w) {
             #message('A Warning Occurred') # No need to print this out for the user.
             #print(w) # No need to print this out for the user.
@@ -103,10 +103,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
             ##we should actually do nothing here
           }
         )
-        if(!is.na(enr))
-          p.value = enr$p.value
-        else
-          p.value = NA
+     
         
         # this expression of foldx might be subject to some weird pathological conditions
         # e.g. one sample has a background that is always negative, another that's positive
