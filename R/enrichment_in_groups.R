@@ -98,7 +98,8 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
           warning=function(w) {
             #message('A Warning Occurred') # No need to print this out for the user.
             #print(w) # No need to print this out for the user.
-            return(enr)
+            #eturn(enr$p.value)
+            ##we should actually do nothing here
           }
         )
         if(!is.na(enr))
