@@ -227,8 +227,8 @@ leapR = function(geneset, enrichment_method, ...){
     }
 
     if(!is.null(id_column)) {
-      background = unique(datamatrix[background,])
-      targets = unique(datamatrix[targets,])
+      background = unique(datamatrix[background,id_column])
+      targets = unique(datamatrix[targets,id_column])
     }
 
     result = enrichment_in_groups(geneset=geneset, targets=targets, background=background,
