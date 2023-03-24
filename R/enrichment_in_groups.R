@@ -69,9 +69,8 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       }
       
       in_path = length(in_group)
-      
-      
-      if (in_path > minsize) {
+
+      if ((in_path > minsize)&(any(!is.na(in_path)))) {
         in_back = length(backlist)
 
         # enr = try(ks.test(in_group, backlist), silent=silence_try_errors)
@@ -90,13 +89,11 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         enr<-tryCatch(
           {
             ks.test(in_group, backlist)
-            
           },
           error=function(e) {
             message('An Error Occurred')
-            print(e) 
-            
-                      }
+            return(NA)
+          }
         )
         
         if(length(enr)>1)
