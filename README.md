@@ -7,7 +7,7 @@ To install leapR, you can use the `devtools` package as follows:
 
 ``` R
 install.packages("devtools")
-devtools::install_github("biodataganache/leapR",build_vignette=TRUE)
+devtools::install_github("PNNL-CompBio/leapR",build_vignette=TRUE)
 ```
 
 Once you have successfully installed the package you can load the vignette to read examples using the `vignette('leapR')` command.
