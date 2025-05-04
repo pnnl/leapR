@@ -2,7 +2,7 @@
 #'
 #' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
 # # access through leapr wrapper
-#'
+#' @import stats
 #' @export
 
 enrichment_in_abundance <-

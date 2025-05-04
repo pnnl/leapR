@@ -5,7 +5,7 @@
 #'
 #' @noRd
 #' 
-#' 
+#' @import stats
 #' @export
 correlation_comparison_enrichment <- function(geneset, abundance, set1, set2, mapping_column=NA, tag=NA, mode="original") {
   allgenes = unique(unlist(as.list(geneset$matrix)))

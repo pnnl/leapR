@@ -1,7 +1,7 @@
 #' read_gene_sets
 #'
 #' read_gene_sets is a function to import external pathway database files in .gmt format
-#'
+#' @import readr
 #' @param gsfile is a gene set file, for example a .gmt file (gene matrix transposed file format)
 #' @param gene.labels defaults to NA
 #' @param gs.size.threshold.min defaults to 5
@@ -13,9 +13,8 @@
 
 read_gene_sets <- function(gsfile, gene.labels=NA, gs.size.threshold.min=5, gs.size.threshold.max=15000) {
   # Read input gene set database
-  library(readr)
   
-  temp <- read_lines(gsfile)
+  temp <- readr::read_lines(gsfile)
 
   max.Ng <- length(temp)
   temp.size.G <- vector(length = max.Ng, mode = "numeric")

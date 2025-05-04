@@ -5,6 +5,7 @@
 #' # access through leapr wrapper
 #'
 #'
+#' @import stats
 #' @export
 #' 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original",
