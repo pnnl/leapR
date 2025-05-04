@@ -12,7 +12,8 @@ enrichment_in_groups(
   minsize = 5,
   mapping_column = NULL,
   abundance_column = NULL,
-  randomize = F
+  randomize = F,
+  silence_try_errors = T
 )
 }
 \description{

@@ -15,7 +15,8 @@ enrichment_in_abundance(
   sample_comparison = NULL,
   min_p_threshold = NULL,
   tag = NA,
-  sample_n = NULL
+  sample_n = NULL,
+  silence_try_errors = T
 )
 }
 \description{

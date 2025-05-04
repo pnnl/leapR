@@ -7,10 +7,10 @@
 \format{
 A list with 4 items
 \describe{
-\item{names} The names of the signling pathways
-\item{desc} Short description of the pathways
-\item{sizes} Number of genes in the signaling pathways
-\item{matrix} Matrix containing the genes in the pathways
+\item{names}{The names of the signaling pathways}
+\item{desc}{Short description of the pathways}
+\item{sizes}{Number of genes in the signaling pathways}
+\item{matrix}{Matrix containing the genes in the pathways}
 }
 }
 \source{

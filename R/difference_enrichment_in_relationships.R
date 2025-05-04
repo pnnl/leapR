@@ -46,7 +46,7 @@ difference_enrichment_in_relationships <- function(geneset, relationships1, rela
 
     if (!is.na(tag)) grouplist = sapply(grouplist, function (n) paste(tag, n, sep="_"))
 
-    if (!is.na(idmap)) {
+    if (!all(is.na(idmap))) {
       grouplist = rownames(idmap)[which(idmap[,1] %in% grouplist)]
     }
 

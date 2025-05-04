@@ -9,7 +9,8 @@ enrichment_in_relationships(
   relationships,
   idmap = NA,
   tag = NA,
-  mode = "original"
+  mode = "original",
+  silence_try_errors = T
 )
 }
 \description{

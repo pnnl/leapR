@@ -40,8 +40,8 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
   # find the common subset of colnames
   common_conditions = NA
   for (this in list(proteomics, transcriptomics, methylation, cnv, phospho)) {
-    if (!is.na(this)) {
-      if (is.na(common_conditions)) common_conditions = colnames(this)
+    if (!all(is.na(this))) {
+      if (all(is.na(common_conditions))) common_conditions = colnames(this)
       that = colnames(this)
       common_conditions = common_conditions[which(common_conditions %in% that)]
     }
@@ -53,13 +53,13 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
     this = list(proteomics, transcriptomics, methylation, cnv, phospho)[[i]]
     tag = c(proteomics_tag, transcriptomics_tag, methylation_tag, cnv_tag, phospho_tag)[i]
     
-    if (!is.na(this)) {
+    if (!all(is.na(this))) {
       this = this[,common_conditions]
       if (!is.na(id_column)) {
         # we need to add an id_column or use one that's here
         if (tag == phospho_tag) {
           # add the idcolumn from the input phospho data
-          if (!is.na(phospho)) this = cbind(phospho[,id_column], this)
+          if (!all(is.na(phospho))) this = cbind(phospho[,id_column], this)
         }
         else {
           # add an idcolumn that is the rownames
@@ -75,7 +75,7 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
       if (!is.na(id_column)) {
         this[,1] = sapply(this[,1], function (n) paste(tag, n, sep=""))
       }
-      if (is.na(result)) result = this
+      if (all(is.na(result))) result = this
       else result = rbind(result, this)
           }
   }
