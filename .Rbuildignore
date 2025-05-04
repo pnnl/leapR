@@ -1,4 +1,3 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^*.csv$
-^*.csv.gz$
+^csv/*$

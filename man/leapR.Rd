@@ -45,6 +45,7 @@ sample_n \tab Is a way to subsample the number of components considered for each
 
 \strong{Enrichment Methods:}
 \cr
+\cr
 enrichment_comparison
 \cr
 Compares the distribution of abundances between two sets of conditions for each pathway using a t test. For each pathway in \code{geneset}

@@ -70,7 +70,7 @@ The identifiers (gene names, e.g.) for the data input MUST match the identifiers
 A sample data set is included that is from the CPTAC study of 169 ovarian tumors. For each application data is formatted to be an example of the type of analysis and also try to point out other ways you might use the approach (either in examples or as text). This data can be loaded as follows:
 ``` {r omicsdata}
 
-datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/data/'
+datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
 protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)
 transdata<-read.csv(paste0(datadir,'transdata.csv.gz'),check.names=FALSE,row.names=1)
 #data(protdata)
