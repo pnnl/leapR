@@ -3,7 +3,7 @@
 #' Cluster enrichment Run enrichment (Fisher's exact) on clusters (lists of identifier groups)
 #'
 #' @param geneset is a GeneSet object for pathway annotation
-#' @param clusters is a list of clusters (gene lists) to calculate enrichment on
+#' @param clusters is a list of clusters (gene lists) to calculate enrichment on, generally the result of the `cuttree` function
 #' @param background is a list of genes to serve as the background for enrichment
 #' @param sigfilter minimum significance threshold default is .05 
 #'
@@ -49,14 +49,18 @@ cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05)
   this = sapply(1:x, function (i) list(leapR(geneset=geneset, enrichment_method="enrichment_in_sets", 
                                              targets=clusters[[i]], background=background)))
   
+  print(lapply(this,function(i) nrow(subset(i,as.numeric(BH_pvalue)<sigfilter))))
   # if the sigfilter is set we'll only return those functions that have a p-value
   #   lower than the threshold
   if (is.na(sigfilter)) return(this)
-  
+  print(sigfilter)
   outlist = list()
   for (i in 1:x) {
-    these = this[[i]]
-    these = these[which(these[,"BH_pvalue"]<sigfilter),]
+    these <- this[[i]]
+    sigs <- which(these$BH_pvalue<sigfilter)
+    print(sigs)
+    these <- these[sigs,]
+    print(these)
     outlist = c(outlist, list(these))
   }
   return(outlist)

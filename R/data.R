@@ -40,6 +40,10 @@
 #' 
 "mo_krbpaths"
 
+#' MSIGDB
+#' Is this necessary?
+"msigdb"
+
 #' Kinase substrate lists
 #' 
 #' @format A list with 4 items

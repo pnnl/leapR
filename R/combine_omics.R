@@ -3,9 +3,10 @@
 #' Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
 #'
 #' @param proteomics is a matrix of protein abundance values where rownames are ids and columns are conditions
+#' @param transcriptomics is a matrix of gene expression values  where rownames are ids and columns are conditions
 #' @param proteomics is a matrix of transcript values where rownames are ids and columns are conditions
 #' @param methylation is a matrix of methylation values where rownames are ids and columns are conditions
-#' @param CNV is a matrix of copy number variant(CNV) values where rownames are ids and columns are conditions
+#' @param cnv is a matrix of copy number variant(CNV) values where rownames are ids and columns are conditions
 #' @param phospho is a dataframe of phosphorylation data 
 #' @param proteomics_tag is a text prefix to be added to protein ids
 #' @param transcriptomics_tag is a text prefix to be added to transcript ids
@@ -79,5 +80,10 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
       else result = rbind(result, this)
           }
   }
-  return(result)
+  
+  ##SG: added in second check to mak esure all values are numeric
+  nres<-apply(result[,2:ncol(result)],2,as.numeric)
+  rownames(nres)<-rownames(result)
+  
+  return(data.frame(id=result$id,nres,check.names=FALSE))
 }
