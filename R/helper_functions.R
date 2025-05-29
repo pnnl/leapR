@@ -3,7 +3,7 @@
 #' This function checks that identifier names in abundance data are actually present in geneset data
 #'
 #' @param abundance_data data object of class 'abundance_data'
-#' @param genesete_data data object of class 'geneset_data'
+#' @param geneset_data data object of class 'geneset_data'
 #'
 #'
 check_id_names = function(abundance_data, geneset_data){

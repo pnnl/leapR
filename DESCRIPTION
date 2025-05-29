@@ -4,7 +4,7 @@ Version: 0.99.0
 Authors@R: 
     person("Jason", "McDermott", email = "jason.mcdermott@pnnl.gov", role = c("aut", "cre"))
     person("Sara", "Gosline", , "sara.gosline@pnnl.gov", role = c("aut"), comment = c(ORCID = "0000-0002-6534-4774"))
-Description: leapR is a package that identifies pathways that are enriched across diverse 'omics experiments..
+Description: leapR is a package that identifies pathways that are enriched across diverse 'omics experiments.
 Depends: R (>= 4.0.0)
 License: BSD-3
 Encoding: UTF-8

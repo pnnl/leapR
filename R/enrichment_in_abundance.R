@@ -3,6 +3,18 @@
 #' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
 # # access through leapr wrapper
 #' @import stats
+#' @param geneset
+#' @param abundance
+#' @param mapping_column
+#' @param abundance_column 
+#' @param fdr
+#' @param matchset
+#' @param longform
+#' @param sample_comparison
+#' @param min_p_threshold 
+#' @param tag
+#' @param sample_n 
+#' @param silence_try_errors 
 #' @export
 
 enrichment_in_abundance <-

@@ -2,7 +2,15 @@
 #'
 #' Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
 #' # access through leapr wrapper
-#'
+#' @param geneset
+#' @param targets
+#' @param background
+#' @param method
+#' @param minsize
+#' @param mapping_column
+#' @param abundance_column
+#' @param randomize
+#' @param silence_try_errors
 #' @import stats
 #' @export
 #' 

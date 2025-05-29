@@ -10,13 +10,16 @@
 #' @details This function will calculate enrichment (Fisher's exact test for membership overlap) on
 #' @details a series of lists of genes, such as from a set of clusters. The results are returned as
 #' @details a list of results matrices in the order of the input clusters.
-#'
+#' @importFrom utils read.table
 #' @examples
 #'dontrun{
 #'         library(leapr)
 #'
 #'         # read in the example transcriptomic data
-#'         data("transdata")
+#'         datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
+#'         transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
+#'            tibble::column_to_rownames('...1')|>
+#'              as.matrix()
 #'
 #'         # read in the pathways
 #'         data("ncipid")

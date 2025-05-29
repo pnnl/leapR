@@ -8,11 +8,6 @@
 #' @param idmap defaults to an NA
 #' @param tag defaults to an NA
 #'
-#' @examples
-#' dontrun{
-#'
-#'
-#' }
 #'
 #' @noRd
 
