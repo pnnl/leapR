@@ -12,7 +12,7 @@
 #' @details a list of results matrices in the order of the input clusters.
 #' @importFrom utils read.table
 #' @examples
-#'dontrun{
+#' \dontrun{
 #'         library(leapr)
 #'
 #'         # read in the example transcriptomic data

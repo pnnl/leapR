@@ -12,9 +12,28 @@ enrichment_in_groups(
   minsize = 5,
   mapping_column = NULL,
   abundance_column = NULL,
-  randomize = F,
-  silence_try_errors = T
+  randomize = FALSE,
+  silence_try_errors = TRUE
 )
+}
+\arguments{
+\item{geneset}{geneset to use for enrichment}
+
+\item{targets}{targets to use for enrichmenet}
+
+\item{background}{list of background features}
+
+\item{method}{method to use for statistical test, options are 'fishers' or 'ks'}
+
+\item{minsize}{minimum size of set}
+
+\item{mapping_column}{column mapping identifiers}
+
+\item{abundance_column}{columns mapping abundance}
+
+\item{randomize}{true/false whether to randomize}
+
+\item{silence_try_errors}{true/false to silence errors}
 }
 \description{
 Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test

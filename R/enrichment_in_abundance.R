@@ -3,18 +3,17 @@
 #' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
 # # access through leapr wrapper
 #' @import stats
-#' @param geneset
-#' @param abundance
-#' @param mapping_column
-#' @param abundance_column 
-#' @param fdr
-#' @param matchset
-#' @param longform
-#' @param sample_comparison
-#' @param min_p_threshold 
-#' @param tag
-#' @param sample_n 
-#' @param silence_try_errors 
+#' @param geneset Gene set to calculate enrichmnet
+#' @param abundance Molecular abundance matrix
+#' @param mapping_column Column to use to map identifiers
+#' @param abundance_column  Columns to use to quantify abundance
+#' @param fdr number of times to sample for FDR value
+#' @param matchset Name of a set to use for enrichment
+#' @param sample_comparison list of samples to use as comparison
+#' @param min_p_threshold  Only include p-values lower than this
+#' @param tag tag to use for name of group
+#' @param sample_n size of sample to use
+#' @param silence_try_errors set to true to silence try errors
 #' @export
 
 enrichment_in_abundance <-
@@ -24,12 +23,11 @@ enrichment_in_abundance <-
            abundance_column = NULL,
            fdr = 0,
            matchset = NULL,
-           longform = F,
            sample_comparison = NULL,
            min_p_threshold = NULL,
            tag = NA,
            sample_n = NULL,
-           silence_try_errors = T) {
+           silence_try_errors = TRUE) {
     # for each category in geneset calculates the abundance level
     #     of the genes/proteins in the category versus those
     #     not in the category and calculate a pvalue based on a
@@ -180,10 +178,6 @@ enrichment_in_abundance <-
     #update
     results[, "BH_pvalue"] = p.adjust(results[, "pvalue"], method = "BH")
     
-    #if (!is.null(matchset)) {
-    #  results = results[matchset,]
-    #  if (longform==T) results = list(results, ingroup, outgroup)
-    #}
     if (!is.null(min_p_threshold)) {
       results = results[results$pvalue < min_p_threshold,]
       return(results)

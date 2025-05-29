@@ -87,7 +87,7 @@
 #' \code{correlation_enrichment}.
 #'
 #' @examples
-#' dontrun{
+#' \dontrun{
 #'         library(leapr)
 #'
 #'         # read in the example abundance data

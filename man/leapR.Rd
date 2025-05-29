@@ -98,11 +98,13 @@ is a square matrix to provide pairwise relationships between components (genes, 
 \code{correlation_enrichment}.
 }
 \examples{
-dontrun{
+\dontrun{
         library(leapr)
 
         # read in the example abundance data
-        data("protdata")
+        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
+        protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)|>
+          as.matrix()
 
         # read in the pathways
         data("ncipid")

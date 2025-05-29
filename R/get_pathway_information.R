@@ -3,10 +3,12 @@
 #' get_pathway_information extracts information about a pathway from a GeneSet object
 #'
 #' @param geneset is a GeneSet object for pathway annotation
-#' @param name is the name of the gene set to be returned
+#' @param path  is the name of the gene set pathway to be return
+#' @param remove.tags boolean indicating whether ot remove tags
 #' 
 #' @examples
-#' dontrun{
+#' 
+#' \dontrun{
 #'      library(leapr)
 #'      
 #'      # load example gene set
@@ -19,7 +21,7 @@
 #' @export
 #'
 
-get_pathway_information <- function(geneset, path, remove.tags=F) {
+get_pathway_information <- function(geneset, path, remove.tags=FALSE) {
   i = which(geneset$names == path)
   thissize = geneset$size[i]
   thisdesc = geneset$desc[i]

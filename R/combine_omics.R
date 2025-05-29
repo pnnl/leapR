@@ -18,7 +18,7 @@
 #' @details This combines matrices of different omics types together and adds prefix tags to the ids.
 #'
 #' @examples
-#' dontrun{
+#' \dontrun{
 #'         library(leapr)
 #'
 #'         # read in the example protein data

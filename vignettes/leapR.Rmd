@@ -13,9 +13,9 @@ vignette: |
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  cache=FALSE
 )
-knitr::opts_chunk$set(cache=FALSE)
 ```
 
 
@@ -23,6 +23,8 @@ knitr::opts_chunk$set(cache=FALSE)
 ```{r setup}
 #load the library
 library(leapR)
+library(gplots)
+
 
 ```
 
@@ -43,7 +45,7 @@ are statistically over-represented in one group versus another, display statisti
 abundance from one group to another, or are statistically differentially distributed in a ranked 
 list based on the abundance of one sample. Each of these purposes has a different underlying statistical test (or family of tests) and the results of each can be interpreted in somewhat different ways. The purpose of this vignette is to give the user a very brief introduction on how to use the package, not to discuss the underlying statistical choices that need to be made when analyzing such data.
 
-There are a number of caveats (probably non-exhuastive) with doing this kind of analysis.
+There are a number of caveats (probably non-exhaustive) with doing this kind of analysis.
 
 # Important points for consideration
 
@@ -328,7 +330,7 @@ phosphodata.comp.enrichment.svl = leapR::leapR(geneset=krbpaths,
 # perform the comparison t test
 transdata.svl.ttest = t(sapply(rownames(transdata), function (r) {
         res=try(t.test(transdata[r,shortlist], transdata[r,longlist])); 
-        if (class(res) == 'try-error') return(c(NA, NA));
+        if (is(res,'try-error')) return(c(NA, NA));
         return(c(res$p.value, res$estimate[[1]]-res$estimate[[2]]))}))
 colnames(transdata.svl.ttest) = c('p-value','difference')
 
@@ -341,7 +343,7 @@ transdata.set.enrichment.svl = leapR::leapR(geneset=krbpaths,
 # perform the comparison t test
 protdata.svl.ttest = t(sapply(rownames(protdata), function (r) {
         res=try(t.test(protdata[r,shortlist], protdata[r,longlist]),silent=TRUE); 
-        if (class(res) == 'try-error') return(c(NA, NA));
+        if (is(res,'try-error')) return(c(NA, NA));
         return(c(res$p.value, res$estimate[[1]]-res$estimate[[2]]))}))
 
 colnames(protdata.svl.ttest) = c('p-value','difference')
@@ -355,7 +357,7 @@ protdata.set.enrichment.svl = leapR::leapR(geneset=krbpaths,
 # perform the comparison t test
 phosphodata.svl.ttest = t(sapply(rownames(phosphodata), function (r) {
         res=try(t.test(phosphodata[r,shortlist], phosphodata[r,longlist]),silent=TRUE); 
-        if (class(res) == 'try-error') return(c(NA, NA));
+        if (is(res,'try-error')) return(c(NA, NA));
         return(c(res$p.value, res$estimate[[1]]-res$estimate[[2]]))}))
 
 phosphodata.svl.ttest = data.frame(protein=phosphodata[,1], pvalue=phosphodata.svl.ttest[,1],
@@ -415,7 +417,7 @@ combodata.enrichment.svl = leapR::leapR(geneset=mo_krbpaths,
 # perform the comparison t test
 combodata.svl.ttest = t(sapply(rownames(combodata), function (r) {
         res=try(t.test(combodata[r,shortlist], combodata[r,longlist]),silent=TRUE); 
-        if (class(res) == 'try-error') return(c(NA, NA));
+        if (is(res,'try-error')) return(c(NA, NA));
         return(c(res$p.value, res$estimate[[1]]-res$estimate[[2]]))}))
 
 combodata.svl.ttest = data.frame(protein=combodata[,1], pvalue=combodata.svl.ttest[,1],
@@ -518,7 +520,6 @@ rownames(results.frame) = results.frame[,1]
 rownames(results.frame.or) = results.frame.or[,1]
 results.frame.sig = results.frame[,2:17]*results.frame.or[,2:17]
 
-library(gplots)
 heatmap.2(as.matrix(results.frame.sig[,c(1:4,9:16)]), Colv=NA, trace="none", breaks=c(-1,-.1,-0.0001,0,0.1,1), col=c("blue","lightblue", "grey","pink", "red"), dendrogram="none")
 
 ```
@@ -565,4 +566,9 @@ barplot(ksea_result[,"oddsratio"], horiz=TRUE, xlim=c(-1,0.5),
 barplot(phosphodata.ksea.comp.svl[rownames(ksea_result),"oddsratio"],
          horiz=TRUE, names.arg=rownames(ksea_result), las=1, col="black")
 
+```
+
+Lastly we print out the session info!
+```{r session}
+sessionInfo()
 ```

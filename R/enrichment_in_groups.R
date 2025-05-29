@@ -2,21 +2,21 @@
 #'
 #' Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
 #' # access through leapr wrapper
-#' @param geneset
-#' @param targets
-#' @param background
-#' @param method
-#' @param minsize
-#' @param mapping_column
-#' @param abundance_column
-#' @param randomize
-#' @param silence_try_errors
+#' @param geneset geneset to use for enrichment
+#' @param targets targets to use for enrichmenet
+#' @param background list of background features
+#' @param method method to use for statistical test, options are 'fishers' or 'ks'
+#' @param minsize minimum size of set
+#' @param mapping_column column mapping identifiers
+#' @param abundance_column columns mapping abundance
+#' @param randomize true/false whether to randomize
+#' @param silence_try_errors true/false to silence errors
 #' @import stats
 #' @export
 #' 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
-                                 mapping_column=NULL, abundance_column=NULL, randomize=F,
-                                 silence_try_errors=T) {
+                                 mapping_column=NULL, abundance_column=NULL, randomize=FALSE,
+                                 silence_try_errors=TRUE) {
   
   resultp = c()
   resultf = c()

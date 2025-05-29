@@ -4,12 +4,17 @@
 #' is enriched in relationships (interactions, correlation) between its members
 #' # access through leapr wrapper
 #'
-#'
+#' @param geneset List of pathways in gmt format
+#' @param relationships table of relationship information
+#' @param idmap map of identifiers
+#' @param tag tag to append to data
+#' @param mode allowable values are 'original' or anything else
+#' @param silence_try_errors boolean to silence errors
 #' @import stats
 #' @export
 #' 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original",
-                                        silence_try_errors=T) {
+                                        silence_try_errors=TRUE) {
   # for each category in geneset calculates enrichment of within-group
   #     relationships relative to between-group relationships, where
   #     'relationships' are in the form of a square matrix (NxN) of
