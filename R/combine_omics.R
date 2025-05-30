@@ -19,7 +19,7 @@
 #' @details This combines matrices of different omics types together and adds prefix tags to the ids.
 #'
 #' @examples
-#'         library(leapr)
+#'         library(leapR)
 #'
 #'         # read in the example protein data
 #'         datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
@@ -60,19 +60,23 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
     
     if (!all(is.na(this))) {
       this = this[,common_conditions]
+      
       if (!is.na(id_column)) {
         # we need to add an id_column or use one that's here
+        if(!all(is.na(phospho))) {}
         if (tag == phospho_tag) {
           # add the idcolumn from the input phospho data
-          if (!all(is.na(phospho))) this = cbind(phospho[,id_column], this)
+          this = cbind(phospho[,id_column], this)
+        }else {
+          this = cbind(rownames(this),this)
         }
-        else {
-          # add an idcolumn that is the rownames
-          this = cbind(rownames(this), this)
-        }
-        colnames(this)[1] = "id"
-      }
       
+      #else {
+          # add an idcolumn that is the rownames
+          #this = cbind(rownames(this), this)
+      
+      colnames(this)[1] = "id"
+      }
       # tag all the ids appropriately
       rownames(this) = sapply(rownames(this), function (n) paste(tag, n, sep=""))
       
@@ -80,14 +84,20 @@ combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=
       if (!is.na(id_column)) {
         this[,1] = sapply(this[,1], function (n) paste(tag, n, sep=""))
       }
+ 
+      #  print(dim(this))
+    #    print(dim(result))
       if (all(is.na(result))) result = this
       else result = rbind(result, this)
-          }
+    }
   }
   
   ##SG: added in second check to mak esure all values are numeric
-  nres<-apply(result[,2:ncol(result)],2,as.numeric)
-  rownames(nres)<-rownames(result)
-  
-  return(data.frame(id=result$id,nres,check.names=FALSE))
+  nres <- apply(result[,common_conditions],2,as.numeric)
+  rownames(nres) <- rownames(result)
+  if ('id' %in% colnames(result))
+    ids = result$id
+  else
+    ids = rownames(result)
+  return(data.frame(id=ids,nres,check.names=FALSE))
 }

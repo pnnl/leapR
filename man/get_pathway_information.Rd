@@ -13,12 +13,15 @@ get_pathway_information(geneset, path, remove.tags = FALSE)
 
 \item{remove.tags}{boolean indicating whether ot remove tags}
 }
+\value{
+list of pathway information
+}
 \description{
 get_pathway_information extracts information about a pathway from a GeneSet object
 }
 \examples{
 
-     library(leapr)
+     library(leapR)
      
      # load example gene set
      data("ncipid")

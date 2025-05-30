@@ -5,10 +5,10 @@
 #' @param geneset is a GeneSet object for pathway annotation
 #' @param path  is the name of the gene set pathway to be return
 #' @param remove.tags boolean indicating whether ot remove tags
-#' 
+#' @return list of pathway information
 #' @examples
 #' 
-#'      library(leapr)
+#'      library(leapR)
 #'      
 #'      # load example gene set
 #'      data("ncipid")
@@ -33,5 +33,5 @@ get_pathway_information <- function(geneset, path, remove.tags=FALSE) {
   }
   thissize = length(grouplist)
 
-  return(list(name=path, size=thissize, description=thisdesc, geneset=grouplist))
+  return(list(name = path, size = thissize, description = thisdesc, geneset = grouplist))
 }

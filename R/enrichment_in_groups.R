@@ -100,7 +100,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
             ks.test(in_group, backlist)
           },
           error=function(e) {
-            message('An Error Occurred')
+            if(!silence_try_errors) message('An Error Occurred')
             return(NA)
           }
         )

@@ -7,6 +7,7 @@
 #' @param abundance Abundance value matrix
 #' @param mapping_column Column to use to map
 #' @param tag tag to append to group name
+#' @return list of enrichment statistic table and correlation matrix
 
 correlation_enrichment <- function(geneset, abundance, mapping_column=NA, tag=NA) {
   allgenes = unique(unlist(as.list(geneset$matrix)))

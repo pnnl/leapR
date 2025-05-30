@@ -51,7 +51,7 @@ Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids
 This combines matrices of different omics types together and adds prefix tags to the ids.
 }
 \examples{
-        library(leapr)
+        library(leapR)
 
         # read in the example protein data
         datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'

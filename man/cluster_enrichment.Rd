@@ -29,7 +29,7 @@ a series of lists of genes, such as from a set of clusters. The results are retu
 a list of results matrices in the order of the input clusters.
 }
 \examples{
-        library(leapr)
+        library(leapR)
 
         # read in the example transcriptomic data
         datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'

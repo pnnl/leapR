@@ -15,6 +15,9 @@ correlation_enrichment(geneset, abundance, mapping_column = NA, tag = NA)
 
 \item{tag}{tag to append to group name}
 }
+\value{
+list of enrichment statistic table and correlation matrix
+}
 \description{
 # calculate enrichment in correlation between pathway members
 # access through leapr wrapper

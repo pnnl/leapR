@@ -26,6 +26,9 @@ enrichment_in_relationships(
 
 \item{silence_try_errors}{boolean to silence errors}
 }
+\value{
+table of enrichment statistics
+}
 \description{
 enrichment_in_relationships function description is a general way to determine if a pathway
 is enriched in relationships (interactions, correlation) between its members

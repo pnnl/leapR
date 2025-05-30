@@ -10,6 +10,7 @@
 #' @param tag tag to append to data
 #' @param mode allowable values are 'original' or anything else
 #' @param silence_try_errors boolean to silence errors
+#' @return table of enrichment statistics
 #' @import stats
 #' 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original",
@@ -87,10 +88,10 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
       #browser()
     }
 
-    in_mean = mean(unlist(ingroup), na.rm=T)
-    out_mean = mean(unlist(outgroup), na.rm=T)
+    in_mean = mean(unlist(ingroup), na.rm=TRUE)
+    out_mean = mean(unlist(outgroup), na.rm=TRUE)
 
-    out_mean_2 = mean(unlist(outgroup_2), na.rm=T)
+    out_mean_2 = mean(unlist(outgroup_2), na.rm=TRUE)
 
     pvalue = NA
     pvalue_2 = NA
