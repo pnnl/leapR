@@ -1,4 +1,4 @@
-#leapR
+# leapR
 
 Layered Enrichment Analysis of Pathways in R (leapR) a tool that carries out statistical enrichment analysis on single- or multi-omics data.
 
