@@ -4,7 +4,7 @@
 #'
 #' @param abundance_data data object of class 'abundance_data'
 #' @param geneset_data data object of class 'geneset_data'
-#'
+#' @return True/false value if id names are correct
 #'
 check_id_names = function(abundance_data, geneset_data){
   if(!inherits(abundance_data, "abundance_data")) stop("abundance_data object must be of class 'abundance_data'")
@@ -26,7 +26,7 @@ check_id_names = function(abundance_data, geneset_data){
 #'
 #' @param abundance_data1 first data object of class 'abundance_data'
 #' @param abundance_data2 second data object of class 'abundance_data'
-#'
+#' @return check number of identifiers in common
 #'
 #' @noRd
 compare_id_names = function(abundance_data1, abundance_data2){
@@ -48,7 +48,7 @@ compare_id_names = function(abundance_data1, abundance_data2){
 #'
 #' @param abundance_data1 first data object of class 'abundance_data'
 #' @param abundance_data2 second data object of class 'abundance_data'
-#'
+#' @return reports number of columns in common
 #'
 compare_column_names = function(abundance_data1, abundance_data2){
   if(!inherits(abundance_data1, "abundance_data") & !inherits(abundance_data2, "abundance_data")) stop("abundance_data1 and abundance_data2 objects must be of class 'abundance_data'")

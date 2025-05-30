@@ -18,7 +18,6 @@ get_pathway_information extracts information about a pathway from a GeneSet obje
 }
 \examples{
 
-\dontrun{
      library(leapr)
      
      # load example gene set
@@ -26,6 +25,5 @@ get_pathway_information extracts information about a pathway from a GeneSet obje
      
      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 
-}
 
 }

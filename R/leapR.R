@@ -4,6 +4,7 @@
 #'
 #' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix of genes. It represents .gmt format pathway files.
 #' @param enrichment_method is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment", "enrichment_in_relationships".
+#' @return data frame with results
 #' @param ... further arguments
 #'
 #' @details Further arguments and enrichment method optional argument information
@@ -87,7 +88,6 @@
 #' \code{correlation_enrichment}.
 #'
 #' @examples
-#' \dontrun{
 #'         library(leapr)
 #'
 #'         # read in the example abundance data
@@ -130,7 +130,6 @@
 #'          short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_correlation',
 #'                 datamatrix=protdata, primary_columns=shortlist)
 #'
-#' }
 #'
 #' @export
 #'

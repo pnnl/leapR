@@ -5,9 +5,8 @@
 #' @param filename the directory path to a file containing the abundance data
 #' @param data_type a character string, either 'protdata' or 'phosphoprotdata' which describes the type of abundance data
 #' @param infocol_name a character string describing the name of the column extra identifier info in abundance data of type 'phosphoprotdata'
-#'
-#'
-#' @export
+#' @return read in abundance data
+#' do we need this function at all?
 #'
 read_abundance_data = function(filename, data_type, infocol_name = NULL){
 

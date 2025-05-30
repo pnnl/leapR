@@ -11,9 +11,10 @@
 #' @details a series of lists of genes, such as from a set of clusters. The results are returned as
 #' @details a list of results matrices in the order of the input clusters.
 #' @importFrom utils read.table
+#' @return data frame with enrichment results
+#' @export
 #' @examples
-#' \dontrun{
-#'         library(leapr)
+#'         library(leapR)
 #'
 #'         # read in the example transcriptomic data
 #'         datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
@@ -36,9 +37,7 @@
 #'         #   of enrichment results
 #'         transdata.hc.enrichment = cluster_enrichment(geneset=ncipid, clusters=transdata.hc.clusters, background=rownames(transdata))
 #'         
-#' }
 #'
-#' @export
 #'
 
 cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05) {

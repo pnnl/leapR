@@ -207,7 +207,7 @@ protdata.enrichment.sets.module_1 = leapR::leapR(geneset=ncipid, enrichment_meth
                                           targets=names(modules[which(modules==1)]))
 
 # To do enrichment on all modules and return the list of enrichment results tables do this
-protdata.enrichment.sets.modules <- cluster_enrichment(geneset=krbpaths, clusters=clusters, background=names(modules), sigfilter=0.05)
+protdata.enrichment.sets.modules <- cluster_enrichment(geneset=ncipid, clusters=clusters, background=names(modules), sigfilter=0.05)
 ##nothing is enriched
 knitr::kable(head(protdata.enrichment.sets.modules))
 ```

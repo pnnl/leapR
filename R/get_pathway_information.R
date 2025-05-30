@@ -8,7 +8,6 @@
 #' 
 #' @examples
 #' 
-#' \dontrun{
 #'      library(leapr)
 #'      
 #'      # load example gene set
@@ -16,7 +15,6 @@
 #'      
 #'      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 #'
-#' }
 #'
 #' @export
 #'

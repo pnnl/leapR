@@ -11,7 +11,6 @@
 #' @param mode allowable values are 'original' or anything else
 #' @param silence_try_errors boolean to silence errors
 #' @import stats
-#' @export
 #' 
 enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original",
                                         silence_try_errors=TRUE) {
@@ -26,7 +25,7 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
                        outgroup_mean=rep(NA_real_, length(geneset$names)), zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
                        pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
                        SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
-                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = FALSE)
   
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
@@ -97,9 +96,9 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
     pvalue_2 = NA
     if (length(ingroup)>1) {
       pvalue = try(t.test(ingroup, outgroup)$p.value, silent=silence_try_errors);
-      if (class(pvalue)=="try-error") pvalue = NA;
+      if (is(pvalue,"try-error")) pvalue = NA;
       pvalue_2 = try(t.test(ingroup, outgroup_2)$p.value, silent=silence_try_errors)
-      if (class(pvalue_2)=="try-error") pvalue_2 = NA
+      if (is(pvalue_2,"try-error")) pvalue_2 = NA
     }
 
     delta = in_mean - out_mean

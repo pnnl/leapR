@@ -35,6 +35,9 @@ enrichment_in_groups(
 
 \item{silence_try_errors}{true/false to silence errors}
 }
+\value{
+data frame with enrichment results
+}
 \description{
 Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
 # access through leapr wrapper

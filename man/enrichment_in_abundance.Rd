@@ -41,6 +41,9 @@ enrichment_in_abundance(
 
 \item{silence_try_errors}{set to true to silence try errors}
 }
+\value{
+data frame of enrichment result
+}
 \description{
 Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
 }

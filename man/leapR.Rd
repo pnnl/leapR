@@ -13,6 +13,9 @@ leapR(geneset, enrichment_method, ...)
 
 \item{...}{further arguments}
 }
+\value{
+data frame with results
+}
 \description{
 leapR is a wrapper function that consolidates multiple enrichment methods.
 }
@@ -98,7 +101,6 @@ is a square matrix to provide pairwise relationships between components (genes, 
 \code{correlation_enrichment}.
 }
 \examples{
-\dontrun{
         library(leapr)
 
         # read in the example abundance data
@@ -141,6 +143,5 @@ is a square matrix to provide pairwise relationships between components (genes, 
          short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_correlation',
                 datamatrix=protdata, primary_columns=shortlist)
 
-}
 
 }

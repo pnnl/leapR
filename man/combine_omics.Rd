@@ -41,6 +41,9 @@ combine_omics(
 
 \item{id_column}{is an optional column number for identifiers for the phospho data}
 }
+\value{
+combined omics table
+}
 \description{
 Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
 }
@@ -48,7 +51,6 @@ Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids
 This combines matrices of different omics types together and adds prefix tags to the ids.
 }
 \examples{
-\dontrun{
         library(leapr)
 
         # read in the example protein data
@@ -64,6 +66,5 @@ This combines matrices of different omics types together and adds prefix tags to
         # merge the two datasets by rows and add prefix tags for different omics types
         multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
 
-}
 
 }

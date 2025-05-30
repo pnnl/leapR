@@ -11,7 +11,8 @@
 #' @param mapping_column Column to use for id mapping
 #' @param tag Tag to add
 #' @param mode to use, default is 'original'
-#' @export
+#' @return data frame with enrichment results
+#' 
 correlation_comparison_enrichment <- function(geneset, abundance, set1, set2, mapping_column=NA, tag=NA, mode="original") {
   allgenes = unique(unlist(as.list(geneset$matrix)))
 

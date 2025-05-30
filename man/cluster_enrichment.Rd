@@ -15,6 +15,9 @@ cluster_enrichment(geneset, clusters, background = NA, sigfilter = 0.05)
 
 \item{sigfilter}{minimum significance threshold default is .05}
 }
+\value{
+data frame with enrichment results
+}
 \description{
 Cluster enrichment Run enrichment (Fisher's exact) on clusters (lists of identifier groups)
 }
@@ -26,7 +29,6 @@ a series of lists of genes, such as from a set of clusters. The results are retu
 a list of results matrices in the order of the input clusters.
 }
 \examples{
-\dontrun{
         library(leapr)
 
         # read in the example transcriptomic data
@@ -50,6 +52,6 @@ a list of results matrices in the order of the input clusters.
         #   of enrichment results
         transdata.hc.enrichment = cluster_enrichment(geneset=ncipid, clusters=transdata.hc.clusters, background=rownames(transdata))
         
-}
+
 
 }

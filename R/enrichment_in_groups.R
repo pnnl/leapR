@@ -12,7 +12,7 @@
 #' @param randomize true/false whether to randomize
 #' @param silence_try_errors true/false to silence errors
 #' @import stats
-#' @export
+#' @return data frame with enrichment results
 #' 
 enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
                                  mapping_column=NULL, abundance_column=NULL, randomize=FALSE,
@@ -26,7 +26,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
                        outgroup_mean=rep(NA_real_, length(geneset$names)), score=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
                        pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
                        SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
-                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = FALSE)
   
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
@@ -125,16 +125,16 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         
         # this will give not a fold enrichment - but a score that ranges from 1 (most in top)
         #      to -1 (most in bottom).
-        foldx = 1-((mean(in_rank, na.rm=T)/length(backlist))/0.5)
+        foldx = 1 - ((mean(in_rank, na.rm = TRUE)/length(backlist))/0.5)
         
-        zscore = (mean(in_group, na.rm=T)-mean(backlist, na.rm=T))/sd(in_group, na.rm=T)
+        zscore = (mean(in_group, na.rm = TRUE) - mean(backlist, na.rm = TRUE))/sd(in_group, na.rm = TRUE)
         #browser()
         
         results[thisname,"ingroup_n"] = in_path
         results[thisname,"ingroupnames"] = in_group_name
-        results[thisname,"ingroup_mean"] = mean(in_group, na.rm=T)
+        results[thisname,"ingroup_mean"] = mean(in_group, na.rm = TRUE)
         results[thisname,"outgroup_n"] = in_back
-        results[thisname,"outgroup_mean"] = mean(backlist, na.rm=T)
+        results[thisname,"outgroup_mean"] = mean(backlist, na.rm = TRUE)
         results[thisname,"zscore"] = zscore
         results[thisname,"pvalue"] = p.value
         results[thisname,"oddsratio"] = foldx

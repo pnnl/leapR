@@ -15,10 +15,10 @@
 #' @param phospho_tag is a text prefix to be added to phospho ids
 #' @param id_column is an optional column number for identifiers for the phospho data
 #' 
+#' @return combined omics table 
 #' @details This combines matrices of different omics types together and adds prefix tags to the ids.
 #'
 #' @examples
-#' \dontrun{
 #'         library(leapr)
 #'
 #'         # read in the example protein data
@@ -34,7 +34,6 @@
 #'         # merge the two datasets by rows and add prefix tags for different omics types
 #'         multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
 #'
-#' }
 #'
 #' @export
 

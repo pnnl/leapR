@@ -14,7 +14,7 @@
 #' @param tag tag to use for name of group
 #' @param sample_n size of sample to use
 #' @param silence_try_errors set to true to silence try errors
-#' @export
+#' @return data frame of enrichment result
 
 enrichment_in_abundance <-
   function(geneset,
@@ -48,7 +48,7 @@ enrichment_in_abundance <-
       SignedBH_pvalue = rep(NA_real_, length(geneset$names)),
       background_n = rep(NA_real_, length(geneset$names)),
       background_mean = rep(NA_real_, length(geneset$names)),
-      stringsAsFactors = F
+      stringsAsFactors = FALSE
     )
     
     
@@ -107,14 +107,14 @@ enrichment_in_abundance <-
                                abundance_column[which(abundance_column %in% colnames(abundance))]]
       }
       #cat(length(ingroup), length(outgroup), "\n")
-      in_mean = mean(unlist(ingroup), na.rm = T)
-      out_mean = mean(unlist(outgroup), na.rm = T)
+      in_mean = mean(unlist(ingroup), na.rm = TRUE)
+      out_mean = mean(unlist(outgroup), na.rm = TRUE)
       pvalue = NA
       if (length(ingroup) > 1) {
         pvalue = try(t.test(unlist(ingroup), unlist(outgroup))$p.value, silent =
                        silence_try_errors)
         ;
-        if (class(pvalue) == "try-error")
+        if (is(pvalue,"try-error"))
           pvalue = NA
         
         
@@ -149,8 +149,8 @@ enrichment_in_abundance <-
           outgroup = which(!1:length(abundances) %in% ingroup)
           ingroup = abundances[ingroup]
           outgroup = abundances[outgroup]
-          in_mean = mean(ingroup, na.rm = T)
-          out_mean = mean(outgroup, na.rm = T)
+          in_mean = mean(ingroup, na.rm = TRUE)
+          out_mean = mean(outgroup, na.rm = TRUE)
           delta_r = in_mean - out_mean
           background = c(background, delta_r)
         }
@@ -171,7 +171,7 @@ enrichment_in_abundance <-
       #question : do we want to calculate an oddsratio for this too?
       # answer: yes, but for now we'll use the mean of the ingroup compared with the
       #        distribution of the background as a zscore
-      zscore = (out_mean - in_mean) / sd(unlist(outgroup), na.rm = T)
+      zscore = (out_mean - in_mean) / sd(unlist(outgroup), na.rm = TRUE)
       #browser()
       results[thisname, "zscore"] = zscore
     }

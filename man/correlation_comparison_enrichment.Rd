@@ -29,6 +29,9 @@ correlation_comparison_enrichment(
 
 \item{mode}{to use, default is 'original'}
 }
+\value{
+data frame with enrichment results
+}
 \description{
 # internal function to calculate enrichment in differences in correlation between two groups
 # access through the leapr wrapper
