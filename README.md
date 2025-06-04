@@ -14,7 +14,7 @@ if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install(version = "3.21")
 
-BiocManager::install('Biocstyle')
+BiocManager::install('BiocStyle')
   
 devtools::install_github("PNNL/leapR",build_vignette=TRUE)
 ```
