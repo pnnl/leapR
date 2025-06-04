@@ -2,12 +2,21 @@
 
 Layered Enrichment Analysis of Pathways in R (leapR) a tool that carries out statistical enrichment analysis on single- or multi-omics data.
 
-## Installation
-To install leapR, you can use the `devtools` package as follows:
+## Install and build
+Until leapR is madea vailable on the bioconductor repository, we are recommending install the package from GitHub as follows. 
 
-``` R
-install.packages("devtools")
-devtools::install_github("PNNL-CompBio/leapR",build_vignette=TRUE)
+```{r install}
+
+if(!require('devtools', quietly=TRUE))
+  install.packages("devtools")
+  
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.21")
+
+BiocManager::install('Biocstyle')
+  
+devtools::install_github("PNNL/leapR",build_vignette=TRUE)
 ```
 
 Once you have successfully installed the package you can load the vignette to read examples using the `vignette('leapR')` command.
