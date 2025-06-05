@@ -78,13 +78,14 @@ This data can be loaded as follows:
 pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='wget',destfile='protdata')
 protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
   as.matrix()
+file.remove("protdata")
 
 #transdata<-read.csv(paste0(datadir,'transdata.csv.gz'),check.names=FALSE,row.names=1)
 tdata <- download.file("https://figshare.com/ndownloader/files/55158764",method='wget',destfile='transdata')
 transdata<-readr::read_csv('transdata')|>
   tibble::column_to_rownames('...1')|>
   as.matrix()
-
+file.remove("transdata")
 ```
 We also include some groups of patients to compare stored as R data objects:
 ``` {r ptlists}
@@ -269,6 +270,8 @@ In this example we will use phosphoproteomics data to assess the enrichment in k
 # load phosphoproteomics data for 69 tumors
 phdata<-download.file('https://figshare.com/ndownloader/files/55158761',method='wget',destfile = 'phdata')
 phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
+file.remove('phdata')
+
 #data("phosphodata")
 data("kinasesubstrates")
 
