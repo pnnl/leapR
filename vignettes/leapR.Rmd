@@ -71,16 +71,17 @@ data(ncipid)
 The identifiers (gene names, e.g.) for the data input MUST match the identifiers used in the pathway database. The two included human databases use the HGNC-approved gene names. Which means your data has to use the same identifiers.
 
 ### 6. Example data
-A sample data set is included that is from the CPTAC study of 169 ovarian tumors. For each application data is formatted to be an example of the type of analysis and also try to point out other ways you might use the approach (either in examples or as text). We stored the files as CSV on our github repo to enable facile download.
-
+A sample data set is included that is from the CPTAC study of 169 ovarian tumors. For each application data is formatted to be an example of the type of analysis and also try to point out other ways you might use the approach (either in examples or as text). We stored the files as CSV on [Figshare]() for facile download.
 This data can be loaded as follows:
 ``` {r omicsdata, message=FALSE, warning=FALSE}
 
-datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
-protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)|>
+pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='wget',destfile='protdata')
+protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
   as.matrix()
+
 #transdata<-read.csv(paste0(datadir,'transdata.csv.gz'),check.names=FALSE,row.names=1)
-transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
+tdata <- download.file("https://figshare.com/ndownloader/files/55158764",method='wget',destfile='transdata')
+transdata<-readr::read_csv('transdata')|>
   tibble::column_to_rownames('...1')|>
   as.matrix()
 
@@ -266,7 +267,8 @@ In this example we will use phosphoproteomics data to assess the enrichment in k
 ``` {r phosphoproteomics, echo=TRUE, warning=FALSE, message=FALSE, include=FALSE}
 
 # load phosphoproteomics data for 69 tumors
-phosphodata<-read.csv(paste0(datadir,'phosphodata.csv'),check.names=FALSE,row.names=1)
+phdata<-download.file('https://figshare.com/ndownloader/files/55158761',method='wget',destfile = 'phdata')
+phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
 #data("phosphodata")
 data("kinasesubstrates")
 
