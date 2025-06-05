@@ -8,11 +8,6 @@
 #' @param idmap defaults to an NA
 #' @param tag defaults to an NA
 #'
-#' @examples
-#' dontrun{
-#'
-#'
-#' }
 #'
 #' @noRd
 
@@ -29,7 +24,7 @@ difference_enrichment_in_relationships <- function(geneset, relationships1, rela
                        outgroup_mean=rep(NA_real_, length(geneset$names)), zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
                        pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
                        SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
-                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = F)
+                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = FALSE)
   
   #results = matrix(nrow=length(geneset$names), ncol=6)
   #rownames(results) = geneset$names
@@ -46,7 +41,7 @@ difference_enrichment_in_relationships <- function(geneset, relationships1, rela
 
     if (!is.na(tag)) grouplist = sapply(grouplist, function (n) paste(tag, n, sep="_"))
 
-    if (!is.na(idmap)) {
+    if (!all(is.na(idmap))) {
       grouplist = rownames(idmap)[which(idmap[,1] %in% grouplist)]
     }
 
@@ -85,14 +80,14 @@ difference_enrichment_in_relationships <- function(geneset, relationships1, rela
       #browser()
     }
 
-    in_mean1 = mean(unlist(ingroup1), na.rm=T)
-    in_mean2 = mean(unlist(ingroup2), na.rm=T)
+    in_mean1 = mean(unlist(ingroup1), na.rm=TRUE)
+    in_mean2 = mean(unlist(ingroup2), na.rm=TRUE)
 
     pvalue = NA
 
     if (length(ingroup1)>1 && length(ingroup2)>1) {
-      pvalue = try(t.test(ingroup1, ingroup2)$p.value, silent=T);
-      if (class(pvalue)=="try-error") pvalue = NA;
+      pvalue = try(t.test(ingroup1, ingroup2)$p.value, silent=TRUE);
+      if (is(pvalue,"try-error")) pvalue = NA;
     }
 
     results[thisname,"ingroup_mean"] = in_mean1

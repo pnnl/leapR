@@ -21,7 +21,11 @@ combine_omics(
 \arguments{
 \item{proteomics}{is a matrix of transcript values where rownames are ids and columns are conditions}
 
+\item{transcriptomics}{is a matrix of gene expression values  where rownames are ids and columns are conditions}
+
 \item{methylation}{is a matrix of methylation values where rownames are ids and columns are conditions}
+
+\item{cnv}{is a matrix of copy number variant(CNV) values where rownames are ids and columns are conditions}
 
 \item{phospho}{is a dataframe of phosphorylation data}
 
@@ -36,8 +40,9 @@ combine_omics(
 \item{phospho_tag}{is a text prefix to be added to phospho ids}
 
 \item{id_column}{is an optional column number for identifiers for the phospho data}
-
-\item{CNV}{is a matrix of copy number variant(CNV) values where rownames are ids and columns are conditions}
+}
+\value{
+combined omics table
 }
 \description{
 Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
@@ -46,17 +51,20 @@ Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids
 This combines matrices of different omics types together and adds prefix tags to the ids.
 }
 \examples{
-dontrun{
-        library(leapr)
+        library(leapR)
 
         # read in the example protein data
-        data("protdata")
-        # read in the example transcriptomics data
-        data("transdata")
-        
+        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
+        protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)|>
+          as.matrix()
+          
+       # read in the example transcriptomics data
+        transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
+           tibble::column_to_rownames('...1')|>
+             as.matrix()
+                      
         # merge the two datasets by rows and add prefix tags for different omics types
         multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
 
-}
 
 }

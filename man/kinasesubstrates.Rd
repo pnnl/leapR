@@ -7,10 +7,10 @@
 \format{
 A list with 4 items
 \describe{
-\item{names} The names of the kinases
-\item{desc} Short description of the kinase
-\item{sizes} Length of the substrate list
-\item{matrix} Substrate list for the kinase
+\item{names}{The names of the kinases}
+\item{desc}{Short description of the kinase}
+\item{sizes}{Length of the substrate list}
+\item{matrix}{Substrate list for the kinase}
 }
 }
 \source{

@@ -9,7 +9,10 @@ check_id_names(abundance_data, geneset_data)
 \arguments{
 \item{abundance_data}{data object of class 'abundance_data'}
 
-\item{genesete_data}{data object of class 'geneset_data'}
+\item{geneset_data}{data object of class 'geneset_data'}
+}
+\value{
+True/false value if id names are correct
 }
 \description{
 This function checks that identifier names in abundance data are actually present in geneset data

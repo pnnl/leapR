@@ -4,25 +4,29 @@
 \alias{get_pathway_information}
 \title{get_pathway_information}
 \usage{
-get_pathway_information(geneset, path, remove.tags = F)
+get_pathway_information(geneset, path, remove.tags = FALSE)
 }
 \arguments{
 \item{geneset}{is a GeneSet object for pathway annotation}
 
-\item{name}{is the name of the gene set to be returned}
+\item{path}{is the name of the gene set pathway to be return}
+
+\item{remove.tags}{boolean indicating whether ot remove tags}
+}
+\value{
+list of pathway information
 }
 \description{
 get_pathway_information extracts information about a pathway from a GeneSet object
 }
 \examples{
-dontrun{
-     library(leapr)
+
+     library(leapR)
      
      # load example gene set
      data("ncipid")
      
      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 
-}
 
 }

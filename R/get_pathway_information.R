@@ -3,23 +3,23 @@
 #' get_pathway_information extracts information about a pathway from a GeneSet object
 #'
 #' @param geneset is a GeneSet object for pathway annotation
-#' @param name is the name of the gene set to be returned
-#' 
+#' @param path  is the name of the gene set pathway to be return
+#' @param remove.tags boolean indicating whether ot remove tags
+#' @return list of pathway information
 #' @examples
-#' dontrun{
-#'      library(leapr)
+#' 
+#'      library(leapR)
 #'      
 #'      # load example gene set
 #'      data("ncipid")
 #'      
 #'      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 #'
-#' }
 #'
 #' @export
 #'
 
-get_pathway_information <- function(geneset, path, remove.tags=F) {
+get_pathway_information <- function(geneset, path, remove.tags=FALSE) {
   i = which(geneset$names == path)
   thissize = geneset$size[i]
   thisdesc = geneset$desc[i]
@@ -33,5 +33,5 @@ get_pathway_information <- function(geneset, path, remove.tags=F) {
   }
   thissize = length(grouplist)
 
-  return(list(name=path, size=thissize, description=thisdesc, geneset=grouplist))
+  return(list(name = path, size = thissize, description = thisdesc, geneset = grouplist))
 }

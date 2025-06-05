@@ -2,8 +2,19 @@
 #'
 #' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
 # # access through leapr wrapper
-#'
-#' @export
+#' @import stats
+#' @param geneset Gene set to calculate enrichmnet
+#' @param abundance Molecular abundance matrix
+#' @param mapping_column Column to use to map identifiers
+#' @param abundance_column  Columns to use to quantify abundance
+#' @param fdr number of times to sample for FDR value
+#' @param matchset Name of a set to use for enrichment
+#' @param sample_comparison list of samples to use as comparison
+#' @param min_p_threshold  Only include p-values lower than this
+#' @param tag tag to use for name of group
+#' @param sample_n size of sample to use
+#' @param silence_try_errors set to true to silence try errors
+#' @return data frame of enrichment result
 
 enrichment_in_abundance <-
   function(geneset,
@@ -12,12 +23,11 @@ enrichment_in_abundance <-
            abundance_column = NULL,
            fdr = 0,
            matchset = NULL,
-           longform = F,
            sample_comparison = NULL,
            min_p_threshold = NULL,
            tag = NA,
            sample_n = NULL,
-           silence_try_errors = T) {
+           silence_try_errors = TRUE) {
     # for each category in geneset calculates the abundance level
     #     of the genes/proteins in the category versus those
     #     not in the category and calculate a pvalue based on a
@@ -38,7 +48,7 @@ enrichment_in_abundance <-
       SignedBH_pvalue = rep(NA_real_, length(geneset$names)),
       background_n = rep(NA_real_, length(geneset$names)),
       background_mean = rep(NA_real_, length(geneset$names)),
-      stringsAsFactors = F
+      stringsAsFactors = FALSE
     )
     
     
@@ -97,14 +107,14 @@ enrichment_in_abundance <-
                                abundance_column[which(abundance_column %in% colnames(abundance))]]
       }
       #cat(length(ingroup), length(outgroup), "\n")
-      in_mean = mean(unlist(ingroup), na.rm = T)
-      out_mean = mean(unlist(outgroup), na.rm = T)
+      in_mean = mean(unlist(ingroup), na.rm = TRUE)
+      out_mean = mean(unlist(outgroup), na.rm = TRUE)
       pvalue = NA
       if (length(ingroup) > 1) {
         pvalue = try(t.test(unlist(ingroup), unlist(outgroup))$p.value, silent =
                        silence_try_errors)
         ;
-        if (class(pvalue) == "try-error")
+        if (is(pvalue,"try-error"))
           pvalue = NA
         
         
@@ -139,8 +149,8 @@ enrichment_in_abundance <-
           outgroup = which(!1:length(abundances) %in% ingroup)
           ingroup = abundances[ingroup]
           outgroup = abundances[outgroup]
-          in_mean = mean(ingroup, na.rm = T)
-          out_mean = mean(outgroup, na.rm = T)
+          in_mean = mean(ingroup, na.rm = TRUE)
+          out_mean = mean(outgroup, na.rm = TRUE)
           delta_r = in_mean - out_mean
           background = c(background, delta_r)
         }
@@ -161,17 +171,13 @@ enrichment_in_abundance <-
       #question : do we want to calculate an oddsratio for this too?
       # answer: yes, but for now we'll use the mean of the ingroup compared with the
       #        distribution of the background as a zscore
-      zscore = (out_mean - in_mean) / sd(unlist(outgroup), na.rm = T)
+      zscore = (out_mean - in_mean) / sd(unlist(outgroup), na.rm = TRUE)
       #browser()
       results[thisname, "zscore"] = zscore
     }
     #update
     results[, "BH_pvalue"] = p.adjust(results[, "pvalue"], method = "BH")
     
-    #if (!is.null(matchset)) {
-    #  results = results[matchset,]
-    #  if (longform==T) results = list(results, ingroup, outgroup)
-    #}
     if (!is.null(min_p_threshold)) {
       results = results[results$pvalue < min_p_threshold,]
       return(results)

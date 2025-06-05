@@ -6,6 +6,18 @@
 \usage{
 correlation_enrichment(geneset, abundance, mapping_column = NA, tag = NA)
 }
+\arguments{
+\item{geneset}{Geneset list}
+
+\item{abundance}{Abundance value matrix}
+
+\item{mapping_column}{Column to use to map}
+
+\item{tag}{tag to append to group name}
+}
+\value{
+list of enrichment statistic table and correlation matrix
+}
 \description{
 # calculate enrichment in correlation between pathway members
 # access through leapr wrapper

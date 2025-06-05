@@ -13,6 +13,9 @@ leapR(geneset, enrichment_method, ...)
 
 \item{...}{further arguments}
 }
+\value{
+data frame with results
+}
 \description{
 leapR is a wrapper function that consolidates multiple enrichment methods.
 }
@@ -43,7 +46,9 @@ sample_n \tab Is a way to subsample the number of components considered for each
 \tab \cr
 }
 
-\u Enrichment Methods
+\strong{Enrichment Methods:}
+\cr
+\cr
 enrichment_comparison
 \cr
 Compares the distribution of abundances between two sets of conditions for each pathway using a t test. For each pathway in \code{geneset}
@@ -96,11 +101,12 @@ is a square matrix to provide pairwise relationships between components (genes, 
 \code{correlation_enrichment}.
 }
 \examples{
-dontrun{
-        library(leapr)
+        library(leapR)
 
         # read in the example abundance data
-        data("protdata")
+        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
+        protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)|>
+          as.matrix()
 
         # read in the pathways
         data("ncipid")
@@ -127,16 +133,15 @@ dontrun{
          onept_order = leapR(geneset=ncipid, enrichment_method='enrichment_in_order',
                datamatrix=protdata, primary_columns="TCGA-13-1484")
                
-         # use enrichment_in_pathways to calculate the most enriched pathways in a set of conditions
+         # use enrichment_in_pathway to calculate the most enriched pathways in a set of conditions
          #     based on abundance in the pathway members versus abundance in non-pathway members
-         short_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_pathways',
+         short_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_pathway',
                datamatrix=protdata, primary_columns=shortlist)
                
          # use correlation_enrichment to calculate the most enriched pathways in correlation across
          #     the shortlist conditions
-         short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_correlation',
+         short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='correlation_enrichment',
                 datamatrix=protdata, primary_columns=shortlist)
 
-}
 
 }

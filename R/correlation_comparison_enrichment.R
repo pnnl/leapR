@@ -3,10 +3,16 @@
 #' # internal function to calculate enrichment in differences in correlation between two groups
 #' # access through the leapr wrapper
 #'
-#' @noRd
+#' @import stats
+#' @param geneset pathway to use for enrichment
+#' @param abundance abundance matrix
+#' @param set1 first set to use
+#' @param set2 second set to use
+#' @param mapping_column Column to use for id mapping
+#' @param tag Tag to add
+#' @param mode to use, default is 'original'
+#' @return data frame with enrichment results
 #' 
-#' 
-#' @export
 correlation_comparison_enrichment <- function(geneset, abundance, set1, set2, mapping_column=NA, tag=NA, mode="original") {
   allgenes = unique(unlist(as.list(geneset$matrix)))
 

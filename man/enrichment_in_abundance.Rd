@@ -11,12 +11,38 @@ enrichment_in_abundance(
   abundance_column = NULL,
   fdr = 0,
   matchset = NULL,
-  longform = F,
   sample_comparison = NULL,
   min_p_threshold = NULL,
   tag = NA,
-  sample_n = NULL
+  sample_n = NULL,
+  silence_try_errors = TRUE
 )
+}
+\arguments{
+\item{geneset}{Gene set to calculate enrichmnet}
+
+\item{abundance}{Molecular abundance matrix}
+
+\item{mapping_column}{Column to use to map identifiers}
+
+\item{abundance_column}{Columns to use to quantify abundance}
+
+\item{fdr}{number of times to sample for FDR value}
+
+\item{matchset}{Name of a set to use for enrichment}
+
+\item{sample_comparison}{list of samples to use as comparison}
+
+\item{min_p_threshold}{Only include p-values lower than this}
+
+\item{tag}{tag to use for name of group}
+
+\item{sample_n}{size of sample to use}
+
+\item{silence_try_errors}{set to true to silence try errors}
+}
+\value{
+data frame of enrichment result
 }
 \description{
 Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.

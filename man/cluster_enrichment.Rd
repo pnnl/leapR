@@ -9,11 +9,14 @@ cluster_enrichment(geneset, clusters, background = NA, sigfilter = 0.05)
 \arguments{
 \item{geneset}{is a GeneSet object for pathway annotation}
 
-\item{clusters}{is a list of clusters (gene lists) to calculate enrichment on}
+\item{clusters}{is a list of clusters (gene lists) to calculate enrichment on, generally the result of the `cuttree` function}
 
 \item{background}{is a list of genes to serve as the background for enrichment}
 
 \item{sigfilter}{minimum significance threshold default is .05}
+}
+\value{
+data frame with enrichment results
 }
 \description{
 Cluster enrichment Run enrichment (Fisher's exact) on clusters (lists of identifier groups)
@@ -26,11 +29,13 @@ a series of lists of genes, such as from a set of clusters. The results are retu
 a list of results matrices in the order of the input clusters.
 }
 \examples{
-dontrun{
-        library(leapr)
+        library(leapR)
 
         # read in the example transcriptomic data
-        data("transdata")
+        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
+        transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
+           tibble::column_to_rownames('...1')|>
+             as.matrix()
 
         # read in the pathways
         data("ncipid")
@@ -47,6 +52,6 @@ dontrun{
         #   of enrichment results
         transdata.hc.enrichment = cluster_enrichment(geneset=ncipid, clusters=transdata.hc.clusters, background=rownames(transdata))
         
-}
+
 
 }

@@ -5,9 +5,8 @@
 #' @param filename the directory path to a file containing the abundance data
 #' @param data_type a character string, either 'protdata' or 'phosphoprotdata' which describes the type of abundance data
 #' @param infocol_name a character string describing the name of the column extra identifier info in abundance data of type 'phosphoprotdata'
-#'
-#'
-#' @export
+#' @return read in abundance data
+#' do we need this function at all?
 #'
 read_abundance_data = function(filename, data_type, infocol_name = NULL){
 
@@ -15,7 +14,7 @@ read_abundance_data = function(filename, data_type, infocol_name = NULL){
   if(!is.element(data_type, c("protdata", "phospho_protdata"))) stop("data_type must be one of 'protdata', 'phospho_protdata'")
   if(data_type == "phospho_protdata" & is.null(infocol_name)) stop("'infocol_name must be provided with 'phospho_protdata' objects")
 
-  df = read.table(filename, sep="\t", row.names=1, header=1, stringsAsFactors=F)
+  df = read.table(filename, sep="\t", row.names=1, header=1, stringsAsFactors=FALSE)
 
   #assign "data_type" attribute to df data object
   if(data_type == "phospho_protdata" & !is.null(infocol_name)){

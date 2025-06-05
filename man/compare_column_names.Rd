@@ -11,6 +11,9 @@ compare_column_names(abundance_data1, abundance_data2)
 
 \item{abundance_data2}{second data object of class 'abundance_data'}
 }
+\value{
+reports number of columns in common
+}
 \description{
 This function compares column names between two abundance data objects
 }

@@ -9,8 +9,25 @@ enrichment_in_relationships(
   relationships,
   idmap = NA,
   tag = NA,
-  mode = "original"
+  mode = "original",
+  silence_try_errors = TRUE
 )
+}
+\arguments{
+\item{geneset}{List of pathways in gmt format}
+
+\item{relationships}{table of relationship information}
+
+\item{idmap}{map of identifiers}
+
+\item{tag}{tag to append to data}
+
+\item{mode}{allowable values are 'original' or anything else}
+
+\item{silence_try_errors}{boolean to silence errors}
+}
+\value{
+table of enrichment statistics
 }
 \description{
 enrichment_in_relationships function description is a general way to determine if a pathway

@@ -13,6 +13,10 @@ read_abundance_data(filename, data_type, infocol_name = NULL)
 
 \item{infocol_name}{a character string describing the name of the column extra identifier info in abundance data of type 'phosphoprotdata'}
 }
+\value{
+read in abundance data
+do we need this function at all?
+}
 \description{
 This function reads in abundance data
 }
