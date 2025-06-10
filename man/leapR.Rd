@@ -104,9 +104,10 @@ is a square matrix to provide pairwise relationships between components (genes, 
         library(leapR)
 
         # read in the example abundance data
-        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
-        protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)|>
-          as.matrix()
+        pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='libcurl',destfile='protdata')
+        protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
+            as.matrix()
+        file.remove("protdata")
 
         # read in the pathways
         data("ncipid")

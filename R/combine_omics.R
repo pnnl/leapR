@@ -22,15 +22,18 @@
 #'         library(leapR)
 #'
 #'         # read in the example protein data
-#'         datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
-#'         protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)|>
-#'           as.matrix()
+#'         pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='libcurl',destfile='protdata')
+#'         protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
+#'             as.matrix()
+#'         file.remove("protdata")
+#'
 #'           
-#'        # read in the example transcriptomics data
-#'         transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
-#'            tibble::column_to_rownames('...1')|>
-#'              as.matrix()
-#'                       
+#'         tdata <- download.file("https://figshare.com/ndownloader/files/55158764",method='libcurl',destfile='transdata')
+#'         transdata<-readr::read_csv('transdata')|>
+#'             tibble::column_to_rownames('...1')|>
+#'             as.matrix()
+#'         file.remove("transdata")
+#'
 #'         # merge the two datasets by rows and add prefix tags for different omics types
 #'         multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
 #'
