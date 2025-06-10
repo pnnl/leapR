@@ -75,13 +75,13 @@ A sample data set is included that is from the CPTAC study of 169 ovarian tumors
 This data can be loaded as follows:
 ``` {r omicsdata, message=FALSE, warning=FALSE}
 
-pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='wget',destfile='protdata')
+pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='libcurl',destfile='protdata')
 protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
   as.matrix()
 file.remove("protdata")
 
 #transdata<-read.csv(paste0(datadir,'transdata.csv.gz'),check.names=FALSE,row.names=1)
-tdata <- download.file("https://figshare.com/ndownloader/files/55158764",method='wget',destfile='transdata')
+tdata <- download.file("https://figshare.com/ndownloader/files/55158764",method='libcurl',destfile='transdata')
 transdata<-readr::read_csv('transdata')|>
   tibble::column_to_rownames('...1')|>
   as.matrix()
@@ -268,7 +268,7 @@ In this example we will use phosphoproteomics data to assess the enrichment in k
 ``` {r phosphoproteomics, echo=TRUE, warning=FALSE, message=FALSE, include=FALSE}
 
 # load phosphoproteomics data for 69 tumors
-phdata<-download.file('https://figshare.com/ndownloader/files/55158761',method='wget',destfile = 'phdata')
+phdata<-download.file('https://figshare.com/ndownloader/files/55158761',method='libcurl',destfile = 'phdata')
 phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
 file.remove('phdata')
 
