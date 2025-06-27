@@ -6,14 +6,15 @@
 #'
 #' @param geneset List of pathways in gmt format
 #' @param relationships table of relationship information
-#' @param idmap map of identifiers
-#' @param tag tag to append to data
+#' @param idmap list of identifiers to use for mapping, the names of the items should agree with names of features in matrix
 #' @param mode allowable values are 'original' or anything else
 #' @param silence_try_errors boolean to silence errors
 #' @return table of enrichment statistics
 #' @import stats
 #' 
-enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA, mode="original",
+enrichment_in_relationships <- function(geneset, relationships, idmap=NA, 
+                                        #tag=NA, 
+                                        mode="original",
                                         silence_try_errors=TRUE) {
   # for each category in geneset calculates enrichment of within-group
   #     relationships relative to between-group relationships, where
@@ -36,10 +37,10 @@ enrichment_in_relationships <- function(geneset, relationships, idmap=NA, tag=NA
     #cat(thisname, thissize, "\n")
     grouplist = geneset$matrix[i,1:thissize]
 
-    if (!is.na(tag)) grouplist = sapply(grouplist, function (n) paste(tag, n, sep="_"))
+  #  if (!is.na(tag)) grouplist = sapply(grouplist, function (n) paste(tag, n, sep="_"))
 
-    if (!is.na(idmap)) {
-      grouplist = rownames(idmap)[which(idmap[,1] %in% grouplist)]
+    if (!all(is.na(idmap))) {
+      grouplist = names(idmap)[which(idmap %in% grouplist)]
     }
 
 

@@ -6,29 +6,35 @@
 #' @param geneset Geneset list
 #' @param abundance Abundance value matrix
 #' @param mapping_column Column to use to map
-#' @param tag tag to append to group name
 #' @return list of enrichment statistic table and correlation matrix
 
-correlation_enrichment <- function(geneset, abundance, mapping_column=NA, tag=NA) {
+correlation_enrichment <- function(geneset, abundance, mapping_column=NA) {#}, tag=NA) {
   allgenes = unique(unlist(as.list(geneset$matrix)))
 
-  if (!is.na(tag)) allgenes = sapply(allgenes, function (n) paste(tag, n, sep="_"))
+#  if (!is.na(tag)) allgenes = sapply(allgenes, function (n) paste(tag, n, sep="_"))
 
   # fixme: add support for an id column
   ids = rownames(abundance)
   cols = 1:ncol(abundance)
-  map = NA
   if (!is.na(mapping_column)) {
-    allgenes = rownames(abundance)[which(abundance[,1] %in% allgenes)]
-
-    # NOTE: assumes that the mapping column is 1 and everything else
-    #       is valid data- which may not be the case
-    cols = 2:ncol(abundance)
-    map = abundance
+    map <- Biobase::fdata(abundance)[,mapping_column]
+    names(map) <- rownames(abundance)
+  }else{
+    map = rownames(abundance)
+    names(map) <- rownames(abundance)
   }
+#  if (is.na(mapping_column)) {
+  allgenes = intersect(rownames(abundance), allgenes)#ownames(abundance)[which(abundance[,1] %in% allgenes)]
+
+  # NOTE: assumes that the mapping column is 1 and everything else
+  #       is valid data- which may not be the case
+  cols = 1:ncol(abundance)
+  #map = abundance
+  
   allgenes_present = allgenes[which(allgenes %in% ids)]
   allgenes_cor = cor(t(abundance[allgenes_present,cols]), use="p")
 
-  return(list(enrichment=enrichment_in_relationships(geneset, allgenes_cor, idmap=map, tag=tag),
+  return(list(enrichment=enrichment_in_relationships(geneset, allgenes_cor, 
+                                                     idmap = map),
               corrmat=allgenes_cor))
 }
