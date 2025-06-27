@@ -5,6 +5,7 @@
 #' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix of genes. It represents .gmt format pathway files.
 #' @param enrichment_method is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment", "enrichment_in_relationships".
 #' @return data frame with results
+#' @importClassesFrom Biobase ExpressionSet
 #' @param ... further arguments
 #'
 #' @details Further arguments and enrichment method optional argument information
@@ -139,7 +140,7 @@ leapR = function(geneset, enrichment_method, ...){
   .enrichment_wrapper(geneset, enrichment_method, ...)
 }
 
-.enrichment_wrapper = function(geneset, enrichment_method, datamatrix=NULL, id_column=NULL, primary_columns=NULL,
+.enrichment_wrapper = function(geneset, enrichment_method, eset=NULL, id_column=NULL, primary_columns=NULL,
                                secondary_columns=NULL, threshold=NULL, minsize=5, mode=NULL,
                                idmap=NA, fdr=0, min_p_threshold=NULL, sample_n=NULL,
                                enrichment_results=NA,
@@ -152,6 +153,10 @@ leapR = function(geneset, enrichment_method, ...){
   #check that geneset is of correct class
   #if(!inherits(geneset, "geneset_data")) stop("geneset must be of class 'geneset_data")
 
+  if (!is.null(eset))
+    datamatrix = Biobase::exprs(eset)
+  else
+    datamatrix = NULL
   #check that enrichment_method is one of the designated methods
   if(!is.element(enrichment_method, c("correlation_enrichment", "correlation_comparison",
                                       "enrichment_in_relationships", 
@@ -165,7 +170,8 @@ leapR = function(geneset, enrichment_method, ...){
 
     #message("'enrichment_by_ks' has the following optional arguments: datamatrix=NULL, minsize=5, id_column=NULL, primary_columns=NULL")
 
-    # datamatrix will replace background - but we can do that at this level and not change the underlying code
+    # datamatrix will replace background - but we can do that at this level and 
+    # not change the underlying code
     # primary_columns will replace abundance_column  - but again, at this level
     # minsize will remain the same
     # id_column will replace mapping_column
