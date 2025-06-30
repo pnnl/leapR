@@ -10,7 +10,7 @@
 #' @param method method to use for statistical test, options are 'fishers' or 'ks'
 #' @param minsize minimum size of set
 #' @param mapping_column column name of mapping identifiers
-#' @param abundance_column columns mapping abundance
+#' @param abundance_column columns mapping abundance, either in the `exprs` matrix or `featureData`
 #' @param randomize true/false whether to randomize
 #' @param silence_try_errors true/false to silence errors
 #' @import stats
@@ -31,17 +31,11 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
                        background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = FALSE)
   
   
-  backlist <- rownames(background)
-  if (!is.null(mapping_column)) {
-    backlist <- Biobase::fData(background)[,mapping_column] |>
-      unique()
-  }
-  
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]
     thissize = geneset$size[i]
     thisdesc = geneset$desc[i]
-    grouplist = geneset$matrix[i,1:thissize]
+    grouplist = setdiff(geneset$matrix[i,1:thissize],'null')
     if (randomize) {
       # choose a random set of genes as this grouplist
       # A disadvantage is that we resample for each functional group rather than
@@ -49,10 +43,26 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       #   I don't think this should be a huge problem though.
       grouplist = sample(unlist(geneset$matrix), length(grouplist))
     }
+    
+    #here backlist is actually a list of feature names
+    if (class(background) == 'ExpressionSet') {
+      if (!is.null(mapping_column)) {
+        backlist <- Biobase::fData(background)[,mapping_column] |>
+          unique()
+      }
+      backlist <- rownames(background)
+    }else{
+      backlist <- names(background)
+    }
     in_back = length(backlist)
     
     if (method == "fishers") {
-      enr = enrichment_by_fishers(targets, backlist, grouplist)
+      
+ 
+  #    print(background)
+  #    print(backlist)
+      
+      enr = leapR::enrichment_by_fishers(targets, backlist, grouplist)
       p = enr$fisher$p.value
       f = enr$foldx
       mat = enr$mat
@@ -71,19 +81,32 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       # in this case "background" must be the continuous variable from which grouplist can be drawn
       #backlist = background
       
-      if (is.null(mapping_column)) {
-        in_group = Biobase::exprs(background)[grouplist[which(grouplist %in% rownames(background))],abundance_column]
+      ##here backlist is a list of values, with namesa s feature names
+      
+      if (is.null(mapping_column)) { #use rownames here
         in_group_name = paste(intersect(grouplist, rownames(background)), collapse = ", ")
-        backlist = Biobase::exprs(background)[,abundance_column]
+        
+        if(abundance_column %in% colnames(background)){ ##use the exprs
+          in_group = Biobase::exprs(background)[grouplist[which(grouplist %in% rownames(background))],abundance_column]
+          backlist = Biobase::exprs(background)[,abundance_column]
+        }else{ #mapping_column must be a featureData item
+          in_group = Biobase::fData(background)[grouplist[which(grouplist %in% rownames(background))],abundance_column]
+          backlist = Biobase::fData(background)[,abundance_column]
+        }
       }
       else {
         # mapping_column adds the ability to use phospho-type data where the gene name (non-unique) is in the
         #       first column and the rownames are peptide ids
         # unfortunately this means that "background" has to be the whole matrix and abundance_column
         #       has to be specified, which is a bit ugly
-        in_group = Biobase::exprs(background)[which(Biobase::fData(background)[,mapping_column] %in% grouplist),abundance_column]
-        in_group_name = paste(intersect(Biobase::fData(background)[,mapping_column], grouplist), collapse = ", ")
-        backlist = Biobase::exprs(background)[,abundance_column]
+        in_group_name = paste(intersect(backlist, grouplist), collapse = ", ")
+        if(abundance_column %in% colnames(background)){ #we are using exprs fro values
+          in_group = Biobase::exprs(background)[which(Biobase::fData(background)[,mapping_column] %in% grouplist),abundance_column]
+          backlist = Biobase::exprs(background)[,abundance_column]
+        }else{
+          in_group = Biobase::fData(background)[which(Biobase::fData(background)[,mapping_column] %in% grouplist),abundance_column]
+          backlist = Biobase::fData(background)[,abundance_column]          
+        }
       }
       
       in_path = length(in_group)
@@ -116,7 +139,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         if(length(enr)>1)
           p.value <- enr$p.value
         else
-          p.value<-NA
+          p.value < -NA
      
         
         # this expression of foldx might be subject to some weird pathological conditions
@@ -129,7 +152,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         # that is, rank(backlist) has the most negative values at the top, with the most positive at the bottom.
         # To get the positive entries at the top, negative at the bottom, we use rank(-backlist) instead.
         if (is.null(mapping_column)) in_rank = rank(-backlist)[which(rownames(background) %in% grouplist)]
-        else in_rank = rank(-backlist)[which(background[,mapping_column] %in% grouplist)]
+        else in_rank = rank(-backlist)[which(names(backlist) %in% grouplist)]
         
         # this will give not a fold enrichment - but a score that ranges from 1 (most in top)
         #      to -1 (most in bottom).

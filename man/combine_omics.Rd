@@ -4,24 +4,12 @@
 \alias{combine_omics}
 \title{combine_omics}
 \usage{
-combine_omics(
-  proteomics = NA,
-  transcriptomics = NA,
-  methylation = NA,
-  cnv = NA,
-  phospho = NA,
-  proteomics_tag = "prot_",
-  transcriptomics_tag = "txn_",
-  methylation_tag = "meth_",
-  cnv_tag = "cnv_",
-  phospho_tag = "phospho_",
-  id_column = NA
-)
+combine_omics(omics_list, id_list = rep(NA, length(omics_list)))
 }
 \arguments{
-\item{proteomics}{is a matrix of transcript values where rownames are ids and columns are conditions}
-
 \item{transcriptomics}{is a matrix of gene expression values  where rownames are ids and columns are conditions}
+
+\item{proteomics}{is a matrix of transcript values where rownames are ids and columns are conditions}
 
 \item{methylation}{is a matrix of methylation values where rownames are ids and columns are conditions}
 
@@ -53,21 +41,23 @@ This combines matrices of different omics types together and adds prefix tags to
 \examples{
         library(leapR)
 
-        # read in the example protein data
-        pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='libcurl',destfile='protdata')
-        protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
-            as.matrix()
-        file.remove("protdata")
 
-          
-        tdata <- download.file("https://figshare.com/ndownloader/files/55158764",method='libcurl',destfile='transdata')
-        transdata<-readr::read_csv('transdata')|>
-            tibble::column_to_rownames('...1')|>
-            as.matrix()
-        file.remove("transdata")
+        pdata <- download.file('https://figshare.com/ndownloader/files/55781147',method='libcurl',destfile='protData.rda')
+        load('protData.rda')
+        p <- file.remove("protData.rda")
+        
+        tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+        load('transData.rda')
+        p <- file.remove("transData.rda")
+        
+        phdata<-download.file('https://figshare.com/ndownloader/files/55781120',method='libcurl',destfile = 'phosData.rda')
+        #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
+        load('phosData.rda')
+        p <- file.remove('phosData.rda')# read in the example protein data
+        
 
         # merge the two datasets by rows and add prefix tags for different omics types
-        multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
+        multi_omics = combine_omics(list(pset, tset, phset))
 
 
 }

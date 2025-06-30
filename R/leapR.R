@@ -9,23 +9,30 @@
 #' @importClassesFrom Biobase ExpressionSet
 #' @param ... further arguments
 #'
-#' @details Further arguments and enrichment method optional argument information
+#' 
+#' @details 
+#' Further arguments and enrichment method optional argument information: \cr
 #' \tabular{ll}{
 #' eset \tab Is an \code{ExpressionSet} of expression data, with features as rows and \emph{n} sample/conditions as columns. 
-#' The \code{Annotation\} field ideally describes the data type (i.e. proteomics, phosphoproteomics), the \code{featureData} field describes any mapping identifiers and the \code{phenoData} field describes any 
+#' The \code{Annotation} field ideally describes the data type (i.e. proteomics, phosphoproteomics), the \code{featureData} field describes any mapping identifiers and the \code{phenoData} field describes any 
 #' phenotyptic data. This is an required for all active enrichment methods with the exception of 'enrichment_in_relationships'. \cr
 #' \tab \cr
 #' id_column \tab Is a character string, present in the \code{featureData} slot, that is used to specify a column for identifiers. If missing, the rownames of the ExpressionSet will be used. 
 #' \tab \cr
-#' primary_columns \tab Is a character vector composed of column names from \code{eset}, that specifies a set of primary columns to calculate enrichment on. 
+#' primary_columns \tab Is a character vector composed of column names from \code{eset} (either in the `exprs` or in the `featureData`), 
+#' that specifies a set of primary columns to calculate enrichment on. 
 #' The meaning of this varies according to the enrichment method used - see the descriptions for each method below. 
 #' This is an optional argument used with 'enrichment_in_order', 'enrichment_in_sets', and 'enrichment_comparison' methods. \cr
 #' \tab \cr
 #' secondary_columns \tab Is a character vector of column names. This is an optional argument used with 'enrichment_comparison' methods. \cr
 #' \tab \cr
-#' threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values either above or below it. \cr
+#' threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values 
+#' either above or below it. \cr
 #' \tab \cr
-#' greaterthan \tab Is a logical value that defaults to TRUE, it's used with 'enrichment_in_sets' method. When set to TRUE, genes with abundance data above the \code{threshold} argument are kept. When set to FALSE genes with abundance data below the \code{threshold} argument are kept. This is an optional argument used with 'enrichment_in_sets' method. \cr
+#' greaterthan \tab Is a logical value that defaults to TRUE, it's used with 'enrichment_in_sets' method. 
+#' When set to TRUE, genes with abundance data above the \code{threshold} argument are kept. 
+#' When set to FALSE genes with abundance data below the \code{threshold} argument are kept. 
+#' This is an optional argument used with 'enrichment_in_sets' method. \cr
 #' \tab \cr
 #' minsize \tab Is a numeric value, an optional argument used with 'enrichment_in_sets' and 'enrichment_in_order". \cr
 #' \tab \cr
@@ -45,7 +52,7 @@
 #' enrichment_comparison
 #' \cr
 #' Compares the distribution of abundances between two sets of conditions for each pathway using a t test. For each pathway in \code{geneset}
-#' uses a t test to compare the distribution of abundance/expression values in \code{eset} \code{primary_columns} with those in
+#' uses a t test to compare the distribution of abundance values/numbers in \code{eset} \code{primary_columns} with those in
 #' \code{eset} \code{secondary_columns}. Lower p-values for pathways indicate that the expression of the pathway is
 #' significantly different between the set of conditions in primary_columns and the set of conditions in secondary_columns.
 #' Optionally, users can specify \code{fdr} which will calculate an empirical p-value by randomizing abdunances
@@ -97,10 +104,10 @@
 #'         library(leapR)
 #'
 #'         # read in the example abundance data
-#'         pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='libcurl',destfile='protdata')
-#'         protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
-#'             as.matrix()
-#'         file.remove("protdata")
+#'         # read in the example transcriptomic data
+#'         tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+#'         load('transData.rda')
+#'         p <- file.remove("transData.rda")
 #'
 #'         # read in the pathways
 #'         data("ncipid")
@@ -112,12 +119,12 @@
 #'         # use enrichment_comparison to calculate enrichment in one set of conditions (shortlist) and another
 #'         # (longlist)
 #'         short_v_long = leapR(geneset=ncipid, enrichment_method='enrichment_comparison', 
-#'               eset=protdata, primary_columns=shortlist, secondary_columns=longlist)
+#'               eset=tset, primary_columns=shortlist, secondary_columns=longlist)
 #'         
 #'         # use enrichment_in_sets to calculate the most enriched pathways from the highest abundance proteins
 #'         #     from one condition
 #'         onept_sets = leapR(geneset=ncipid, enrichment_method='enrichment_in_sets',
-#'                eset=protdata, primary_columns="TCGA-13-1484", threshold=1.5)
+#'                eset=tset, primary_columns="TCGA-13-1484", threshold=1.5)
 #'                
 #'          # use enrichment_in_order to calculate the most enriched pathways from the same condition
 #'          #     Note: that this uses the entire set of abundance values and their order - whereas
@@ -125,17 +132,17 @@
 #'          #     and calculates enrichment based on set overlap. The results are likely to be similar - but
 #'          #     with some notable differences.
 #'          onept_order = leapR(geneset=ncipid, enrichment_method='enrichment_in_order',
-#'                eset=protdata, primary_columns="TCGA-13-1484")
+#'                eset=tset, primary_columns="TCGA-13-1484")
 #'                
 #'          # use enrichment_in_pathway to calculate the most enriched pathways in a set of conditions
 #'          #     based on abundance in the pathway members versus abundance in non-pathway members
 #'          short_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_pathway',
-#'                eset=protdata, primary_columns=shortlist)
+#'                eset=tset, primary_columns=shortlist)
 #'                
 #'          # use correlation_enrichment to calculate the most enriched pathways in correlation across
 #'          #     the shortlist conditions
 #'          short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='correlation_enrichment',
-#'                 eset=protdata, primary_columns=shortlist)
+#'                 eset=tset, primary_columns=shortlist)
 #'
 #'
 #' @export
@@ -168,6 +175,9 @@ leapR = function(geneset, enrichment_method, ...){
                                       "enrichment_in_order", "enrichment_comparison", "enrichment_in_pathway",
                                       "enrichment_in_sets")))
     stop("enrichment_method must be one of the methods designated in the function documentation")
+  
+
+  
   #checking each enrichment method
   # JEM: changed here - moved these around so that the most important ones are first
   #      There are two different modes this can be run in and we can just have the user specify in the enrichment_method
@@ -188,8 +198,12 @@ leapR = function(geneset, enrichment_method, ...){
     }
 
     if(!is.null(primary_columns) & !is.null(eset)){
+      
+      ##primary_columsn can be in either the abundance data or the featureData, so here we check
+      all_names <- c(colnames(eset), colnames(Biobase::fData(eset)))
+      
       # TODO: add a validation that eset has a column named primary_columns
-      if(!is.element(primary_columns, colnames(eset))){stop("'primary_columns' must be column name of 'eset'")}
+      if(!is.element(primary_columns, all_names)){stop("'primary_columns' must be column name of 'eset'")}
     }
 
     # JEM - notes for me: this application takes a background (matrix) and specifies which abundance column for calculating ks enrichment
@@ -220,30 +234,45 @@ leapR = function(geneset, enrichment_method, ...){
     }
 
     if(!is.null(primary_columns) & !is.null(eset)){
+      ##primary_columsn can be in either the abundance data or the featureData, so here we check
+      all_names <- c(colnames(eset), colnames(Biobase::fData(eset)))
+      
       # TODO: add a validation that the eset has a column with the primary_columns name
-      if(!is.element(primary_columns, colnames(eset))){stop("'primary_columns' must be a column name of 'eset'")}
+      if(!is.element(primary_columns, all_names)){stop("'primary_columns' must be a column name of 'eset'")}
     }
     
     # if we've been passed background instead of a eset then use it as the background
-    if (is.null(background)) background = rownames(eset)
-
+    if (is.null(background)) {
+      background = eset #rownames(eset)
+      backlist <- rownames(background)
+    }else if(is.list(background)) {backlist  = background }
+    else{ backlist <- rownames(background) }
+    
     # TODO: we should allow the user to specify if they want it greater than or less than for the threshold
     if(greaterthan == FALSE & !is.null(threshold)){
-      targets = rownames(eset[which(eset[,primary_columns]<threshold),])
+      if(primary_columns%in%colnames(eset)) {
+        targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns]<threshold),])
+      }else{
+        targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns]<threshold),])
       }
+    }
     else if(greaterthan == TRUE & !is.null(threshold)){
-      targets = rownames(eset[which(eset[,primary_columns]>threshold),])
+      if(primary_columns%in%colnames(eset)) {
+        targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns]>threshold),])
+      }else{
+        targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns]>threshold),])
+      }
     }
 
     if(length(targets) == 0){stop("please adjust 'threshold' argument, there are no target genes captured by current threshold value")}
 
     if(!is.null(id_column) & !is.null(eset)){
-      if(!is.element(id_column, colnames(eset))){stop("'id_column' must be a column name of 'eset'")}
+      if(!is.element(id_column, colnames(Biobase::fData(eset)))){stop("'id_column' must be a column name of 'fData(eset)'")}
     }
 
     if(!is.null(id_column)) {
-      background = unique(eset[background,id_column])
-      targets = unique(eset[targets,id_column])
+      background = unique(Biobase::fData(eset)[backlist,id_column])
+      targets = unique(Biobase::fData(eset)[targets,id_column])
     }
 
     result = enrichment_in_groups(geneset=geneset, targets=targets, background=background,
@@ -259,7 +288,7 @@ leapR = function(geneset, enrichment_method, ...){
     #message("'enrichment_in_pathway' has the following optional arguments: id_column=NULL, primary_columns=NULL,fdr=0, secondary_columns=NULL,
     #                                      min_p_threshold=NULL, sample_n=NULL")
 
-    result = enrichment_in_abundance(geneset=geneset, abundance=eset, mapping_column=id_column,
+    result = enrichment_in_abundance(geneset=geneset, eset=eset, mapping_column=id_column,
                                      abundance_column=primary_columns, sample_comparison=NULL,
                                      fdr=fdr, min_p_threshold=min_p_threshold, sample_n=sample_n)
 
@@ -279,7 +308,7 @@ leapR = function(geneset, enrichment_method, ...){
     #message("'enrichment_comparison' has the following optional arguments: id_column=NULL, primary_columns=NULL,fdr=0, secondary_columns=NULL,
     #                                      min_p_threshold=NULL, sample_n=NULL")
     
-    result = enrichment_in_abundance(geneset=geneset, abundance=eset, mapping_column=id_column,
+    result = enrichment_in_abundance(geneset=geneset, eset=eset, mapping_column=id_column,
                                      abundance_column=primary_columns, sample_comparison=secondary_columns,
                                      fdr=fdr, min_p_threshold=min_p_threshold, sample_n=sample_n)
     
@@ -297,7 +326,7 @@ leapR = function(geneset, enrichment_method, ...){
     #if(is.null(mode)){mode = 'original'} - this pertains to multiomics comparisons and we'll need to figure out how
     #                                       to recode this -
 
-    result = enrichment_in_relationships(geneset=geneset, relationships=eset, idmap=idmap)
+    result = enrichment_in_relationships(geneset=geneset, relationships=Biobase::exprs(eset), idmap=NULL)
   }
 
   # JEM- this function needs to be updated. Right now it's very simple and has the user define what set they
@@ -308,7 +337,7 @@ leapR = function(geneset, enrichment_method, ...){
     #message("'correlation_enrichment' has the following optional arguments:  id_column=NA, tag=NA")
     if(is.null(id_column)){id_column = NA}
 
-    temp_result = correlation_enrichment(geneset=geneset, abundance=eset, mapping_column=id_column)
+    temp_result = correlation_enrichment(geneset = geneset, eset = eset, mapping_column = id_column)
 
     result = as.data.frame(temp_result$enrichment)
     attr(result, "corrmat") = temp_result$corrmat
@@ -318,7 +347,7 @@ leapR = function(geneset, enrichment_method, ...){
     if (is.null(eset)){stop("'eset' argument is required")}
     if(is.null(id_column)){id_column = NA}
     
-    temp_result = correlation_comparison_enrichment(geneset=geneset, abundance=eset, 
+    temp_result = correlation_comparison_enrichment(geneset=geneset, eset=eset, 
                                                set1=primary_columns, set2=secondary_columns,
                                                mapping_column=id_column)
     result = as.data.frame(temp_result)

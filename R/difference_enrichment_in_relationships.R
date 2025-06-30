@@ -11,7 +11,8 @@
 #'
 #' @noRd
 
-difference_enrichment_in_relationships <- function(geneset, relationships1, relationships2, idmap=NA, tag=NA,
+difference_enrichment_in_relationships <- function(geneset, relationships1, relationships2, 
+                                                   idmap=NA, tag=NA,
                                                    mode="original") {
   # for each category in geneset calculates enrichment of
   #     relationships in matrix 1 versus those in matrix 2, where
@@ -42,7 +43,7 @@ difference_enrichment_in_relationships <- function(geneset, relationships1, rela
     if (!is.na(tag)) grouplist = sapply(grouplist, function (n) paste(tag, n, sep="_"))
 
     if (!all(is.na(idmap))) {
-      grouplist = rownames(idmap)[which(idmap[,1] %in% grouplist)]
+      grouplist = names(idmap)[which(idmap %in% grouplist)]
     }
 
     # do these separately since the matrices could be different

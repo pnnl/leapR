@@ -21,15 +21,15 @@ enrichment_in_groups(
 
 \item{targets}{targets to use for enrichmenet}
 
-\item{background}{list of background features}
+\item{background}{`ExpressionSet` describing background to use}
 
 \item{method}{method to use for statistical test, options are 'fishers' or 'ks'}
 
 \item{minsize}{minimum size of set}
 
-\item{mapping_column}{column mapping identifiers}
+\item{mapping_column}{column name of mapping identifiers}
 
-\item{abundance_column}{columns mapping abundance}
+\item{abundance_column}{columns mapping abundance, either in the `exprs` matrix or `featureData`}
 
 \item{randomize}{true/false whether to randomize}
 
@@ -39,6 +39,7 @@ enrichment_in_groups(
 data frame with enrichment results
 }
 \description{
-Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test
+Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test, using either
+the primary_columns to identify feature or the targets list.
 # access through leapr wrapper
 }

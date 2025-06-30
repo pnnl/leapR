@@ -6,7 +6,7 @@
 \usage{
 correlation_comparison_enrichment(
   geneset,
-  abundance,
+  eset,
   set1,
   set2,
   mapping_column = NA,
@@ -17,7 +17,7 @@ correlation_comparison_enrichment(
 \arguments{
 \item{geneset}{pathway to use for enrichment}
 
-\item{abundance}{abundance matrix}
+\item{eset}{ExpressionSet with abundnace matrix}
 
 \item{set1}{first set to use}
 

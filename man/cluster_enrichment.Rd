@@ -32,10 +32,9 @@ a list of results matrices in the order of the input clusters.
         library(leapR)
 
         # read in the example transcriptomic data
-        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
-        transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
-           tibble::column_to_rownames('...1')|>
-             as.matrix()
+        tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+        load('transData.rda')
+        p <- file.remove("transData.rda")
 
         # read in the pathways
         data("ncipid")

@@ -18,7 +18,7 @@
 
 enrichment_in_abundance <-
   function(geneset,
-           abundance,
+           eset,
            mapping_column = NULL,
            abundance_column = NULL,
            fdr = 0,
@@ -53,7 +53,7 @@ enrichment_in_abundance <-
     
     
     if (!is.null(mapping_column))
-      groupnames = unique(Biobase::fdata(abundance)[, mapping_column])
+      groupnames = unique(Biobase::fData(eset)[, mapping_column])
     
     for (i in 1:length(geneset$names)) {
       thisname = geneset$names[i]
@@ -83,29 +83,29 @@ enrichment_in_abundance <-
           outgroupnames = sample(outgroupnames, sample_n)
         }
         
-        ingroup = abundance[which(Biobase::fdata(abundance)[, mapping_column] %in% ingroupnames),
-                            abundance_column[which(abundance_column %in% colnames(abundance[, 2:ncol(abundance)]))]]
+        ingroup = Biobase::exprs(eset)[which(Biobase::fData(eset)[, mapping_column] %in% ingroupnames),
+                            abundance_column[which(abundance_column %in% colnames(eset[, 2:ncol(eset)]))]]
         
         if (!is.null(sample_comparison))
-          outgroup = abundance[which(Biobase::fdata(abundance)[, mapping_column]  %in% ingroupnames),
-                               sample_comparison[which(sample_comparison %in% colnames(abundance[, 2:ncol(abundance)]))]]
+          outgroup = Biobase::exprs(eset)[which(Biobase::fData(eset)[, mapping_column]  %in% ingroupnames),
+                               sample_comparison[which(sample_comparison %in% colnames(eset[, 2:ncol(eset)]))]]
         else
-          outgroup = abundance[which(Biobase::fdata(abundance)[, mapping_column]  %in% outgroupnames), abundance_column]
+          outgroup = Biobase::exprs(eset)[which(Biobase::fData(eset)[, mapping_column]  %in% outgroupnames), abundance_column]
       }
       else { #use rownames to extract IDs
         # I changed this to make it easier to use- may break old code!
         # ingroup = abundance[grouplist[which(grouplist %in% names(abundance))]]
         # outgroup = abundance[which(!names(abundance) %in% grouplist)]
-        ingroupnames = grouplist[which(grouplist %in% rownames(abundance))]
-        ingroup = unlist(abundance[ingroupnames,
-                                   abundance_column[which(abundance_column %in% colnames(abundance))]])
+        ingroupnames = grouplist[which(grouplist %in% rownames(eset))]
+        ingroup = unlist(Biobase::exprs(eset)[ingroupnames,
+                                   abundance_column[which(abundance_column %in% colnames(eset))]])
         
         if (!is.null(sample_comparison))
-          outgroup = abundance[ingroupnames,
-                               sample_comparison[which(sample_comparison %in% colnames(abundance))]]
+          outgroup = Biobase::exprs(eset)[ingroupnames,
+                               sample_comparison[which(sample_comparison %in% colnames(eset))]]
         else
-          outgroup = abundance[which(!rownames(abundance) %in% grouplist),
-                               abundance_column[which(abundance_column %in% colnames(abundance))]]
+          outgroup = Biobase::exprs(eset)[which(!rownames(eset) %in% grouplist),
+                               abundance_column[which(abundance_column %in% colnames(eset))]]
       }
       #cat(length(ingroup), length(outgroup), "\n")
       in_mean = mean(unlist(ingroup), na.rm = TRUE)

@@ -5,29 +5,34 @@
 #' # access through leapr wrapper
 #'
 #' @param geneset List of pathways in gmt format
-#' @param relationships table of relationship information
+#' @param relationships table of relationship information, e.g. correlation
 #' @param idmap list of identifiers to use for mapping, the names of the items should agree with names of features in matrix
 #' @param mode allowable values are 'original' or anything else
 #' @param silence_try_errors boolean to silence errors
 #' @return table of enrichment statistics
 #' @import stats
 #' 
-enrichment_in_relationships <- function(geneset, relationships, idmap=NA, 
-                                        #tag=NA, 
-                                        mode="original",
-                                        silence_try_errors=TRUE) {
+enrichment_in_relationships <- function(geneset, relationships, idmap = NA, 
+                                        #tag = NA, 
+                                        mode = "original",
+                                        silence_try_errors = TRUE) {
   # for each category in geneset calculates enrichment of within-group
   #     relationships relative to between-group relationships, where
   #     'relationships' are in the form of a square matrix (NxN) of
   #     continuous similarity metrics
   #     Currently uses a two-tailed t-test to assess this difference
   results = data.frame(row.names = geneset$names,
-                       ingroup_n=rep(NA_real_, length(geneset$names)), ingroupnames=rep(NA_character_, length(geneset$names)), 
-                       ingroup_mean=rep(NA_real_, length(geneset$names)), outgroup_n=rep(NA_real_, length(geneset$names)), 
-                       outgroup_mean=rep(NA_real_, length(geneset$names)), zscore=rep(NA_real_, length(geneset$names)), oddsratio=rep(NA_real_, length(geneset$names)), 
-                       pvalue=rep(NA_real_, length(geneset$names)), BH_pvalue=rep(NA_real_, length(geneset$names)), 
-                       SignedBH_pvalue=rep(NA_real_, length(geneset$names)), background_n=rep(NA_real_, length(geneset$names)),
-                       background_mean=rep(NA_real_, length(geneset$names)), stringsAsFactors = FALSE)
+                       ingroup_n = rep(NA_real_, length(geneset$names)), 
+                       ingroupnames = rep(NA_character_, length(geneset$names)), 
+                       ingroup_mean = rep(NA_real_, length(geneset$names)), 
+                       outgroup_n = rep(NA_real_, length(geneset$names)), 
+                       outgroup_mean = rep(NA_real_, length(geneset$names)), 
+                       zscore = rep(NA_real_, length(geneset$names)), 
+                       oddsratio = rep(NA_real_, length(geneset$names)), 
+                       pvalue = rep(NA_real_, length(geneset$names)), 
+                       BH_pvalue = rep(NA_real_, length(geneset$names)), 
+                       SignedBH_pvalue = rep(NA_real_, length(geneset$names)), background_n = rep(NA_real_, length(geneset$names)),
+                       background_mean = rep(NA_real_, length(geneset$names)), stringsAsFactors = FALSE)
   
   for (i in 1:length(geneset$names)) {
     thisname = geneset$names[i]

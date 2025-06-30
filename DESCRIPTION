@@ -20,7 +20,8 @@ Imports:
     readr,
     tibble,
     gplots,
-    methods
+    methods, 
+    Biobase
 Suggests: 
     knitr,
     rmarkdown

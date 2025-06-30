@@ -1,12 +1,13 @@
 #' enrichment_by_fishers
 #'
 #' # helper function for enrichment functions
-#'
+#' @export
 #' @noRd
 
 enrichment_by_fishers <- function(group, background, annotation) {
   # calculate the fishers exact on a group of things versus a background
   #     for those things with a particular annotation (on another list)
+ 
   non_group = background[!background %in% group]
 
   group_annot = sum(group %in% annotation)

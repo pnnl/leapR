@@ -22,21 +22,23 @@
 #' @examples
 #'         library(leapR)
 #'
-#'         # read in the example protein data
-#'         pdata <- download.file('https://figshare.com/ndownloader/files/55158767',method='libcurl',destfile='protdata')
-#'         protdata<-read.csv("protdata",check.names=FALSE,row.names=1)|>
-#'             as.matrix()
-#'         file.remove("protdata")
 #'
-#'           
-#'         tdata <- download.file("https://figshare.com/ndownloader/files/55158764",method='libcurl',destfile='transdata')
-#'         transdata<-readr::read_csv('transdata')|>
-#'             tibble::column_to_rownames('...1')|>
-#'             as.matrix()
-#'         file.remove("transdata")
+#'         pdata <- download.file('https://figshare.com/ndownloader/files/55781147',method='libcurl',destfile='protData.rda')
+#'         load('protData.rda')
+#'         p <- file.remove("protData.rda")
+#'         
+#'         tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+#'         load('transData.rda')
+#'         p <- file.remove("transData.rda")
+#'         
+#'         phdata<-download.file('https://figshare.com/ndownloader/files/55781120',method='libcurl',destfile = 'phosData.rda')
+#'         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
+#'         load('phosData.rda')
+#'         p <- file.remove('phosData.rda')# read in the example protein data
+#'         
 #'
 #'         # merge the two datasets by rows and add prefix tags for different omics types
-#'         multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
+#'         multi_omics = combine_omics(list(pset, tset, phset))
 #'
 #'
 #' @export
@@ -57,55 +59,61 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
   if (length(common_conditions) == 0) stop("No common conditions found")
   
   result <- NA
+  allfeat <- NA
   for (i in 1:length(omics_list)) {
     this = omics_list[[i]]
     id_column = id_list[[i]]
+    
+    ##first lets pull some metadata out
     data = this@annotation
-    
     tag = paste0(substr(data,0,3),'_')
-    #tag = c(proteomics_tag, transcriptomics_tag, methylation_tag, cnv_tag, phospho_tag)[i]
+    feat = Biobase::fData(this)
     
-    #if (!all(is.na(this))) {
+    #now let's get the common conditions
     this = this[,common_conditions]
       
     if (!is.na(id_column)) {
         # we need to add an id_column or use one that's here
           # add the idcolumn from the input phospho data
-          this = cbind(Biobase::featureData(this)[[id_column]], Biobase::exprs(this))
+      ids <- Biobase::fData(this)[,id_column]
     }else {
-        this = cbind(rownames(this),Biobase::exprs(this))
-      }
+#        this = cbind(rownames(this),Biobase::exprs(this))
+      ids <- rownames(exprs(this))
+    }
         
         #else {
         # add an idcolumn that is the rownames
         #this = cbind(rownames(this), this)
         
-     colnames(this)[1] = "id"
+     #colnames(this)[1] = "id"
+      idval <- data.frame(id = ids)
       
       # tag all the ids appropriately
-      rownames(this) = sapply(rownames(this), function (n) paste(tag, n, sep=""))
-      
-      # we will also add tags to the idcolumn if necessary
-    #  if (!is.na(id_column)) {
-      this[,1] = sapply(this[,1], function (n) paste(tag, n, sep = ""))
-    #  }
+      expr <- Biobase::exprs(this)
+      rownames(expr) = sapply(rownames(expr), function(n) paste0(tag, n, sep = "_"))
       
       #  print(dim(this))
       #    print(dim(result))
-      if (all(is.na(result))) result = this
-      else result = rbind(result, this)
+      if (all(is.na(result))) result = expr
+      else result = rbind(result, expr)
+      
+      if (all(is.na(allfeat))) allfeat = idval
+      else allfeat = rbind(allfeat,idval)
       
   }
   
-  nres <- apply(result[,common_conditions],2,as.numeric)
-  rownames(nres) <- rownames(result)
-  print(dim(result))
-  if ('id' %in% colnames(result))
-    ids = result[,'id']
-  else
-    ids = rownames(result)
+  allfeat <- Biobase::AnnotatedDataFrame(allfeat)
+  rownames(allfeat) <- rownames(result)
+#  nres <- apply(result[,common_conditions],2,as.numeric)
+#  rownames(nres) <- rownames(result)
+#  print(dim(result))
+#  if ('id' %in% colnames(result))
+#    ids = result[,'id']
+#  else
+#    ids = rownames(result)
   
-  return(data.frame(id=ids,nres,check.names=FALSE))
+  return(Biobase::ExpressionSet(result, featureData = allfeat, 
+                                annotation='Combined Data'))
 }
 
 old_combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=NA, phospho=NA, proteomics_tag="prot_", 
@@ -152,7 +160,7 @@ old_combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, 
       
       # we will also add tags to the idcolumn if necessary
       if (!is.na(id_column)) {
-        this[,1] = sapply(this[,1], function (n) paste(tag, n, sep=""))
+        this[,1] = sapply(this[,1], function(n) paste(tag, n, sep = ""))
       }
  
       #  print(dim(this))
@@ -169,5 +177,5 @@ old_combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, 
     ids = result$id
   else
     ids = rownames(result)
-  return(data.frame(id=ids,nres,check.names=FALSE))
+  return(data.frame(id = ids,nres,check.names=FALSE))
 }

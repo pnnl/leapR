@@ -17,10 +17,9 @@
 #'         library(leapR)
 #'
 #'         # read in the example transcriptomic data
-#'         datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
-#'         transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
-#'            tibble::column_to_rownames('...1')|>
-#'              as.matrix()
+#'         tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+#'         load('transData.rda')
+#'         p <- file.remove("transData.rda")
 #'
 #'         # read in the pathways
 #'         data("ncipid")
@@ -45,11 +44,12 @@ cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05)
   
   # The default background is all the genes that are in all the clusters
   # the user can submit their own background list if they want to do something different
-  if (!all(is.na(background)))  background = sapply(1:x, function (n) unlist(clusters[[n]]))
+  if (all(is.na(background)))  background = unlist(sapply(1:x, function(n) unlist(clusters[[n]])))
   
   #this = sapply(1:x, function (i) list(enrichment_in_groups(geneset, clusters[[i]], background)))
-  this = sapply(1:x, function (i) list(leapR(geneset=geneset, enrichment_method="enrichment_in_sets", 
-                                             targets=clusters[[i]], background=background)))
+  this = sapply(1:x, function(i) list(enrichment_in_groups(geneset=geneset, targets=clusters[[i]], background=background,
+                                                            method="fishers")))#leapR(geneset = geneset, enrichment_method = "enrichment_in_sets", 
+                                      #       targets = clusters[[i]], background = background)))
   
   #print(lapply(this,function(i) nrow(subset(i,as.numeric(BH_pvalue)<sigfilter))))
   # if the sigfilter is set we'll only return those functions that have a p-value
@@ -59,7 +59,7 @@ cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05)
   outlist = list()
   for (i in 1:x) {
     these <- this[[i]]
-    sigs <- which(these$BH_pvalue<sigfilter)
+    sigs <- which(these$BH_pvalue < sigfilter)
     #print(sigs)
     these <- these[sigs,]
     #print(these)
