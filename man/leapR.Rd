@@ -9,7 +9,7 @@ leapR(geneset, enrichment_method, ...)
 \arguments{
 \item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix of genes. It represents .gmt format pathway files.}
 
-\item{enrichment_method}{is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment", "enrichment_in_relationships".}
+\item{enrichment_method}{is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment".}
 
 \item{...}{further arguments}
 }
@@ -23,24 +23,26 @@ leapR is a wrapper function that consolidates multiple enrichment methods.
 Further arguments and enrichment method optional argument information: \cr
 \tabular{ll}{
 eset \tab Is an \code{ExpressionSet} of expression data, with features as rows and \emph{n} sample/conditions as columns. 
-The \code{Annotation} field ideally describes the data type (i.e. proteomics, phosphoproteomics), the \code{featureData} field describes any mapping identifiers and the \code{phenoData} field describes any 
-phenotyptic data. This is an required for all active enrichment methods with the exception of 'enrichment_in_relationships'. \cr
+The \code{Annotation} field ideally describes the data type (i.e. proteomics, phosphoproteomics), the \code{featureData} field describes any mapping 
+identifiers and the \code{phenoData} field describes any phenotyptic data. We recommend that the `Annotation` slot contain the omics data type for when using with `combine_omics`
+This is an required for all active enrichment methods with the exception of 'enrichment_in_relationships'. \cr
 \cr
-id_column \tab Is a character string, present in the \code{featureData} slot, that is used to specify a column for identifiers. If missing, the rownames of the ExpressionSet will be used. 
+id_column \tab Is a character string, present in the \code{featureData} slot, that is used to specify a column for identifiers to map to enrichment libraries. 
+If missing, the rownames of the ExpressionSet will be used. 
 \cr
 primary_columns \tab Is a character vector composed of column names from \code{eset} (either in the `exprs` or in the `featureData`), 
 that specifies a set of primary columns to calculate enrichment on. 
 The meaning of this varies according to the enrichment method used - see the descriptions for each method below. 
 This is an optional argument used with 'enrichment_in_order', 'enrichment_in_sets', and 'enrichment_comparison' methods. \cr
 \cr
-secondary_columns \tab Is a character vector of column names. This is an optional argument used with 'enrichment_comparison' methods. \cr
+secondary_columns \tab Is a character vector of column names for comparison, pulled from the `exprs` of the ExpressionSet. This is an optional argument used with 'enrichment_comparison' methods. \cr
 \cr
-threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values 
+threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values or p-values (depending on what `primary_columns` is used) 
 either above or below it. \cr
 \cr
 greaterthan \tab Is a logical value that defaults to TRUE, it's used with 'enrichment_in_sets' method. 
-When set to TRUE, genes with abundance data above the \code{threshold} argument are kept. 
-When set to FALSE genes with abundance data below the \code{threshold} argument are kept. 
+When set to TRUE, genes with `primary_columns` value above the \code{threshold} argument are kept. 
+When set to FALSE genes with `primary_columns` value below the \code{threshold} argument are kept. 
 This is an optional argument used with 'enrichment_in_sets' method. \cr
 \cr
 minsize \tab Is a numeric value, an optional argument used with 'enrichment_in_sets' and 'enrichment_in_order". \cr
@@ -102,12 +104,7 @@ For each pathway in \code{geneset} calculates the pairwise correlation between a
 across the specified \code{primary_columns} conditions in \code{eset}. Note that for large matrices this can take a long
 time. A p-value is calculated based on comparing the correlation within the members of a pathway with the correlation
 values between members of the pathway and non-members of the pathway.
-\cr \cr
-enrichment_in_relationships
-Calculates the enrichment of a pathway in specified interactions relative to non-pathway members. For each pathway in \code{geneset}
-calculates the enrichment in relationships as defined by an adjacency matrix provided in \code{eset}. An adjacency matrix
-is a square matrix to provide pairwise relationships between components (genes, proteins) as derived from e.g. correlation as
-\code{correlation_enrichment}.
+\cr
 }
 \examples{
         library(leapR)

@@ -19,19 +19,17 @@ knitr::opts_chunk$set(
 ```
 
 
+This is intended to be a short introduction to the `leapr` package. First we need to load the required libraries:
 
 ```{r setup}
 #load the library
 library(leapR)
 library(gplots)
-
 ```
 
 
-This is intended to be a short introduction to the `leapr` package.
-
 # Definitions 
-*Dataset* - a matrix of components (rows) measured in the same system under multiple different conditions (columns)
+*Dataset* - an expression dataset, contained in the Bioconductor \code{ExpressionSet} object, that at the bare minimum has a matrix of components (rows) measured in the same system under multiple different conditions (columns)
 
 *Component* - the things being measured, genes, proteins, methylation site, phosphosite, etc. For functional (currently) the component must be associated with a gene name. That is, there's not currently a way to calculate pathway enrichment using lipids.
 
@@ -61,6 +59,7 @@ When testing the statistical significance of differences in a lot of pathways it
 
 ### Pathway databases
 Two 'databases' (organized text files) are included for pathways. The first is taken from the NCI's Pathway Interaction Database (PID) and covers signaling pathways in human - but is no longer being actively maintained. The second is taken from the MSIGDB (the same database used by GSEA) that has lots of different pathways gathered from multiple different sources- some are more useful than others. The MSIGDB is good for giving more options- but runs into multiple hypothesis correction issues (see above). They can be loaded as follows:
+
 ``` {r pathdb}
 data(msigdb)
 data(ncipid)
