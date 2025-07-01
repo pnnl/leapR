@@ -45,7 +45,8 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
     }
     
     #here backlist is actually a list of feature names
-    if (isClass(background,'ExpressionSet')) {
+    #todo fix this!!
+    if (length(background) == 1) { #klugey way to see if its an ExpressionSet
       if (!is.null(mapping_column)) {
         backlist <- Biobase::fData(background)[,mapping_column] |>
           unique()
@@ -57,10 +58,6 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
     in_back = length(backlist)
     
     if (method == "fishers") {
-      
- 
-  #    print(background)
-  #    print(backlist)
       
       enr = enrichment_by_fishers(targets, backlist, grouplist)
       p = enr$fisher$p.value
@@ -100,7 +97,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         # unfortunately this means that "background" has to be the whole matrix and abundance_column
         #       has to be specified, which is a bit ugly
         in_group_name = paste(intersect(backlist, grouplist), collapse = ", ")
-        if(abundance_column %in% colnames(background)){ #we are using exprs fro values
+        if (abundance_column %in% colnames(background)) { #we are using exprs fro values
           in_group = Biobase::exprs(background)[which(Biobase::fData(background)[,mapping_column] %in% grouplist),abundance_column]
           backlist = Biobase::exprs(background)[,abundance_column]
         }else{
@@ -132,7 +129,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
             suppressWarnings(ks.test(in_group, backlist))
           },
           error=function(e) {
-            if(!silence_try_errors) message('An Error Occurred in KS test calculation')
+            if (!silence_try_errors) message('An Error Occurred in KS test calculation')
             return(NA)
           }
         )

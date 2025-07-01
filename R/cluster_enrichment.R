@@ -47,7 +47,8 @@ cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05)
   if (all(is.na(background)))  background = unlist(sapply(1:x, function(n) unlist(clusters[[n]])))
   
   #this = sapply(1:x, function (i) list(enrichment_in_groups(geneset, clusters[[i]], background)))
-  this = sapply(1:x, function(i) list(enrichment_in_groups(geneset=geneset, targets=clusters[[i]], background=background,
+  this = sapply(1:x, function(i) list(enrichment_in_groups(geneset = geneset, targets = clusters[[i]], 
+                                                           background = background,
                                                             method="fishers")))#leapR(geneset = geneset, enrichment_method = "enrichment_in_sets", 
                                       #       targets = clusters[[i]], background = background)))
   
