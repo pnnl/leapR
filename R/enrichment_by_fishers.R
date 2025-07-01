@@ -1,7 +1,6 @@
 #' enrichment_by_fishers
 #'
 #' # helper function for enrichment functions
-#' @export
 #' @noRd
 
 enrichment_by_fishers <- function(group, background, annotation) {

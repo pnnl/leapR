@@ -45,7 +45,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
     }
     
     #here backlist is actually a list of feature names
-    if (class(background) == 'ExpressionSet') {
+    if (isClass(background,'ExpressionSet')) {
       if (!is.null(mapping_column)) {
         backlist <- Biobase::fData(background)[,mapping_column] |>
           unique()
@@ -62,7 +62,7 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
   #    print(background)
   #    print(backlist)
       
-      enr = leapR::enrichment_by_fishers(targets, backlist, grouplist)
+      enr = enrichment_by_fishers(targets, backlist, grouplist)
       p = enr$fisher$p.value
       f = enr$foldx
       mat = enr$mat

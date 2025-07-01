@@ -20,6 +20,8 @@ enrichment_in_abundance(
 \arguments{
 \item{geneset}{Gene set to calculate enrichmnet}
 
+\item{eset}{Molecular abundance data in `ExpressionSet` format}
+
 \item{mapping_column}{Column to use to map identifiers}
 
 \item{abundance_column}{Columns to use to quantify abundance}
@@ -35,8 +37,6 @@ enrichment_in_abundance(
 \item{sample_n}{size of sample to use}
 
 \item{silence_try_errors}{set to true to silence try errors}
-
-\item{abundance}{Molecular abundance data in `ExpressionSet` format}
 }
 \value{
 data frame of enrichment result

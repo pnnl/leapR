@@ -2,11 +2,10 @@
 #'
 #' leapR is a wrapper function that consolidates multiple enrichment methods.
 #'
-#' @param eset is an ExpressionSet object required for all enrichment methods except `enrichment_in_relationships`. See below for further details. 
 #' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix of genes. It represents .gmt format pathway files.
 #' @param enrichment_method is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment", "enrichment_in_relationships".
 #' @return data frame with results
-#' @importClassesFrom Biobase ExpressionSet
+#' @import Biobase
 #' @param ... further arguments
 #'
 #' 
@@ -16,34 +15,34 @@
 #' eset \tab Is an \code{ExpressionSet} of expression data, with features as rows and \emph{n} sample/conditions as columns. 
 #' The \code{Annotation} field ideally describes the data type (i.e. proteomics, phosphoproteomics), the \code{featureData} field describes any mapping identifiers and the \code{phenoData} field describes any 
 #' phenotyptic data. This is an required for all active enrichment methods with the exception of 'enrichment_in_relationships'. \cr
-#' \tab \cr
+#' \cr
 #' id_column \tab Is a character string, present in the \code{featureData} slot, that is used to specify a column for identifiers. If missing, the rownames of the ExpressionSet will be used. 
-#' \tab \cr
+#' \cr
 #' primary_columns \tab Is a character vector composed of column names from \code{eset} (either in the `exprs` or in the `featureData`), 
 #' that specifies a set of primary columns to calculate enrichment on. 
 #' The meaning of this varies according to the enrichment method used - see the descriptions for each method below. 
 #' This is an optional argument used with 'enrichment_in_order', 'enrichment_in_sets', and 'enrichment_comparison' methods. \cr
-#' \tab \cr
+#' \cr
 #' secondary_columns \tab Is a character vector of column names. This is an optional argument used with 'enrichment_comparison' methods. \cr
-#' \tab \cr
+#' \cr
 #' threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values 
 #' either above or below it. \cr
-#' \tab \cr
+#' \cr
 #' greaterthan \tab Is a logical value that defaults to TRUE, it's used with 'enrichment_in_sets' method. 
 #' When set to TRUE, genes with abundance data above the \code{threshold} argument are kept. 
 #' When set to FALSE genes with abundance data below the \code{threshold} argument are kept. 
 #' This is an optional argument used with 'enrichment_in_sets' method. \cr
-#' \tab \cr
+#' \cr
 #' minsize \tab Is a numeric value, an optional argument used with 'enrichment_in_sets' and 'enrichment_in_order". \cr
-#' \tab \cr
+#' \cr
 #' idmap \tab Is...??. This is an optional argument used with 'enrichment_in_relationships' method. \cr
-#' \tab \cr
+#' \cr
 #' fdr \tab A numerical value which specifies how many times to randomly sample genes to calculate an empirical false discovery rate, is an optional argument used with 'enrichment_comparison' method. \cr
-#' \tab \cr
+#' \cr
 #' min_p_threshold \tab Is a numeric value, a lower p-value threshold and is an optional argument used with 'enrichment_comparison' method. \cr
-#' \tab \cr
+#' \cr
 #' sample_n \tab Is a way to subsample the number of components considered for each calculation randomly. This is an optional argument used with 'enrichment_comparison' method. \cr
-#' \tab \cr
+#' \cr
 #' }
 #' 
 #' \strong{Enrichment Methods:}

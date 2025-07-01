@@ -7,30 +7,14 @@
 combine_omics(omics_list, id_list = rep(NA, length(omics_list)))
 }
 \arguments{
-\item{transcriptomics}{is a matrix of gene expression values  where rownames are ids and columns are conditions}
+\item{omics_list}{List of \code{ExpressionSet} objects that contain the data to join with data
+type in the `Annotation` slot}
 
-\item{proteomics}{is a matrix of transcript values where rownames are ids and columns are conditions}
-
-\item{methylation}{is a matrix of methylation values where rownames are ids and columns are conditions}
-
-\item{cnv}{is a matrix of copy number variant(CNV) values where rownames are ids and columns are conditions}
-
-\item{phospho}{is a dataframe of phosphorylation data}
-
-\item{proteomics_tag}{is a text prefix to be added to protein ids}
-
-\item{transcriptomics_tag}{is a text prefix to be added to transcript ids}
-
-\item{methylation_tag}{is a text prefix to be added to methylation ids}
-
-\item{cnv_tag}{is a text prefix to be added to cnv ids}
-
-\item{phospho_tag}{is a text prefix to be added to phospho ids}
-
-\item{id_column}{is an optional column number for identifiers for the phospho data}
+\item{id_list}{List of identifers to use, in the same order as the omics_list elements. If an element
+is `NA`, then rownames are used.}
 }
 \value{
-combined omics table
+combined omics \code{ExpressionSet}
 }
 \description{
 Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
@@ -56,8 +40,8 @@ This combines matrices of different omics types together and adds prefix tags to
         p <- file.remove('phosData.rda')# read in the example protein data
         
 
-        # merge the two datasets by rows and add prefix tags for different omics types
-        multi_omics = combine_omics(list(pset, tset, phset))
+        # merge the three datasets by rows and add prefix tags for different omics types
+        multi_omics = combine_omics(list(pset, tset, phset), list(NA,NA,'hgnc_id'))
 
 
 }

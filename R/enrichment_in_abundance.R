@@ -5,7 +5,7 @@
 #' @import stats
 #' @import Biobase
 #' @param geneset Gene set to calculate enrichmnet
-#' @param abundance Molecular abundance data in `ExpressionSet` format
+#' @param eset Molecular abundance data in `ExpressionSet` format
 #' @param mapping_column Column to use to map identifiers
 #' @param abundance_column  Columns to use to quantify abundance
 #' @param fdr number of times to sample for FDR value
