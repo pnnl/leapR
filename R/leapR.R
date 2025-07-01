@@ -243,37 +243,60 @@ leapR = function(geneset, enrichment_method, ...){
     # if we've been passed background instead of a eset then use it as the background
     if (is.null(background)) {
       background = eset #rownames(eset)
-      backlist <- rownames(background)
-    }else if(is.list(background)) {backlist  = background }
-    else{ backlist <- rownames(background) }
+      if(is.null(id_column))
+        backlist <- rownames(background)
+      else
+        backlist <- Biobase::fData(background)[,id_column]
+    }else if(is.list(background)) {
+      backlist  = background 
+    }
+    else{ 
+      if(is.null(id_column))
+        backlist <- rownames(background)
+      else
+        backlist <- Biobase::fData(background)[,id_column]
+   }
     
     # TODO: we should allow the user to specify if they want it greater than or less than for the threshold
     if(greaterthan == FALSE & !is.null(threshold)){
-      if(primary_columns%in%colnames(eset)) {
-        targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns]<threshold),])
+      if(primary_columns %in% colnames(eset)) {
+        targ_ind = which(Biobase::exprs(eset)[,primary_columns] < threshold)
+       # targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns] < threshold),])
       }else{
-        targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns]<threshold),])
+        targ_ind = which(Biobase::fData(eset)[,primary_columns] < threshold)
+       # targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns] < threshold),])
       }
     }
     else if(greaterthan == TRUE & !is.null(threshold)){
-      if(primary_columns%in%colnames(eset)) {
-        targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns]>threshold),])
+      if(primary_columns %in% colnames(eset)) {
+        targ_ind = which(Biobase::exprs(eset)[,primary_columns] > threshold)
+#        targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns]>threshold),])
       }else{
-        targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns]>threshold),])
+        targ_ind = which(Biobase::fData(eset)[,primary_columns] > threshold)
+#        targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns]>threshold),])
+      }
+    }
+    
+    
+
+    if (!is.null(id_column) & !is.null(eset)) {
+      if (!is.element(id_column, colnames(Biobase::fData(eset)))){stop("'id_column' must be a column name of 'fData(eset)'")}
+    }
+
+    if(is.null(targets)){
+      if(!is.null(id_column)) {
+        #background = unique(Biobase::fData(eset)[backlist,id_column])
+        targets = unique(Biobase::fData(eset)[targ_ind,id_column])
+      }else{
+        targets = rownames(Biobase::exprs(eset))[targ_ind]
       }
     }
 
+    
+    
     if(length(targets) == 0){stop("please adjust 'threshold' argument, there are no target genes captured by current threshold value")}
-
-    if(!is.null(id_column) & !is.null(eset)){
-      if(!is.element(id_column, colnames(Biobase::fData(eset)))){stop("'id_column' must be a column name of 'fData(eset)'")}
-    }
-
-    if(!is.null(id_column)) {
-      background = unique(Biobase::fData(eset)[backlist,id_column])
-      targets = unique(Biobase::fData(eset)[targets,id_column])
-    }
-
+    
+    
     result = enrichment_in_groups(geneset=geneset, targets=targets, background=background,
                                   method="fishers", minsize=minsize)
 
