@@ -4,45 +4,17 @@
 \alias{combine_omics}
 \title{combine_omics}
 \usage{
-combine_omics(
-  proteomics = NA,
-  transcriptomics = NA,
-  methylation = NA,
-  cnv = NA,
-  phospho = NA,
-  proteomics_tag = "prot_",
-  transcriptomics_tag = "txn_",
-  methylation_tag = "meth_",
-  cnv_tag = "cnv_",
-  phospho_tag = "phospho_",
-  id_column = NA
-)
+combine_omics(omics_list, id_list = rep(NA, length(omics_list)))
 }
 \arguments{
-\item{proteomics}{is a matrix of transcript values where rownames are ids and columns are conditions}
+\item{omics_list}{List of \code{ExpressionSet} objects that contain the data to join with data
+type in the `Annotation` slot}
 
-\item{transcriptomics}{is a matrix of gene expression values  where rownames are ids and columns are conditions}
-
-\item{methylation}{is a matrix of methylation values where rownames are ids and columns are conditions}
-
-\item{cnv}{is a matrix of copy number variant(CNV) values where rownames are ids and columns are conditions}
-
-\item{phospho}{is a dataframe of phosphorylation data}
-
-\item{proteomics_tag}{is a text prefix to be added to protein ids}
-
-\item{transcriptomics_tag}{is a text prefix to be added to transcript ids}
-
-\item{methylation_tag}{is a text prefix to be added to methylation ids}
-
-\item{cnv_tag}{is a text prefix to be added to cnv ids}
-
-\item{phospho_tag}{is a text prefix to be added to phospho ids}
-
-\item{id_column}{is an optional column number for identifiers for the phospho data}
+\item{id_list}{List of identifers to use, in the same order as the omics_list elements. If an element
+is `NA`, then rownames are used.}
 }
 \value{
-combined omics table
+combined omics \code{ExpressionSet}
 }
 \description{
 Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
@@ -53,18 +25,23 @@ This combines matrices of different omics types together and adds prefix tags to
 \examples{
         library(leapR)
 
-        # read in the example protein data
-        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
-        protdata<-read.csv(paste0(datadir,'protdata.csv'),check.names=FALSE,row.names=1)|>
-          as.matrix()
-          
-       # read in the example transcriptomics data
-        transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
-           tibble::column_to_rownames('...1')|>
-             as.matrix()
-                      
-        # merge the two datasets by rows and add prefix tags for different omics types
-        multi_omics = combine_omics(proteomics=protdata, transcriptomics=transdata)
+
+        pdata <- download.file('https://figshare.com/ndownloader/files/55781147',method='libcurl',destfile='protData.rda')
+        load('protData.rda')
+        p <- file.remove("protData.rda")
+        
+        tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+        load('transData.rda')
+        p <- file.remove("transData.rda")
+        
+        phdata<-download.file('https://figshare.com/ndownloader/files/55781120',method='libcurl',destfile = 'phosData.rda')
+        #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
+        load('phosData.rda')
+        p <- file.remove('phosData.rda')# read in the example protein data
+        
+
+        # merge the three datasets by rows and add prefix tags for different omics types
+        multi_omics = combine_omics(list(pset, tset, phset), list(NA,NA,'hgnc_id'))
 
 
 }

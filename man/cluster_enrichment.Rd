@@ -32,25 +32,24 @@ a list of results matrices in the order of the input clusters.
         library(leapR)
 
         # read in the example transcriptomic data
-        datadir='https://github.com/pnnl/leapR/raw/refs/heads/bioc-submission/csv/'
-        transdata<-readr::read_csv(paste0(datadir,'transdata.csv.gz'))|>
-           tibble::column_to_rownames('...1')|>
-             as.matrix()
+        tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+        load('transData.rda')
+        p <- file.remove("transData.rda")
 
         # read in the pathways
         data("ncipid")
         
         # for the example we will limit the number of transcripts considered - arbitrarily in this case
-        transdata = transdata[1:3000,]
-
+        transdata = Biobase::exprs(tset)
+        transdata[which(is.na(transdata),arr.ind=TRUE)]<-0.0
         # perform heirarchical clustering on the  data
         transdata.hc = hclust(dist(transdata), method="ward.D2")
         
         transdata.hc.clusters = cutree(transdata.hc, k=5)
-        
+        clust.list <- lapply(c(1:5), function(x) return(names(which(transdata.hc.clusters==x))))
         #calculates enrichment for each of the clusters individually and returns a list
         #   of enrichment results
-        transdata.hc.enrichment = cluster_enrichment(geneset=ncipid, clusters=transdata.hc.clusters, background=rownames(transdata))
+        transdata.hc.enrichment = leapR::cluster_enrichment(geneset=ncipid, clusters=clust.list, background=rownames(transdata))
         
 
 

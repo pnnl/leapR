@@ -4,16 +4,14 @@
 \alias{correlation_enrichment}
 \title{correlation_enrichment}
 \usage{
-correlation_enrichment(geneset, abundance, mapping_column = NA, tag = NA)
+correlation_enrichment(geneset, eset, mapping_column = NA)
 }
 \arguments{
 \item{geneset}{Geneset list}
 
-\item{abundance}{Abundance value matrix}
+\item{eset}{an ExpressionSet object}
 
-\item{mapping_column}{Column to use to map}
-
-\item{tag}{tag to append to group name}
+\item{mapping_column}{Column to use to map identifiers, if not rownames}
 }
 \value{
 list of enrichment statistic table and correlation matrix

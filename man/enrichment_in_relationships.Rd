@@ -8,7 +8,6 @@ enrichment_in_relationships(
   geneset,
   relationships,
   idmap = NA,
-  tag = NA,
   mode = "original",
   silence_try_errors = TRUE
 )
@@ -16,11 +15,9 @@ enrichment_in_relationships(
 \arguments{
 \item{geneset}{List of pathways in gmt format}
 
-\item{relationships}{table of relationship information}
+\item{relationships}{table of relationship information, e.g. correlation}
 
-\item{idmap}{map of identifiers}
-
-\item{tag}{tag to append to data}
+\item{idmap}{list of identifiers to use for mapping, the names of the items should agree with names of features in matrix}
 
 \item{mode}{allowable values are 'original' or anything else}
 

@@ -1,12 +1,12 @@
 #' enrichment_by_fishers
 #'
 #' # helper function for enrichment functions
-#'
 #' @noRd
 
 enrichment_by_fishers <- function(group, background, annotation) {
   # calculate the fishers exact on a group of things versus a background
   #     for those things with a particular annotation (on another list)
+ 
   non_group = background[!background %in% group]
 
   group_annot = sum(group %in% annotation)
@@ -16,7 +16,7 @@ enrichment_by_fishers <- function(group, background, annotation) {
   group_nonannot = sum(!group %in% annotation)
   non_group_nonannot = sum(!non_group %in% annotation)
 
-  test = matrix(c(group_annot, non_group_annot, group_nonannot, non_group_nonannot), nrow=2,
+  test = matrix(c(group_annot, non_group_annot, group_nonannot, non_group_nonannot), nrow = 2,
                 dimnames=list(c("Group", "NonGroup"), c("Annotated", "NonAnnotated")))
 
   per = c(test[1,1]/(test[1,1]+test[1,2]), test[2,1]/(test[2,1]+test[2,2]))

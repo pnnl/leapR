@@ -6,14 +6,13 @@
 \usage{
 enrichment_in_abundance(
   geneset,
-  abundance,
+  eset,
   mapping_column = NULL,
   abundance_column = NULL,
   fdr = 0,
   matchset = NULL,
   sample_comparison = NULL,
   min_p_threshold = NULL,
-  tag = NA,
   sample_n = NULL,
   silence_try_errors = TRUE
 )
@@ -21,7 +20,7 @@ enrichment_in_abundance(
 \arguments{
 \item{geneset}{Gene set to calculate enrichmnet}
 
-\item{abundance}{Molecular abundance matrix}
+\item{eset}{Molecular abundance data in `ExpressionSet` format}
 
 \item{mapping_column}{Column to use to map identifiers}
 
@@ -34,8 +33,6 @@ enrichment_in_abundance(
 \item{sample_comparison}{list of samples to use as comparison}
 
 \item{min_p_threshold}{Only include p-values lower than this}
-
-\item{tag}{tag to use for name of group}
 
 \item{sample_n}{size of sample to use}
 
