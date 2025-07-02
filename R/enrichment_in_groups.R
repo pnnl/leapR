@@ -81,14 +81,17 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       ##here backlist is a list of values, with namesa s feature names
       
       if (is.null(mapping_column)) { #use rownames here
-        in_group_name = paste(intersect(grouplist, rownames(background)), collapse = ", ")
+        backlist <- rownames(Biobase::exprs(background))
+        in_group_name = paste(intersect(grouplist, backlist), collapse = ", ")
         
         if(abundance_column %in% colnames(background)){ ##use the exprs
-          in_group = Biobase::exprs(background)[grouplist[which(grouplist %in% rownames(background))],abundance_column]
-          backlist = Biobase::exprs(background)[,abundance_column]
+          in_group = Biobase::exprs(background)[grouplist[which(grouplist %in% backlist)],abundance_column]
+          backlist = Biobase::exprs(background)[,abundance_column]#reassign backlist to values not strings
+          
         }else{ #mapping_column must be a featureData item
-          in_group = Biobase::fData(background)[grouplist[which(grouplist %in% rownames(background))],abundance_column]
-          backlist = Biobase::fData(background)[,abundance_column]
+          in_group = Biobase::fData(background)[grouplist[which(grouplist %in% backlist)],abundance_column]
+          backlist = Biobase::fData(background)[,abundance_column] #reassign backlist to values not strings
+          
         }
       }
       else {
@@ -96,12 +99,15 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         #       first column and the rownames are peptide ids
         # unfortunately this means that "background" has to be the whole matrix and abundance_column
         #       has to be specified, which is a bit ugly
+        backlist <- Biobase::fData(background)[,mapping_column]
+        
         in_group_name = paste(intersect(backlist, grouplist), collapse = ", ")
+    
         if (abundance_column %in% colnames(background)) { #we are using exprs fro values
-          in_group = Biobase::exprs(background)[which(Biobase::fData(background)[,mapping_column] %in% grouplist),abundance_column]
+          in_group = Biobase::exprs(background)[which( backlist %in% grouplist),abundance_column]
           backlist = Biobase::exprs(background)[,abundance_column]
         }else{
-          in_group = Biobase::fData(background)[which(Biobase::fData(background)[,mapping_column] %in% grouplist),abundance_column]
+          in_group = Biobase::fData(background)[which(backlist %in% grouplist),abundance_column]
           backlist = Biobase::fData(background)[,abundance_column]          
         }
       }
