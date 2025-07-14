@@ -74,7 +74,7 @@ A sample data set is included that is from the CPTAC study of 169 ovarian tumors
 This data can be loaded as follows:
 ``` {r omicsdata, message=FALSE, warning=FALSE}
 
-pdata <- download.file('https://figshare.com/ndownloader/files/55781147',method='libcurl',destfile='protData.rda')
+pdata <- download.file('https://api.figshare.com/v2/file/download/55781147',method='libcurl',destfile='protData.rda')
 #protdata<-read.csv("protData.rda",check.names=FALSE,row.names=1)|>
 #  as.matrix()
 load('protData.rda')
@@ -83,11 +83,11 @@ p <- file.remove("protData.rda")
 
 
 #transdata<-read.csv(paste0(datadir,'transdata.csv.gz'),check.names=FALSE,row.names=1)
-tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
 load('transData.rda')
 p <- file.remove("transData.rda")
 
-phdata<-download.file('https://figshare.com/ndownloader/files/55781120',method='libcurl',destfile = 'phosData.rda')
+phdata<-download.file('https://api.figshare.com/v2/file/download/55781120',method='libcurl',destfile = 'phosData.rda')
 #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
 load('phosData.rda')
 p <- file.remove('phosData.rda')

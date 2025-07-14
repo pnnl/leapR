@@ -32,7 +32,7 @@ a list of results matrices in the order of the input clusters.
         library(leapR)
 
         # read in the example transcriptomic data
-        tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+        tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
 
