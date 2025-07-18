@@ -111,7 +111,7 @@ values between members of the pathway and non-members of the pathway.
 
         # read in the example abundance data
         # read in the example transcriptomic data
-        tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+        tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
 

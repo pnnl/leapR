@@ -26,15 +26,15 @@ This combines matrices of different omics types together and adds prefix tags to
         library(leapR)
 
 
-        pdata <- download.file('https://figshare.com/ndownloader/files/55781147',method='libcurl',destfile='protData.rda')
+        pdata <- download.file('https://api.figshare.com/v2/file/download/55781147',method='libcurl',destfile='protData.rda')
         load('protData.rda')
         p <- file.remove("protData.rda")
         
-        tdata <- download.file("https://figshare.com/ndownloader/files/55781153",method='libcurl',destfile='transData.rda')
+        tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
         
-        phdata<-download.file('https://figshare.com/ndownloader/files/55781120',method='libcurl',destfile = 'phosData.rda')
+        phdata<-download.file('https://api.figshare.com/v2/file/download/55781120',method='libcurl',destfile = 'phosData.rda')
         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
         load('phosData.rda')
         p <- file.remove('phosData.rda')# read in the example protein data
