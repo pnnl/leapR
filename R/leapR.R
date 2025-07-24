@@ -167,7 +167,10 @@ leapR = function(geneset, enrichment_method, eset, assay_name, ...){
     stop("enrichment_method must be one of the methods designated in the function documentation")
   
 
-  
+  if(missing(assay_name)){
+    assay_name = names(assay(eset))[1]
+    message(paste("No assay name provided, using",assay_name))
+  }
   #checking each enrichment method
   # JEM: changed here - moved these around so that the most important ones are first
   #      There are two different modes this can be run in and we can just have the user specify in the enrichment_method
