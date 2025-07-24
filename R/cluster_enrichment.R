@@ -17,7 +17,7 @@
 #'         library(leapR)
 #'
 #'         # read in the example transcriptomic data
-#'         tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
+#'         tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
 #'         load('transData.rda')
 #'         p <- file.remove("transData.rda")
 #'
@@ -25,7 +25,7 @@
 #'         data("ncipid")
 #'         
 #'         # for the example we will limit the number of transcripts considered - arbitrarily in this case
-#'         transdata = Biobase::exprs(tset)
+#'         transdata = SummarizedExperiment::assay(tset,'transcriptomics')
 #'         transdata[which(is.na(transdata),arr.ind=TRUE)]<-0.0
 #'         # perform heirarchical clustering on the  data
 #'         transdata.hc = hclust(dist(transdata), method="ward.D2")

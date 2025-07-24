@@ -4,28 +4,25 @@
 #'
 #' @param geneset is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix of genes. It represents .gmt format pathway files.
 #' @param enrichment_method is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment".
+#' @param eset is a `SummarizedExperiment` object containing expression data, with features as rows and \emph{n} sample/conditions as columns. 
+#' @param assay_name is the assay to be analyzed within the `eset`. Recommended to describe the data type (e.g. transcriptomics, proteomics) so that it can be integrated in `combine_omics`
 #' @return data frame with results
-#' @import Biobase
+#' @import SummarizedExperiment
 #' @param ... further arguments
 #'
 #' 
 #' @details 
 #' Further arguments and enrichment method optional argument information: \cr
 #' \tabular{ll}{
-#' eset \tab Is an \code{ExpressionSet} of expression data, with features as rows and \emph{n} sample/conditions as columns. 
-#' The \code{Annotation} field ideally describes the data type (i.e. proteomics, phosphoproteomics), the \code{featureData} field describes any mapping 
-#' identifiers and the \code{phenoData} field describes any phenotyptic data. We recommend that the `Annotation` slot contain the omics data type for when using with `combine_omics`
-#' This is an required for all active enrichment methods with the exception of 'enrichment_in_relationships'. \cr
+#' id_column \tab Is a character string, present in the \code{rowData} slot, that is used to specify a column for identifiers to map to enrichment libraries. 
+#' If missing, the rownames of the SummarizedExperiment assay will be used. 
 #' \cr
-#' id_column \tab Is a character string, present in the \code{featureData} slot, that is used to specify a column for identifiers to map to enrichment libraries. 
-#' If missing, the rownames of the ExpressionSet will be used. 
-#' \cr
-#' primary_columns \tab Is a character vector composed of column names from \code{eset} (either in the `exprs` or in the `featureData`), 
+#' primary_columns \tab Is a character vector composed of column names from \code{eset} (either in the `assay` or in the `rowData`), 
 #' that specifies a set of primary columns to calculate enrichment on. 
 #' The meaning of this varies according to the enrichment method used - see the descriptions for each method below. 
 #' This is an optional argument used with 'enrichment_in_order', 'enrichment_in_sets', and 'enrichment_comparison' methods. \cr
 #' \cr
-#' secondary_columns \tab Is a character vector of column names for comparison, pulled from the `exprs` of the ExpressionSet. This is an optional argument used with 'enrichment_comparison' methods. \cr
+#' secondary_columns \tab Is a character vector of column names for comparison, pulled from the `assay` of the SummarizedExperiment. This is an optional argument used with 'enrichment_comparison' methods. \cr
 #' \cr
 #' threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values or p-values (depending on what `primary_columns` is used) 
 #' either above or below it. \cr
@@ -100,7 +97,7 @@
 #'
 #'         # read in the example abundance data
 #'         # read in the example transcriptomic data
-#'         tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
+#'         tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
 #'         load('transData.rda')
 #'         p <- file.remove("transData.rda")
 #'
@@ -113,12 +110,12 @@
 #'         
 #'         # use enrichment_comparison to calculate enrichment in one set of conditions (shortlist) and another
 #'         # (longlist)
-#'         short_v_long = leapR(geneset=ncipid, enrichment_method='enrichment_comparison', 
+#'         short_v_long = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='enrichment_comparison', 
 #'               eset=tset, primary_columns=shortlist, secondary_columns=longlist)
 #'         
 #'         # use enrichment_in_sets to calculate the most enriched pathways from the highest abundance proteins
 #'         #     from one condition
-#'         onept_sets = leapR(geneset=ncipid, enrichment_method='enrichment_in_sets',
+#'         onept_sets = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='enrichment_in_sets',
 #'                eset=tset, primary_columns="TCGA-13-1484", threshold=1.5)
 #'                
 #'          # use enrichment_in_order to calculate the most enriched pathways from the same condition
@@ -126,17 +123,17 @@
 #'          #     the previous example uses a hard threshold to get a short list of most abundant proteins
 #'          #     and calculates enrichment based on set overlap. The results are likely to be similar - but
 #'          #     with some notable differences.
-#'          onept_order = leapR(geneset=ncipid, enrichment_method='enrichment_in_order',
+#'          onept_order = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='enrichment_in_order',
 #'                eset=tset, primary_columns="TCGA-13-1484")
 #'                
 #'          # use enrichment_in_pathway to calculate the most enriched pathways in a set of conditions
 #'          #     based on abundance in the pathway members versus abundance in non-pathway members
-#'          short_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_pathway',
+#'          short_pathways = leapR(geneset=ncipid, assay_name='transcriptomics',enrichment_method='enrichment_in_pathway',
 #'                eset=tset, primary_columns=shortlist)
 #'                
 #'          # use correlation_enrichment to calculate the most enriched pathways in correlation across
 #'          #     the shortlist conditions
-#'          short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='correlation_enrichment',
+#'          short_correlation_pathways = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='correlation_enrichment',
 #'                 eset=tset, primary_columns=shortlist)
 #'
 #'
@@ -147,7 +144,8 @@ leapR = function(geneset, enrichment_method, ...){
   .enrichment_wrapper(geneset, enrichment_method, ...)
 }
 
-.enrichment_wrapper = function(geneset, enrichment_method, eset=NULL, id_column=NULL, primary_columns=NULL,
+.enrichment_wrapper = function(geneset, enrichment_method, eset, assay_name,
+                               id_column=NULL, primary_columns=NULL,
                                secondary_columns=NULL, threshold=NULL, minsize=5, mode=NULL,
                                idmap=NA, fdr=0, min_p_threshold=NULL, sample_n=NULL,
                                enrichment_results=NA,
@@ -160,10 +158,7 @@ leapR = function(geneset, enrichment_method, ...){
   #check that geneset is of correct class
   #if(!inherits(geneset, "geneset_data")) stop("geneset must be of class 'geneset_data")
 
- # if (!is.null(eset))
-#    eset = Biobase::exprs(eset)
-#  else
-#    eset = NULL
+
   #check that enrichment_method is one of the designated methods
   if(!is.element(enrichment_method, c("correlation_enrichment", "correlation_comparison",
                                    #   "enrichment_in_relationships", #removing because it is not used without correlation
@@ -195,14 +190,16 @@ leapR = function(geneset, enrichment_method, ...){
     if(!is.null(primary_columns) & !is.null(eset)){
       
       ##primary_columsn can be in either the abundance data or the featureData, so here we check
-      all_names <- c(colnames(eset), colnames(Biobase::fData(eset)))
+      all_names <- c(colnames(eset), colnames(SummarizedExperiment::rowData(eset)))
       
       # TODO: add a validation that eset has a column named primary_columns
       if(!is.element(primary_columns, all_names)){stop("'primary_columns' must be column name of 'eset'")}
     }
+    
+  
 
     # JEM - notes for me: this application takes a background (matrix) and specifies which abundance column for calculating ks enrichment
-    result = enrichment_in_groups(geneset=geneset, background=eset,
+    result = enrichment_in_groups(geneset=geneset, background=eset, assay_name=assay_name, 
                                   method="ks", minsize=minsize, mapping_column=id_column,
                                   abundance_column=primary_columns)
   }
@@ -230,7 +227,7 @@ leapR = function(geneset, enrichment_method, ...){
 
     if(!is.null(primary_columns) & !is.null(eset)){
       ##primary_columsn can be in either the abundance data or the featureData, so here we check
-      all_names <- c(colnames(eset), colnames(Biobase::fData(eset)))
+      all_names <- c(colnames(eset), colnames(SummarizedExperiment::rowData(eset)))
       
       # TODO: add a validation that the eset has a column with the primary_columns name
       if(!is.element(primary_columns, all_names)){stop("'primary_columns' must be a column name of 'eset'")}
@@ -242,7 +239,7 @@ leapR = function(geneset, enrichment_method, ...){
       if(is.null(id_column))
         backlist <- rownames(background)
       else
-        backlist <- Biobase::fData(background)[,id_column]
+        backlist <- SummarizedExperiment::rowData(background)[,id_column]
     }else if(is.list(background)) {
       backlist  = background 
     }
@@ -250,41 +247,41 @@ leapR = function(geneset, enrichment_method, ...){
       if(is.null(id_column))
         backlist <- rownames(background)
       else
-        backlist <- Biobase::fData(background)[,id_column]
+        backlist <- SummarizedExperiment::rowData(background)[,id_column]
    }
-    
-    # TODO: we should allow the user to specify if they want it greater than or less than for the threshold
+
+        # TODO: we should allow the user to specify if they want it greater than or less than for the threshold
     if(greaterthan == FALSE & !is.null(threshold)){
       if(primary_columns %in% colnames(eset)) {
-        targ_ind = which(Biobase::exprs(eset)[,primary_columns] < threshold)
-       # targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns] < threshold),])
+        targ_ind = which(SummarizedExperiment::assay(eset,assay_name)[,primary_columns] < threshold)
+       # targets = rownames(eset[which(SummarizedExperiment::assay(eset,assay_name)[,primary_columns] < threshold),])
       }else{
-        targ_ind = which(Biobase::fData(eset)[,primary_columns] < threshold)
-       # targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns] < threshold),])
+        targ_ind = which(SummarizedExperiment::rowData(eset)[,primary_columns] < threshold)
+       # targets = rownames(SummarizedExperiment::rowData(eset)[which(SummarizedExperiment::rowData(eset)[,primary_columns] < threshold),])
       }
     }
     else if(greaterthan == TRUE & !is.null(threshold)){
       if(primary_columns %in% colnames(eset)) {
-        targ_ind = which(Biobase::exprs(eset)[,primary_columns] > threshold)
-#        targets = rownames(eset[which(Biobase::exprs(eset)[,primary_columns]>threshold),])
+        targ_ind = which(SummarizedExperiment::assay(eset,assay_name)[,primary_columns] > threshold)
+#        targets = rownames(eset[which(SummarizedExperiment::assay(eset,assay_name)[,primary_columns]>threshold),])
       }else{
-        targ_ind = which(Biobase::fData(eset)[,primary_columns] > threshold)
-#        targets = rownames(Biobase::fData(eset)[which(Biobase::fData(eset)[,primary_columns]>threshold),])
+        targ_ind = which(SummarizedExperiment::rowData(eset)[,primary_columns] > threshold)
+#        targets = rownames(SummarizedExperiment::rowData(eset)[which(SummarizedExperiment::rowData(eset)[,primary_columns]>threshold),])
       }
     }
     
     
 
     if (!is.null(id_column) & !is.null(eset)) {
-      if (!is.element(id_column, colnames(Biobase::fData(eset)))){stop("'id_column' must be a column name of 'fData(eset)'")}
+      if (!is.element(id_column, colnames(SummarizedExperiment::rowData(eset)))){stop("'id_column' must be a column name of 'fData(eset)'")}
     }
 
     if(is.null(targets)){
       if(!is.null(id_column)) {
-        #background = unique(Biobase::fData(eset)[backlist,id_column])
-        targets = unique(Biobase::fData(eset)[targ_ind,id_column])
+        #background = unique(SummarizedExperiment::rowData(eset)[backlist,id_column])
+        targets = unique(SummarizedExperiment::rowData(eset)[targ_ind,id_column])
       }else{
-        targets = rownames(Biobase::exprs(eset))[targ_ind]
+        targets = rownames(eset)[targ_ind]
       }
     }
 
@@ -306,7 +303,7 @@ leapR = function(geneset, enrichment_method, ...){
     #message("'enrichment_in_pathway' has the following optional arguments: id_column=NULL, primary_columns=NULL,fdr=0, secondary_columns=NULL,
     #                                      min_p_threshold=NULL, sample_n=NULL")
 
-    result = enrichment_in_abundance(geneset=geneset, eset=eset, mapping_column=id_column,
+    result = enrichment_in_abundance(geneset=geneset, eset=eset,  assay_name=assay_name, mapping_column=id_column,
                                      abundance_column=primary_columns, sample_comparison=NULL,
                                      fdr=fdr, min_p_threshold=min_p_threshold, sample_n=sample_n)
 
@@ -326,7 +323,7 @@ leapR = function(geneset, enrichment_method, ...){
     #message("'enrichment_comparison' has the following optional arguments: id_column=NULL, primary_columns=NULL,fdr=0, secondary_columns=NULL,
     #                                      min_p_threshold=NULL, sample_n=NULL")
     
-    result = enrichment_in_abundance(geneset=geneset, eset=eset, mapping_column=id_column,
+    result = enrichment_in_abundance(geneset=geneset, eset=eset, assay_name=assay_name, mapping_column=id_column,
                                      abundance_column=primary_columns, sample_comparison=secondary_columns,
                                      fdr=fdr, min_p_threshold=min_p_threshold, sample_n=sample_n)
     
@@ -344,7 +341,7 @@ leapR = function(geneset, enrichment_method, ...){
     #if(is.null(mode)){mode = 'original'} - this pertains to multiomics comparisons and we'll need to figure out how
     #                                       to recode this -
 
-#    result = enrichment_in_relationships(geneset=geneset, relationships=Biobase::exprs(eset), idmap=NULL)
+#    result = enrichment_in_relationships(geneset=geneset, relationships=SummarizedExperiment::assay(eset,assay_name), idmap=NULL)
 #  }
 
   # JEM- this function needs to be updated. Right now it's very simple and has the user define what set they
@@ -355,7 +352,7 @@ leapR = function(geneset, enrichment_method, ...){
     #message("'correlation_enrichment' has the following optional arguments:  id_column=NA, tag=NA")
     if(is.null(id_column)){id_column = NA}
 
-    temp_result = correlation_enrichment(geneset = geneset, eset = eset, mapping_column = id_column)
+    temp_result = correlation_enrichment(geneset = geneset, eset = eset, assay_name = assay_name, mapping_column = id_column)
 
     result = as.data.frame(temp_result$enrichment)
     attr(result, "corrmat") = temp_result$corrmat
@@ -365,7 +362,7 @@ leapR = function(geneset, enrichment_method, ...){
     if (is.null(eset)){stop("'eset' argument is required")}
     if(is.null(id_column)){id_column = NA}
     
-    temp_result = correlation_comparison_enrichment(geneset=geneset, eset=eset, 
+    temp_result = correlation_comparison_enrichment(geneset=geneset, eset=eset,  assay_name=assay_name, 
                                                set1=primary_columns, set2=secondary_columns,
                                                mapping_column=id_column)
     result = as.data.frame(temp_result)

@@ -2,14 +2,16 @@
 #'
 #' # calculate enrichment in correlation between pathway members
 #' # access through leapr wrapper
-#' @import stats
-#' @import Biobase
+#' @importFrom stats sd
+#' @importFrom stats p.adjust
+#' @import SummarizedExperiment
 #' @param geneset Geneset list
-#' @param eset an ExpressionSet object
+#' @param eset a SummarizedExperiment object
+#' @param assay_name name of assay
 #' @param mapping_column Column to use to map identifiers, if not rownames
 #' @return list of enrichment statistic table and correlation matrix
 
-correlation_enrichment <- function(geneset, eset, mapping_column=NA) {#}, tag=NA) {
+correlation_enrichment <- function(geneset, eset, assay_name, mapping_column=NA) {#}, tag=NA) {
   ##which genes are in geneset
   allgenes = unique(unlist(as.list(geneset$matrix)))
 
@@ -19,7 +21,7 @@ correlation_enrichment <- function(geneset, eset, mapping_column=NA) {#}, tag=NA
   ids = rownames(eset)
   cols = 1:ncol(eset)
   if (!is.na(mapping_column)) {
-    map <- Biobase::fData(eset)[,mapping_column]
+    map <- SummarizedExperiment::rowData(eset)[,mapping_column]
     names(map) <- rownames(eset)
   }else{
     map = rownames(eset)
@@ -34,7 +36,7 @@ correlation_enrichment <- function(geneset, eset, mapping_column=NA) {#}, tag=NA
   #map = eset
   
   #allgenes_present = allgenes[which(allgenes %in% )]
-  allgenes_cor = cor(t(Biobase::exprs(eset)[allgenes_present,cols]), use = "p")
+  allgenes_cor = cor(t(SummarizedExperiment::assay(eset, assay_name)[allgenes_present,cols]), use = "p")
 
   return(list(enrichment = enrichment_in_relationships(geneset, allgenes_cor, idmap = map),
               corrmat = allgenes_cor))

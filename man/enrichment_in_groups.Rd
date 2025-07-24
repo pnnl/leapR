@@ -8,6 +8,7 @@ enrichment_in_groups(
   geneset,
   targets = NULL,
   background = NULL,
+  assay_name = NULL,
   method = "fishers",
   minsize = 5,
   mapping_column = NULL,
@@ -21,7 +22,9 @@ enrichment_in_groups(
 
 \item{targets}{targets to use for enrichmenet}
 
-\item{background}{`ExpressionSet` describing background to use}
+\item{background}{`SummarizedExperiment` describing background to use}
+
+\item{assay_name}{is the name of the assay to use from the background}
 
 \item{method}{method to use for statistical test, options are 'fishers' or 'ks'}
 

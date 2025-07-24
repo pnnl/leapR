@@ -5,15 +5,17 @@
 #'
 #' @import stats
 #' @param geneset pathway to use for enrichment
-#' @param eset ExpressionSet with abundnace matrix
+#' @param eset  SummarizedExperiment with abundance matrix
+#' @param assay_name name of assay
 #' @param set1 first set to use
 #' @param set2 second set to use
-#' @param mapping_column Column to use for id mapping
+#' @param mapping_column Column to use for id mapping within rowData
 #' @param tag Tag to add
 #' @param mode to use, default is 'original'
 #' @return data frame with enrichment results
 #' 
-correlation_comparison_enrichment <- function(geneset, eset, set1, set2, 
+correlation_comparison_enrichment <- function(geneset, eset, assay_name,
+                                              set1, set2, 
                                               mapping_column=NA, tag=NA, 
                                               mode="original") {
   
@@ -32,7 +34,7 @@ correlation_comparison_enrichment <- function(geneset, eset, set1, set2,
     # NOTE: assumes that the mapping column is 1 and everything else
     #       is valid data- which may not be the case
     cols = 1:ncol(eset)
-    ids = Biobase::fData(eset)[,mapping_column]
+    ids = SummarizedExperiment::rowData(eset)[,mapping_column]
     names(ids) <- rownames(eset)
 
   }
@@ -44,8 +46,8 @@ correlation_comparison_enrichment <- function(geneset, eset, set1, set2,
   cols1 = colnames(eset)[which(colnames(eset) %in% set1)]
   cols2 = colnames(eset)[which(colnames(eset) %in% set2)]
   
-  abcols1 = Biobase::exprs(eset)[allgenes_present,cols1]
-  abcols2 = Biobase::exprs(eset)[allgenes_present,cols2]
+  abcols1 = SummarizedExperiment::assay(eset,assay_name)[allgenes_present,cols1]
+  abcols2 = SummarizedExperiment::assay(eset,assay_name)[allgenes_present,cols2]
   
   abcols1 = abcols1[which(rowSums(!is.na(abcols1)) > 0),]
   abcols2 = abcols2[which(rowSums(!is.na(abcols2)) > 0),]

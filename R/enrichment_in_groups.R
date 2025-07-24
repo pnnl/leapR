@@ -3,20 +3,23 @@
 #' Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test, using either
 #' the primary_columns to identify feature or the targets list.
 #' # access through leapr wrapper
-#' @import Biobase
+#' @import SummarizedExperiment
+#' @importFrom stats sd
+#' @importFrom stats p.adjust
+#' 
 #' @param geneset geneset to use for enrichment
 #' @param targets targets to use for enrichmenet
-#' @param background `ExpressionSet` describing background to use
+#' @param background `SummarizedExperiment` describing background to use
+#' @param assay_name is the name of the assay to use from the background
 #' @param method method to use for statistical test, options are 'fishers' or 'ks'
 #' @param minsize minimum size of set
 #' @param mapping_column column name of mapping identifiers
-#' @param abundance_column columns mapping abundance, either in the `exprs` matrix or `featureData`
+#' @param abundance_column columns mapping abundance, either in the `assay` matrix or `rowData`
 #' @param randomize true/false whether to randomize
 #' @param silence_try_errors true/false to silence errors
-#' @import stats
 #' @return data frame with enrichment results
 #' 
-enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method="fishers", minsize=5,
+enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, assay_name=NULL, method="fishers", minsize=5,
                                  mapping_column=NULL, abundance_column=NULL, randomize=FALSE,
                                  silence_try_errors=TRUE) {
   
@@ -48,17 +51,17 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
     #todo fix this!!
     if (length(background) == 1) { #klugey way to see if its an ExpressionSet
       if (!is.null(mapping_column)) {
-        backlist <- Biobase::fData(background)[,mapping_column] |>
+        backlist <- SummarizedExperiment::rowData(background)[,mapping_column] |>
           unique()
       }
       backlist <- rownames(background)
     }else{
       backlist <- names(background)
     }
+
     in_back = length(backlist)
     
     if (method == "fishers") {
-      
       enr = enrichment_by_fishers(targets, backlist, grouplist)
       p = enr$fisher$p.value
       f = enr$foldx
@@ -81,16 +84,16 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
       ##here backlist is a list of values, with namesa s feature names
       
       if (is.null(mapping_column)) { #use rownames here
-        backlist <- rownames(Biobase::exprs(background))
+        backlist <- rownames(SummarizedExperiment::assay(background,assay_name))
         in_group_name = paste(intersect(grouplist, backlist), collapse = ", ")
         
         if(abundance_column %in% colnames(background)){ ##use the exprs
-          in_group = Biobase::exprs(background)[grouplist[which(grouplist %in% backlist)],abundance_column]
-          backlist = Biobase::exprs(background)[,abundance_column]#reassign backlist to values not strings
+          in_group = SummarizedExperiment::assay(background,assay_name)[grouplist[which(grouplist %in% backlist)],abundance_column]
+          backlist = SummarizedExperiment::assay(background,assay_name)[,abundance_column]#reassign backlist to values not strings
           
         }else{ #mapping_column must be a featureData item
-          in_group = Biobase::fData(background)[grouplist[which(grouplist %in% backlist)],abundance_column]
-          backlist = Biobase::fData(background)[,abundance_column] #reassign backlist to values not strings
+          in_group = SummarizedExperiment::rowData(background)[grouplist[which(grouplist %in% backlist)],abundance_column]
+          backlist = SummarizedExperiment::rowData(background)[,abundance_column] #reassign backlist to values not strings
           
         }
       }
@@ -99,16 +102,16 @@ enrichment_in_groups <- function(geneset, targets=NULL, background=NULL, method=
         #       first column and the rownames are peptide ids
         # unfortunately this means that "background" has to be the whole matrix and abundance_column
         #       has to be specified, which is a bit ugly
-        backlist <- Biobase::fData(background)[,mapping_column]
+        backlist <- SummarizedExperiment::rowData(background)[,mapping_column]
         
         in_group_name = paste(intersect(backlist, grouplist), collapse = ", ")
     
         if (abundance_column %in% colnames(background)) { #we are using exprs fro values
-          in_group = Biobase::exprs(background)[which( backlist %in% grouplist),abundance_column]
-          backlist = Biobase::exprs(background)[,abundance_column]
+          in_group = SummarizedExperiment::assay(background,assay_name)[which( backlist %in% grouplist),abundance_column]
+          backlist = SummarizedExperiment::assay(background,assay_name)[,abundance_column]
         }else{
-          in_group = Biobase::fData(background)[which(backlist %in% grouplist),abundance_column]
-          backlist = Biobase::fData(background)[,abundance_column]          
+          in_group = SummarizedExperiment::rowData(background)[which(backlist %in% grouplist),abundance_column]
+          backlist = SummarizedExperiment::rowData(background)[,abundance_column]          
         }
       }
       

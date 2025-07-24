@@ -2,27 +2,26 @@
 #'
 #' Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
 #'
-#' @import Biobase
-#' @param omics_list List of \code{ExpressionSet} objects that contain the data to join with data
-#' type in the `Annotation` slot
-#' @param id_list List of identifers to use, in the same order as the omics_list elements. If an element
+#' @import SummarizedExperiment
+#' @param eset Is a \code{SummarizedExperiment} with multiple assays. 
+#' @param id_list List of identifiers to use, in the same order as the omics_list elements. If an element
 #' is `NA`, then rownames are used.
-#' @return combined omics \code{ExpressionSet}
+#' @return \code{SummarizedExperiment} with an additional assay called `combined`
 #' @details This combines matrices of different omics types together and adds prefix tags to the ids.
 #'
 #' @examples
 #'         library(leapR)
 #'
 #'
-#'         pdata <- download.file('https://api.figshare.com/v2/file/download/55781147',method='libcurl',destfile='protData.rda')
+#'         pdata <- download.file('https://api.figshare.com/v2/file/download/56536217',method='libcurl',destfile='protData.rda')
 #'         load('protData.rda')
 #'         p <- file.remove("protData.rda")
 #'         
-#'         tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
+#'         tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
 #'         load('transData.rda')
 #'         p <- file.remove("transData.rda")
 #'         
-#'         phdata<-download.file('https://api.figshare.com/v2/file/download/55781120',method='libcurl',destfile = 'phosData.rda')
+#'         phdata<-download.file('https://api.figshare.com/v2/file/download/56536211',method='libcurl',destfile = 'phosData.rda')
 #'         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
 #'         load('phosData.rda')
 #'         p <- file.remove('phosData.rda')# read in the example protein data
@@ -56,9 +55,8 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
     id_column = id_list[[i]]
     
     ##first lets pull some metadata out
-    data = this@annotation
-    tag = paste0(substr(data,0,3),'_')
-    feat = Biobase::fData(this)
+    feat =  names(SummarizedExperiment::assays(this))[1]
+    tag = paste0(substr(feat,0,3),'_')
     
     #now let's get the common conditions
     this = this[,common_conditions]
@@ -66,10 +64,10 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
     if (!is.na(id_column)) {
         # we need to add an id_column or use one that's here
           # add the idcolumn from the input phospho data
-      ids <- Biobase::fData(this)[,id_column]
+      ids <- SummarizedExperiment::rowData(this)[,id_column]
     }else {
 #        this = cbind(rownames(this),Biobase::exprs(this))
-      ids <- rownames(exprs(this))
+      ids <- rownames(this)
     }
         
         #else {
@@ -80,7 +78,7 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
       idval <- data.frame(id = ids)
       
       # tag all the ids appropriately
-      expr <- Biobase::exprs(this)
+      expr <- SummarizedExperiment::assay(this,feat)
       rownames(expr) = sapply(rownames(expr), function(n) paste0(tag, n, sep = "_"))
       
       #  print(dim(this))
@@ -93,18 +91,10 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
       
   }
   
-  allfeat <- Biobase::AnnotatedDataFrame(allfeat)
+  allfeat <- data.frame(allfeat)
   rownames(allfeat) <- rownames(result)
-#  nres <- apply(result[,common_conditions],2,as.numeric)
-#  rownames(nres) <- rownames(result)
-#  print(dim(result))
-#  if ('id' %in% colnames(result))
-#    ids = result[,'id']
-#  else
-#    ids = rownames(result)
-  
-  return(Biobase::ExpressionSet(result, featureData = allfeat, 
-                                annotation='Combined Data'))
+
+  return(SummarizedExperiment::SummarizedExperiment(assays = as(list(combined=result),'SimpleList'), rowData = allfeat))
 }
 # 
 # old_combine_omics = function(proteomics=NA, transcriptomics=NA, methylation=NA, cnv=NA, phospho=NA, proteomics_tag="prot_", 

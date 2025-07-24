@@ -10,7 +10,8 @@
 #' @param mode allowable values are 'original' or anything else
 #' @param silence_try_errors boolean to silence errors
 #' @return table of enrichment statistics
-#' @import stats
+#' @importFrom stats sd
+#' @importFrom stats p.adjust
 #' 
 enrichment_in_relationships <- function(geneset, relationships, idmap = NA, 
                                         #tag = NA, 

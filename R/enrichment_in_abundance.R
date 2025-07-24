@@ -2,10 +2,12 @@
 #'
 #' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
 # # access through leapr wrapper
-#' @import stats
-#' @import Biobase
+#' @importFrom stats sd
+#' @importFrom stats p.adjust
+#' @import SummarizedExperiment
 #' @param geneset Gene set to calculate enrichmnet
-#' @param eset Molecular abundance data in `ExpressionSet` format
+#' @param eset Molecular abundance data in `SummarizedExperiment` format
+#' @param assay_name Name of assay to compare
 #' @param mapping_column Column to use to map identifiers
 #' @param abundance_column  Columns to use to quantify abundance
 #' @param fdr number of times to sample for FDR value
@@ -19,6 +21,7 @@
 enrichment_in_abundance <-
   function(geneset,
            eset,
+           assay_name, 
            mapping_column = NULL,
            abundance_column = NULL,
            fdr = 0,
@@ -53,7 +56,9 @@ enrichment_in_abundance <-
     
     
     if (!is.null(mapping_column))
-      groupnames = unique(Biobase::fData(eset)[, mapping_column])
+      groupnames = SummarizedExperiment::rowData(eset)[, mapping_column]
+    else
+      groupnames = rownames(eset)
     
     for (i in 1:length(geneset$names)) {
       thisname = geneset$names[i]
@@ -69,9 +74,9 @@ enrichment_in_abundance <-
 #        grouplist = sapply(grouplist, function (n)
 #          paste(tag, n, sep = "_"))
       
-      if (!is.null(mapping_column)) { ##use the featureData to extract ids
+      #if (!is.null(mapping_column)) { ##use the featureData to extract ids
         ingroupnames = grouplist[which(grouplist %in% groupnames)]
-        outgroupnames = groupnames[which(!groupnames %in% grouplist)]
+        outgroupnames = groupnames[which(!groupnames %in% grouplist)] |> unique()
         
         if (!is.null(sample_n)) {
           if (sample_n > length(ingroupnames) ||
@@ -83,30 +88,30 @@ enrichment_in_abundance <-
           outgroupnames = sample(outgroupnames, sample_n)
         }
         
-        ingroup = Biobase::exprs(eset)[which(Biobase::fData(eset)[, mapping_column] %in% ingroupnames),
-                            abundance_column[which(abundance_column %in% colnames(eset[, 2:ncol(eset)]))]]
+        ingroup = SummarizedExperiment::assay(eset,assay_name)[which(groupnames %in% ingroupnames),
+                            abundance_column[which(abundance_column %in% colnames(eset))]]
         
         if (!is.null(sample_comparison))
-          outgroup = Biobase::exprs(eset)[which(Biobase::fData(eset)[, mapping_column]  %in% ingroupnames),
-                               sample_comparison[which(sample_comparison %in% colnames(eset[, 2:ncol(eset)]))]]
-        else
-          outgroup = Biobase::exprs(eset)[which(Biobase::fData(eset)[, mapping_column]  %in% outgroupnames), abundance_column]
-      }
-      else { #use rownames to extract IDs
-        # I changed this to make it easier to use- may break old code!
-        # ingroup = abundance[grouplist[which(grouplist %in% names(abundance))]]
-        # outgroup = abundance[which(!names(abundance) %in% grouplist)]
-        ingroupnames = grouplist[which(grouplist %in% rownames(eset))]
-        ingroup = unlist(Biobase::exprs(eset)[ingroupnames,
-                                   abundance_column[which(abundance_column %in% colnames(eset))]])
-        
-        if (!is.null(sample_comparison))
-          outgroup = Biobase::exprs(eset)[ingroupnames,
+          outgroup = SummarizedExperiment::assay(eset,assay_name)[which(groupnames %in% ingroupnames),
                                sample_comparison[which(sample_comparison %in% colnames(eset))]]
         else
-          outgroup = Biobase::exprs(eset)[which(!rownames(eset) %in% grouplist),
-                               abundance_column[which(abundance_column %in% colnames(eset))]]
-      }
+          outgroup = SummarizedExperiment::assay(eset,assay_name)[which(groupnames  %in% outgroupnames), abundance_column]
+      # }
+      # else { #use rownames to extract IDs
+      #   # I changed this to make it easier to use- may break old code!
+      #   # ingroup = abundance[grouplist[which(grouplist %in% names(abundance))]]
+      #   # outgroup = abundance[which(!names(abundance) %in% grouplist)]
+      #   ingroupnames = grouplist[which(grouplist %in% rownames(eset))]
+      #   ingroup = unlist(Biobase::exprs(eset)[ingroupnames,
+      #                              abundance_column[which(abundance_column %in% colnames(eset))]])
+      #   
+      #   if (!is.null(sample_comparison))
+      #     outgroup = Biobase::exprs(eset)[ingroupnames,
+      #                          sample_comparison[which(sample_comparison %in% colnames(eset))]]
+      #   else
+      #     outgroup = Biobase::exprs(eset)[which(!rownames(eset) %in% grouplist),
+      #                          abundance_column[which(abundance_column %in% colnames(eset))]]
+      # }
       #cat(length(ingroup), length(outgroup), "\n")
       in_mean = mean(unlist(ingroup), na.rm = TRUE)
       out_mean = mean(unlist(outgroup), na.rm = TRUE)
