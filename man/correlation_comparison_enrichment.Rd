@@ -7,6 +7,7 @@
 correlation_comparison_enrichment(
   geneset,
   eset,
+  assay_name,
   set1,
   set2,
   mapping_column = NA,
@@ -17,13 +18,15 @@ correlation_comparison_enrichment(
 \arguments{
 \item{geneset}{pathway to use for enrichment}
 
-\item{eset}{ExpressionSet with abundnace matrix}
+\item{eset}{SummarizedExperiment with abundance matrix}
+
+\item{assay_name}{name of assay}
 
 \item{set1}{first set to use}
 
 \item{set2}{second set to use}
 
-\item{mapping_column}{Column to use for id mapping}
+\item{mapping_column}{Column to use for id mapping within rowData}
 
 \item{tag}{Tag to add}
 

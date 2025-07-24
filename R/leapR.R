@@ -140,8 +140,8 @@
 #' @export
 #'
 
-leapR = function(geneset, enrichment_method, ...){
-  .enrichment_wrapper(geneset, enrichment_method, ...)
+leapR = function(geneset, enrichment_method, eset, assay_name, ...){
+  .enrichment_wrapper(geneset, enrichment_method, eset, assay_name, ...)
 }
 
 .enrichment_wrapper = function(geneset, enrichment_method, eset, assay_name,

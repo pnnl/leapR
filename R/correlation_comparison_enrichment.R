@@ -3,7 +3,8 @@
 #' # internal function to calculate enrichment in differences in correlation between two groups
 #' # access through the leapr wrapper
 #'
-#' @import stats
+#' @importFrom stats sd
+#' @importFrom stats p.adjust
 #' @param geneset pathway to use for enrichment
 #' @param eset  SummarizedExperiment with abundance matrix
 #' @param assay_name name of assay

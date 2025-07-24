@@ -4,10 +4,12 @@
 \alias{calcTTest}
 \title{calcTTest}
 \usage{
-calcTTest(eset, group1, group2)
+calcTTest(eset, assay_name, group1, group2)
 }
 \arguments{
-\item{eset}{ExpressionSet}
+\item{eset}{SummarizedExperiment}
+
+\item{assay_name}{name of assay}
 
 \item{group1}{List of samples comprising group 1}
 
@@ -23,7 +25,7 @@ append results to ExpressionSet with two extra columsn: `pvalue` and `difference
 \examples{
 
         library(leapR)
-        tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
+        tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
 
@@ -33,5 +35,5 @@ append results to ExpressionSet with two extra columsn: `pvalue` and `difference
         # read in the patient groups
         data("shortlist")
         data("longlist")
-        calcTTest(tset, shortlist, longlist) 
+        calcTTest(tset, 'transcriptomics', shortlist, longlist) 
 }

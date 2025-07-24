@@ -7,14 +7,13 @@
 combine_omics(omics_list, id_list = rep(NA, length(omics_list)))
 }
 \arguments{
-\item{omics_list}{List of \code{ExpressionSet} objects that contain the data to join with data
-type in the `Annotation` slot}
+\item{omics_list}{Is a list of \code{SummarizedExperiment} each with one assay}
 
-\item{id_list}{List of identifers to use, in the same order as the omics_list elements. If an element
+\item{id_list}{List of identifiers to use, in the same order as the omics_list elements. If an element
 is `NA`, then rownames are used.}
 }
 \value{
-combined omics \code{ExpressionSet}
+\code{SummarizedExperiment} with an additional assay called `combined`
 }
 \description{
 Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
@@ -26,15 +25,15 @@ This combines matrices of different omics types together and adds prefix tags to
         library(leapR)
 
 
-        pdata <- download.file('https://api.figshare.com/v2/file/download/55781147',method='libcurl',destfile='protData.rda')
+        pdata <- download.file('https://api.figshare.com/v2/file/download/56536217',method='libcurl',destfile='protData.rda')
         load('protData.rda')
         p <- file.remove("protData.rda")
         
-        tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
+        tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
         
-        phdata<-download.file('https://api.figshare.com/v2/file/download/55781120',method='libcurl',destfile = 'phosData.rda')
+        phdata<-download.file('https://api.figshare.com/v2/file/download/56536211',method='libcurl',destfile = 'phosData.rda')
         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
         load('phosData.rda')
         p <- file.remove('phosData.rda')# read in the example protein data

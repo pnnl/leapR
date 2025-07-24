@@ -24,7 +24,7 @@
 #'         # read in the patient groups
 #'         data("shortlist")
 #'         data("longlist")
-#'         calcTTest(tset, shortlist, longlist) 
+#'         calcTTest(tset, 'transcriptomics', shortlist, longlist) 
 
 
 calcTTest <- function(eset, assay_name, group1, group2){

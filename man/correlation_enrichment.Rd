@@ -4,12 +4,14 @@
 \alias{correlation_enrichment}
 \title{correlation_enrichment}
 \usage{
-correlation_enrichment(geneset, eset, mapping_column = NA)
+correlation_enrichment(geneset, eset, assay_name, mapping_column = NA)
 }
 \arguments{
 \item{geneset}{Geneset list}
 
-\item{eset}{an ExpressionSet object}
+\item{eset}{a SummarizedExperiment object}
+
+\item{assay_name}{name of assay}
 
 \item{mapping_column}{Column to use to map identifiers, if not rownames}
 }

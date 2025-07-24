@@ -4,18 +4,18 @@
 \alias{leapR}
 \title{leapR}
 \usage{
-leapR(geneset, enrichment_method, ...)
+leapR(geneset, enrichment_method, eset, assay_name, ...)
 }
 \arguments{
 \item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix of genes. It represents .gmt format pathway files.}
 
 \item{enrichment_method}{is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment".}
 
-\item{...}{further arguments}
-
 \item{eset}{is a `SummarizedExperiment` object containing expression data, with features as rows and \emph{n} sample/conditions as columns.}
 
 \item{assay_name}{is the assay to be analyzed within the `eset`. Recommended to describe the data type (e.g. transcriptomics, proteomics) so that it can be integrated in `combine_omics`}
+
+\item{...}{further arguments}
 }
 \value{
 data frame with results
@@ -34,7 +34,7 @@ that specifies a set of primary columns to calculate enrichment on.
 The meaning of this varies according to the enrichment method used - see the descriptions for each method below. 
 This is an optional argument used with 'enrichment_in_order', 'enrichment_in_sets', and 'enrichment_comparison' methods. \cr
 \cr
-secondary_columns \tab Is a character vector of column names for comparison, pulled from the `exprs` of the SummarizedExperiment. This is an optional argument used with 'enrichment_comparison' methods. \cr
+secondary_columns \tab Is a character vector of column names for comparison, pulled from the `assay` of the SummarizedExperiment. This is an optional argument used with 'enrichment_comparison' methods. \cr
 \cr
 threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values or p-values (depending on what `primary_columns` is used) 
 either above or below it. \cr
@@ -110,7 +110,7 @@ values between members of the pathway and non-members of the pathway.
 
         # read in the example abundance data
         # read in the example transcriptomic data
-        tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
+        tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
 

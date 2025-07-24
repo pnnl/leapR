@@ -3,7 +3,7 @@
 #' Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
 #'
 #' @import SummarizedExperiment
-#' @param eset Is a \code{SummarizedExperiment} with multiple assays. 
+#' @param omics_list Is a list of \code{SummarizedExperiment} each with one assay
 #' @param id_list List of identifiers to use, in the same order as the omics_list elements. If an element
 #' is `NA`, then rownames are used.
 #' @return \code{SummarizedExperiment} with an additional assay called `combined`

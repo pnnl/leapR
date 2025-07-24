@@ -32,7 +32,7 @@ enrichment_in_groups(
 
 \item{mapping_column}{column name of mapping identifiers}
 
-\item{abundance_column}{columns mapping abundance, either in the `exprs` matrix or `featureData`}
+\item{abundance_column}{columns mapping abundance, either in the `assay` matrix or `rowData`}
 
 \item{randomize}{true/false whether to randomize}
 
