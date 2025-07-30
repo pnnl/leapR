@@ -7,6 +7,7 @@
 enrichment_in_abundance(
   geneset,
   eset,
+  assay_name,
   mapping_column = NULL,
   abundance_column = NULL,
   fdr = 0,
@@ -20,7 +21,9 @@ enrichment_in_abundance(
 \arguments{
 \item{geneset}{Gene set to calculate enrichmnet}
 
-\item{eset}{Molecular abundance data in `ExpressionSet` format}
+\item{eset}{Molecular abundance data in `SummarizedExperiment` format}
+
+\item{assay_name}{Name of assay to compare}
 
 \item{mapping_column}{Column to use to map identifiers}
 

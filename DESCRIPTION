@@ -21,7 +21,7 @@ Imports:
     tibble,
     gplots,
     methods, 
-    Biobase
+    SummarizedExperiment
 Suggests: 
     knitr,
     rmarkdown

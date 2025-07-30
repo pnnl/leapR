@@ -4,12 +4,16 @@
 \alias{leapR}
 \title{leapR}
 \usage{
-leapR(geneset, enrichment_method, ...)
+leapR(geneset, enrichment_method, eset, assay_name, ...)
 }
 \arguments{
 \item{geneset}{is a list of four vectors, gene names, gene descriptions, gene sizes and a matrix of genes. It represents .gmt format pathway files.}
 
 \item{enrichment_method}{is a character string specifying the method of enrichment to be performed, one of: "enrichment_comparison", "enrichment_in_order", "enrichment_in_sets", "enrichment_in_pathway", "correlation_enrichment".}
+
+\item{eset}{is a `SummarizedExperiment` object containing expression data, with features as rows and \emph{n} sample/conditions as columns.}
+
+\item{assay_name}{is the assay to be analyzed within the `eset`. Recommended to describe the data type (e.g. transcriptomics, proteomics) so that it can be integrated in `combine_omics`}
 
 \item{...}{further arguments}
 }
@@ -22,20 +26,15 @@ leapR is a wrapper function that consolidates multiple enrichment methods.
 \details{
 Further arguments and enrichment method optional argument information: \cr
 \tabular{ll}{
-eset \tab Is an \code{ExpressionSet} of expression data, with features as rows and \emph{n} sample/conditions as columns. 
-The \code{Annotation} field ideally describes the data type (i.e. proteomics, phosphoproteomics), the \code{featureData} field describes any mapping 
-identifiers and the \code{phenoData} field describes any phenotyptic data. We recommend that the `Annotation` slot contain the omics data type for when using with `combine_omics`
-This is an required for all active enrichment methods with the exception of 'enrichment_in_relationships'. \cr
+id_column \tab Is a character string, present in the \code{rowData} slot, that is used to specify a column for identifiers to map to enrichment libraries. 
+If missing, the rownames of the SummarizedExperiment assay will be used. 
 \cr
-id_column \tab Is a character string, present in the \code{featureData} slot, that is used to specify a column for identifiers to map to enrichment libraries. 
-If missing, the rownames of the ExpressionSet will be used. 
-\cr
-primary_columns \tab Is a character vector composed of column names from \code{eset} (either in the `exprs` or in the `featureData`), 
+primary_columns \tab Is a character vector composed of column names from \code{eset} (either in the `assay` or in the `rowData`), 
 that specifies a set of primary columns to calculate enrichment on. 
 The meaning of this varies according to the enrichment method used - see the descriptions for each method below. 
 This is an optional argument used with 'enrichment_in_order', 'enrichment_in_sets', and 'enrichment_comparison' methods. \cr
 \cr
-secondary_columns \tab Is a character vector of column names for comparison, pulled from the `exprs` of the ExpressionSet. This is an optional argument used with 'enrichment_comparison' methods. \cr
+secondary_columns \tab Is a character vector of column names for comparison, pulled from the `assay` of the SummarizedExperiment. This is an optional argument used with 'enrichment_comparison' methods. \cr
 \cr
 threshold \tab Is a numeric value, an optional argument used with 'enrichment_in sets' method which filters out abundance values or p-values (depending on what `primary_columns` is used) 
 either above or below it. \cr
@@ -111,7 +110,7 @@ values between members of the pathway and non-members of the pathway.
 
         # read in the example abundance data
         # read in the example transcriptomic data
-        tdata <- download.file("https://api.figshare.com/v2/file/download/55781153",method='libcurl',destfile='transData.rda')
+        tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
 
@@ -124,12 +123,12 @@ values between members of the pathway and non-members of the pathway.
         
         # use enrichment_comparison to calculate enrichment in one set of conditions (shortlist) and another
         # (longlist)
-        short_v_long = leapR(geneset=ncipid, enrichment_method='enrichment_comparison', 
+        short_v_long = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='enrichment_comparison', 
               eset=tset, primary_columns=shortlist, secondary_columns=longlist)
         
         # use enrichment_in_sets to calculate the most enriched pathways from the highest abundance proteins
         #     from one condition
-        onept_sets = leapR(geneset=ncipid, enrichment_method='enrichment_in_sets',
+        onept_sets = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='enrichment_in_sets',
                eset=tset, primary_columns="TCGA-13-1484", threshold=1.5)
                
          # use enrichment_in_order to calculate the most enriched pathways from the same condition
@@ -137,17 +136,17 @@ values between members of the pathway and non-members of the pathway.
          #     the previous example uses a hard threshold to get a short list of most abundant proteins
          #     and calculates enrichment based on set overlap. The results are likely to be similar - but
          #     with some notable differences.
-         onept_order = leapR(geneset=ncipid, enrichment_method='enrichment_in_order',
+         onept_order = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='enrichment_in_order',
                eset=tset, primary_columns="TCGA-13-1484")
                
          # use enrichment_in_pathway to calculate the most enriched pathways in a set of conditions
          #     based on abundance in the pathway members versus abundance in non-pathway members
-         short_pathways = leapR(geneset=ncipid, enrichment_method='enrichment_in_pathway',
+         short_pathways = leapR(geneset=ncipid, assay_name='transcriptomics',enrichment_method='enrichment_in_pathway',
                eset=tset, primary_columns=shortlist)
                
          # use correlation_enrichment to calculate the most enriched pathways in correlation across
          #     the shortlist conditions
-         short_correlation_pathways = leapR(geneset=ncipid, enrichment_method='correlation_enrichment',
+         short_correlation_pathways = leapR(geneset=ncipid, assay_name='transcriptomics', enrichment_method='correlation_enrichment',
                 eset=tset, primary_columns=shortlist)
 
 
