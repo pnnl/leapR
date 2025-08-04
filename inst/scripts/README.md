@@ -1,0 +1,4 @@
+The extdata directory contains the Hallmarks of Cancer dataset from MSIGDB. To 
+obtain this list, navigate to the [MSIGDB page](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp) and click on 
+the 'Gene symbols' link under the 'Download GMT files' text to the right of the
+"H: hallmark gene sets" section of the table. Login is required, but free. 
