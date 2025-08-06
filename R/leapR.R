@@ -169,7 +169,7 @@ leapR = function(geneset, enrichment_method, eset, assay_name, ...){
 
   if(missing(assay_name)){
     assay_name = names(assay(eset))[1]
-    message(paste("No assay name provided, using",assay_name))
+#    message(paste("No assay name provided, using",assay_name))
   }
   #checking each enrichment method
   # JEM: changed here - moved these around so that the most important ones are first
