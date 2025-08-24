@@ -6,7 +6,7 @@ output:
     toc_depth: 2
 vignette: |
   %\VignetteIndexEntry{leapR}   
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -28,18 +28,18 @@ library(gplots)
 ```
 
 
-# Definitions 
+# Definitions
 *Dataset* - an expression dataset, contained in the Bioconductor \code{SummarizedExperiment} object, that at the bare minimum has a matrix of components (rows) measured in the same system under multiple different conditions (columns)
 
 *Component* - the things being measured, genes, proteins, methylation site, phosphosite, etc. For functional (currently) the component must be associated with a gene name. That is, there's not currently a way to calculate pathway enrichment using lipids.
 
 *Pathway* - a set of components that works together to accomplish something or are related to each other in some other way. This includes classic signaling and metabolic pathways, but also molecular function and localization categories and other groups of related components, like genome location, conservation, etc.
 
-*Condition* - a sample where the treatment, environmental conditions, patient, time point or some combination of those is varied. 
+*Condition* - a sample where the treatment, environmental conditions, patient, time point or some combination of those is varied.
 
 The overall idea for functional enrichment is to determine which pathways
 are statistically over-represented in one group versus another, display statistically differential
-abundance from one group to another, or are statistically differentially distributed in a ranked 
+abundance from one group to another, or are statistically differentially distributed in a ranked
 list based on the abundance of one sample. Each of these purposes has a different underlying statistical test (or family of tests) and the results of each can be interpreted in somewhat different ways. The purpose of this vignette is to give the user a very brief introduction on how to use the package, not to discuss the underlying statistical choices that need to be made when analyzing such data.
 
 There are a number of caveats (probably non-exhaustive) with doing this kind of analysis.
@@ -47,12 +47,12 @@ There are a number of caveats (probably non-exhaustive) with doing this kind of 
 # Important points for consideration
 
 ### Data normalization
-One important point is to use data that's been normalized in a particular way to do these analyses. Data here has been normalized as a Z score *by row* (gene/protein/etc.). So, for each row, calculate the mean and standard deviation across all the conditions (columns) and then express as a Z score. 
+One important point is to use data that's been normalized in a particular way to do these analyses. Data here has been normalized as a Z score *by row* (gene/protein/etc.). So, for each row, calculate the mean and standard deviation across all the conditions (columns) and then express as a Z score.
 
 Here's why. All high-throughput technologies (microarray, RNAseq, MS-assisted proteomics, metabolomics, lipidomics, etc.) suffer from the same limitation. The detectability of each molecule being detected (protein, RNA, etc.) is different and, in general, it's impossible to accurately determine *how detectable* each one is. The multi-omic functional enrichment process lumps together measurements from different components (proteins, genes, etc.) to summarize a pathway. If the component measurements aren't directly comparable (they aren't) then this can and will introduce significant systematic errors and won't produce the results you're looking for. Careful consideration must be given that the results of the analysis reflect the question being asked and that the normalization method hasn't obscured the desired results.
 
 ### Background
-The background of comparison for functional enrichment is always important, but really only impacts the Fisher's exact tests in my applications below. The background is the answer to "my functional group of interest is statistically enriched relative to what?" For Fisher's exact tests this is really important. Generally, it is best to compare enrichment versus those components observed in the data - not against the universe of all possible components. For example, a proteomics dataset from plasma may have a limited number of proteins observed relative to all possible human proteins. Functional enrichment using all possible proteins will yeild very different results than if it's performed using only those proteins observed in plasma as a background.
+The background of comparison for functional enrichment is always important, but really only impacts the Fisher's exact tests in my applications below. The background is the answer to "my functional group of interest is statistically enriched relative to what?" For Fisher's exact tests this is really important. Generally, it is best to compare enrichment versus those components observed in the data - not against the universe of all possible components. For example, a proteomics dataset from plasma may have a limited number of proteins observed relative to all possible human proteins. Functional enrichment using all possible proteins will yield very different results than if it's performed using only those proteins observed in plasma as a background.
 
 ### Multiple hypothesis correction
 When testing the statistical significance of differences in a lot of pathways it's necessary to correct for multiple hypotheses. This essentially accounts for the possibility you might see SOMETHING significant by chance if you just test enough things- so it moves p values in a less significant direction. The more things you test, the greater this move will be. So pathway databases with lots of pathways are affected more by this correction, making it harder to get a significant result (which is a good thing actually).
@@ -101,7 +101,7 @@ data(longlist)
 cols_to_display = c('ingroup_n','outgroup_n','background_n','pvalue','BH_pvalue','SignedBH_pvalue')
 ```
 
-The data are now loaded and ready to go through some of the examples. 
+The data are now loaded and ready to go through some of the examples.
 
 # Examples
 
@@ -111,7 +111,7 @@ The data are now loaded and ready to go through some of the examples.
 There are a number of ways to do this. I generally use a simple approach which
 assesses the statistical difference in distributions between the abundance values
 from all the members of a pathway in all the group members from one group with those
-from the other group using a t test. 
+from the other group using a t test.
 
 ### Caveat
 This is a 'bag of values' approach and it does not pay attention to the
@@ -138,9 +138,9 @@ It is VERY important to also consider the effect size. That is, the difference b
 #   them to another group (the 'long survivors')
 
 ###using enrichment_wrapper function
-protdata.enrichment.svl = leapR::leapR(geneset = ncipid, 
+protdata.enrichment.svl = leapR::leapR(geneset = ncipid,
                                 enrichment_method = 'enrichment_comparison',
-                                eset = pset, 
+                                eset = pset,
                                 assay_name = 'proteomics',
                                 primary_columns = shortlist,
                                 secondary_columns = longlist)
@@ -152,7 +152,7 @@ rmarkdown::paged_table(protdata.enrichment.svl[order(protdata.enrichment.svl[,"p
 ###using enrichment_wrapper function
 protdata.enrichment.svl.ovo = leapR::leapR(geneset = ncipid,
                                     enrichment_method = 'enrichment_comparison',
-                                    eset = pset, 
+                                    eset = pset,
                                     assay_name = 'proteomics',
                                     primary_columns = shortlist[1],
                                     secondary_columns = longlist[1])
@@ -163,8 +163,8 @@ When we only compare one sample to another, we get no enriched pathways.
 
 ## Example 2: Fisher's exact test
 For this test I use Fisher's exact which is a simple comparison of the overlap of
-two sets (think of it like a statistical Venn diagram with two groups). It's also 
-referred to as a hypergeometric test. 
+two sets (think of it like a statistical Venn diagram with two groups). It's also
+referred to as a hypergeometric test.
 
 ### Caveats
 *Caveat 1*. Fisher's exact does not consider abundance values but only lists of components. Generally
@@ -186,15 +186,15 @@ genelist = rownames(pset)[which(SummarizedExperiment::assay(pset,'proteomics')[,
 #background = rownames(protdata)
 
 
-protdata.enrichment.sets.test = leapR::leapR(geneset=ncipid, 
+protdata.enrichment.sets.test = leapR::leapR(geneset=ncipid,
                                                  enrichment_method="enrichment_in_sets",
-                                                 eset=pset, 
+                                                 eset=pset,
                                                  assay_name='proteomics',
                                                  targets=genelist)
 rmarkdown::paged_table(protdata.enrichment.sets.test[order(protdata.enrichment.sets.test[,"pvalue"]),cols_to_display])
 
 ###using enrichment_wrapper function
-protdata.enrichment.order = leapR::leapR(geneset=ncipid, 
+protdata.enrichment.order = leapR::leapR(geneset=ncipid,
                                    enrichment_method="enrichment_in_order",
                                    eset = pset, #threshold=.5,
                                    assay_name='proteomics',
@@ -224,15 +224,15 @@ clusters = lapply(unique(modules),function(x) names(which(modules==x)))
 #         number and the name is the gene name
 
 # To do enrichment for one module (module 1 in this case) do this
-protdata.enrichment.sets.module_1 = leapR::leapR(geneset=ncipid, 
+protdata.enrichment.sets.module_1 = leapR::leapR(geneset=ncipid,
                                                  enrichment_method="enrichment_in_sets",
-                                                 eset=pset, 
+                                                 eset=pset,
                                                  assay_name='proteomics',
                                                  targets=names(modules[which(modules==1)]))
 
 # To do enrichment on all modules and return the list of enrichment results tables do this
-protdata.enrichment.sets.modules <-do.call(rbind,leapR::cluster_enrichment(geneset=ncipid, 
-                                                       clusters=clusters, 
+protdata.enrichment.sets.modules <-do.call(rbind,leapR::cluster_enrichment(geneset=ncipid,
+                                                       clusters=clusters,
                                                        background=modules, sigfilter=0.25))
 ##nothing is enriched
 rmarkdown::paged_table(protdata.enrichment.sets.modules[,cols_to_display])
@@ -243,7 +243,7 @@ rmarkdown::paged_table(protdata.enrichment.sets.modules[,cols_to_display])
 Similar to the popular GSEA, KS tests whether a group of components (the pathway) is distributed in a statistically significant manner in a ranked list of components. That is, if all the members of the pathway are clustered together at the top of the list (highly abundant, e.g.) or at the bottom of the list (low abundance, e.g.) this will return good p values. I should note that GSEA uses a more sophisticated approach than this and their application has a lot of bells and whistles.
 
 ### Description
-In the example below I'm simply calculating enrichment for one of the patients in the list (arbitrarily selected). The ranking value is relative protein abundance in this case, but can be any continuous measure or derived value. For example, you could calculate the topology of all proteins in a network and use the topology measure (degree) as the measure. 
+In the example below I'm simply calculating enrichment for one of the patients in the list (arbitrarily selected). The ranking value is relative protein abundance in this case, but can be any continuous measure or derived value. For example, you could calculate the topology of all proteins in a network and use the topology measure (degree) as the measure.
 
 ### Interpretation
 Similar to the other examples be cautious of pathways with good p values that consider a small number of pathway numbers (in_path column). The MeanPath column gives a measure that shows how far above or below the median the mean rank of the pathway is (normalized to -1,1). The Zscore column is a Zscore calculated on the basis of the mean percentage rank of the pathway relative to the mean of the entire list divided by the standard deviation of the pathway rank. The foldx column expresses the mean percentage rank of the pathway relative to the entire list - closer to 0 is higher in the list and closer to 1 is closer to the bottom of the list. Each of these should give consistent results, but will be somewhat different.
@@ -251,8 +251,8 @@ Similar to the other examples be cautious of pathways with good p values that co
 ``` {r ks, echo=TRUE, warning = FALSE, message=FALSE}
 # This is how you calculate enrichment in a ranked list (for example from topology)
 ###using enrichment_wrapper function
-protdata.enrichment.sets = leapR::leapR(geneset=ncipid, "enrichment_in_order", 
-                                            eset = pset, 
+protdata.enrichment.sets = leapR::leapR(geneset=ncipid, "enrichment_in_order",
+                                            eset = pset,
                                          assay_name = 'proteomics',
                                             primary_columns=shortlist[1])
 
@@ -273,20 +273,20 @@ The `ingroup_mean` gives the mean correlation of the pathway members to each oth
 
 
 ###using enrichment_wrapper function
-protdata.enrichment.correlation = leapR::leapR(geneset=ncipid, 
+protdata.enrichment.correlation = leapR::leapR(geneset=ncipid,
                                         enrichment_method = "correlation_enrichment",
                                         assay_name = 'proteomics',
                                         eset = pset)
 
 rmarkdown::paged_table(head(protdata.enrichment.correlation[order(protdata.enrichment.correlation[,"pvalue"]),cols_to_display]))
 
-protdata.enrichment.correlation.short = leapR::leapR(geneset=ncipid, 
-                                              enrichment_method = "correlation_enrichment", 
+protdata.enrichment.correlation.short = leapR::leapR(geneset=ncipid,
+                                              enrichment_method = "correlation_enrichment",
                                               assay_name = 'proteomics',
                                               eset = pset[,shortlist])
 rmarkdown::paged_table(head(protdata.enrichment.correlation.short[order(protdata.enrichment.correlation.short[,"pvalue"]),cols_to_display]))
 
-protdata.enrichment.correlation.long = leapR::leapR(geneset=ncipid, 
+protdata.enrichment.correlation.long = leapR::leapR(geneset=ncipid,
                                             enrichment_method = "correlation_enrichment",
                                             assay_name = 'proteomics',
                                             eset = pset[,longlist])
@@ -317,7 +317,7 @@ rmarkdown::paged_table(phosphodata.ksea.order[order(phosphodata.ksea.order[,"pva
 # now do the same thing but use a threshold
 phosphodata.sets.order = leapR::leapR(geneset=kinasesubstrates,
                                enrichment_method="enrichment_in_sets",
-                               eset = phset, 
+                               eset = phset,
                                assay_name = 'phosphoproteomics',
                                threshold=0.5,
                                primary_columns="TCGA-13-1484")
@@ -328,11 +328,11 @@ rmarkdown::paged_table(phosphodata.sets.order[order(phosphodata.sets.order[,"pva
 
 ### Figure 2
 We will compare the ability of transcriptomics, proteomics, and phosphoproteomics to inform about
-differences between short and long surviving patient groups. In addition to other methods, we also employ a `calcTTest` function that takes 
-two sets of samples from the `SummarizedExperiment` object and computes the t-test between them. The results are then stored in the `rowData` of the 
-same object, so that they can be used for enrichment later on. 
+differences between short and long surviving patient groups. In addition to other methods, we also employ a `calcTTest` function that takes
+two sets of samples from the `SummarizedExperiment` object and computes the t-test between them. The results are then stored in the `rowData` of the
+same object, so that they can be used for enrichment later on.
 
-This spans the multiple enrichment methods in leapR and also includes multi-omics. 
+This spans the multiple enrichment methods in leapR and also includes multi-omics.
 
 The resulting heatmap is presented as Figure 2 in the paper.
 
@@ -343,18 +343,18 @@ data("krbpaths")
 data("mo_krbpaths")
 
 # comparison enrichment in transcriptional data
-transdata.comp.enrichment.svl = leapR::leapR(geneset=krbpaths, 
+transdata.comp.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                 enrichment_method='enrichment_comparison',
-                                eset = tset, 
+                                eset = tset,
                                 assay_name = 'transcriptomics',
                                 primary_columns=shortlist,
                                 secondary_columns=longlist)
 
 # comparison enrichment in proteomics data
 # this is the same code used above, just repeated here for clarity
-protdata.comp.enrichment.svl = leapR::leapR(geneset=krbpaths, 
+protdata.comp.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                 enrichment_method='enrichment_comparison',
-                                eset = pset, 
+                                eset = pset,
                                 assay_name = 'proteomics',
                                 primary_columns=shortlist,
                                 secondary_columns=longlist)
@@ -362,7 +362,7 @@ protdata.comp.enrichment.svl = leapR::leapR(geneset=krbpaths,
 # comparison enrichment in phosphoproteomics data
 phosphodata.comp.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                    enrichment_method='enrichment_comparison',
-                                   eset = phset, 
+                                   eset = phset,
                                    assay_name = 'phosphoproteomics',
                                    primary_columns=shortlist,
                                    secondary_columns=longlist, id_column='hgnc_id')
@@ -384,7 +384,7 @@ transdata.set.enrichment.svl = leapR::leapR(geneset=krbpaths,
 
 pset <- leapR::calcTTest(pset, assay_name = 'proteomics', shortlist, longlist)
 
-protdata.set.enrichment.svl = leapR::leapR(geneset = krbpaths, 
+protdata.set.enrichment.svl = leapR::leapR(geneset = krbpaths,
                                            eset=pset,
                                            assay_name = 'proteomics',
                                            enrichment_method = 'enrichment_in_sets',
@@ -404,43 +404,43 @@ phosphodata.set.enrichment.svl = leapR::leapR(geneset = krbpaths,
 # order enrichment in transcriptomics data
 transdata.order.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                      enrichment_method='enrichment_in_order',
-                                     eset = tset, 
+                                     eset = tset,
                                      assay_name = 'transcriptomics',
                                      primary_columns="difference")
 
 # order enrichment in proteomics data
 protdata.order.enrichment.svl = leapR::leapR(geneset = krbpaths,
                                      enrichment_method = 'enrichment_in_order',
-                                     eset = pset, 
+                                     eset = pset,
                                      assay_name = 'proteomics',
                                      primary_columns = "difference")
 
 # order enrichment in phosphoproteomics data
 phosphodata.order.enrichment.svl = leapR::leapR(geneset=krbpaths,
-                                     enrichment_method='enrichment_in_order', 
+                                     enrichment_method='enrichment_in_order',
                                      id_column='hgnc_id',
-                                     eset = phset, 
+                                     eset = phset,
                                      assay_name = 'phosphoproteomics',
                                      primary_columns="difference")
 
 # correlation difference in transcriptomics data
 transdata.corr.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                       enrichment_method="correlation_comparison",
-                                      eset = tset, 
+                                      eset = tset,
                                       assay_name = 'transcriptomics',
                                       primary_columns=shortlist,
                                       secondary_columns=longlist)
 # correlation difference in proteomics data
 protdata.corr.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                      enrichment_method="correlation_comparison",
-                                     eset = pset, 
+                                     eset = pset,
                                      assay_name = 'proteomics',
                                      primary_columns=shortlist,
                                      secondary_columns=longlist)
 # correlation difference in phosphoproteomics data
 phosphodata.corr.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                     enrichment_method="correlation_comparison",
-                                    eset = phset, 
+                                    eset = phset,
                                     assay_name = 'phosphoproteomics',
                                     primary_columns=shortlist,
                                     secondary_columns=longlist, id_column='hgnc_id')
@@ -452,7 +452,7 @@ comboset = leapR::combine_omics(list(pset, phset, tset), c(NA,'hgnc_id',NA))
 #when we use expression set, we do not need to use the mo_krbpaths since the id mapping column is used
 combodata.enrichment.svl = leapR::leapR(geneset=krbpaths,#mo_krbpaths,
                                  enrichment_method='enrichment_comparison',
-                                 eset = comboset, 
+                                 eset = comboset,
                                  assay_name = 'combined',
                                  primary_columns=shortlist,
                                  secondary_columns=longlist, id_column='id')
@@ -462,7 +462,7 @@ combodata.enrichment.svl = leapR::leapR(geneset=krbpaths,#mo_krbpaths,
 # perform the comparison t test
 comboset <- leapR::calcTTest(comboset, assay_name = 'combined', shortlist, longlist)
 #combodata.svl.ttest = t(sapply(rownames(combodata), function (r) {
-#        res=try(t.test(combodata[r,shortlist], combodata[r,longlist]),silent=TRUE); 
+#        res=try(t.test(combodata[r,shortlist], combodata[r,longlist]),silent=TRUE);
 #        if (is(res,'try-error')) return(c(NA, NA));
 #        return(c(res$p.value, res$estimate[[1]]-res$estimate[[2]]))}))
 
@@ -488,7 +488,7 @@ combodata.order.enrichment.svl = leapR::leapR(geneset=krbpaths,
 # correlation difference in combo data
 combodata.corr.enrichment.svl = leapR::leapR(geneset=krbpaths,
                                       enrichment_method="correlation_comparison",
-                                      eset = comboset, 
+                                      eset = comboset,
                                       assay_name = 'combined',
                                       primary_columns=shortlist,
                                       id_column = 'id',
@@ -500,17 +500,17 @@ all_results = list(transdata.comp.enrichment.svl,
                    protdata.comp.enrichment.svl,
                    phosphodata.comp.enrichment.svl,
                    combodata.enrichment.svl,
-                   
+
                    transdata.set.enrichment.svl,
                    protdata.set.enrichment.svl,
                    phosphodata.set.enrichment.svl,
                    combodata.set.enrichment.svl,
-                   
+
                    transdata.order.enrichment.svl,
                    protdata.order.enrichment.svl,
                    phosphodata.order.enrichment.svl,
                    combodata.order.enrichment.svl,
-                   
+
                    transdata.corr.enrichment.svl,
                    protdata.corr.enrichment.svl,
                    phosphodata.corr.enrichment.svl,
@@ -598,13 +598,13 @@ phosphodata.ksea.comp.svl = leapR::leapR(geneset=kinasesubstrates,
 #      case v control conditions
 phosphodata.ksea.corr.svl = leapR::leapR(geneset=kinasesubstrates,
                                   enrichment_method="correlation_comparison",
-                                  eset = phset, 
+                                  eset = phset,
                                   assay_name = 'phosphoproteomics',
                                   primary_columns=shortlist,
                                   secondary_columns=longlist)
 
 # for the example we are using an UNCORRECTED PVALUE
-#     which will allow us to plot more values, but 
+#     which will allow us to plot more values, but
 #     for real applications it's necessary to use the
 #     CORRECTED PVALUE
 

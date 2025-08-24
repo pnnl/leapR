@@ -20,7 +20,7 @@ enrichment_in_groups(
 \arguments{
 \item{geneset}{geneset to use for enrichment}
 
-\item{targets}{targets to use for enrichmenet}
+\item{targets}{targets to use for enrichment}
 
 \item{background}{`SummarizedExperiment` describing background to use}
 
@@ -42,7 +42,7 @@ enrichment_in_groups(
 data frame with enrichment results
 }
 \description{
-Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test, using either
+Calculate the enrichment in pathways using Fisher's exact or Kolmogorov-Smirnov test, using either
 the primary_columns to identify feature or the targets list.
 # access through leapr wrapper
 }

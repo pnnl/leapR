@@ -3,19 +3,19 @@
 Layered Enrichment Analysis of Pathways in R (leapR) a tool that carries out statistical enrichment analysis on single- or multi-omics data.
 
 ## Install and build
-Until leapR is madea vailable on the bioconductor repository, we are recommending install the package from GitHub as follows. 
+Until leapR is made available on the bioconductor repository, we are recommending install the package from GitHub as follows.
 
 ```{r install}
 
 if(!require('devtools', quietly=TRUE))
   install.packages("devtools")
-  
+
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install(version = "3.21")
 
 BiocManager::install('BiocStyle')
-  
+
 devtools::install_github("PNNL/leapR",build_vignette=TRUE)
 ```
 
@@ -32,7 +32,7 @@ Here is a list of enrichment arguments that can be called with the `leapR` comma
 | Argument                                        | Description |   
 | ---                                             | ----        |   
 | `enrichment_in_sets`                           | Calculates enrichment in pathway membership in a list (e.g. highly differential proteins) relative to background using Fisher's exact test. |   
-| `enrichment_in_order`                         | Calculates enrichment of pathways based on a ranked list using the Kologmorov-Smirnov test |   
+| `enrichment_in_order`                         | Calculates enrichment of pathways based on a ranked list using the Kolmogorov-Smirnov test |   
 | `enrichment_comparison`                         | Compares the distribution of abundances between two sets of conditions for each pathway using a t test  |
 | `enrichment_in_pathways`                        | Compares the distribution of abundances in a pathway with the background distribution of abundances using a t test |   
 |`correlation_enrichment`              | Calculates the enrichment of a pathway based on correlation between pathway members across conditions versus correlation between members not in the pathway             |   
