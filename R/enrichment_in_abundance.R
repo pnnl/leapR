@@ -4,8 +4,11 @@
 # # access through leapr wrapper
 #' @importFrom stats sd
 #' @importFrom stats p.adjust
-#' @import SummarizedExperiment
-#' @param geneset Gene set to calculate enrichmnet
+#' @importFrom SummarizedExperiment assay
+#' @importFrom SummarizedExperiment rowData
+#' @importFrom SummarizedExperiment SummarizedExperiment
+
+#' @param geneset Gene set to calculate enrichment
 #' @param eset Molecular abundance data in `SummarizedExperiment` format
 #' @param assay_name Name of assay to compare
 #' @param mapping_column Column to use to map identifiers
@@ -21,14 +24,14 @@
 enrichment_in_abundance <-
   function(geneset,
            eset,
-           assay_name, 
+           assay_name,
            mapping_column = NULL,
            abundance_column = NULL,
            fdr = 0,
            matchset = NULL,
            sample_comparison = NULL,
            min_p_threshold = NULL,
-  #         tag = NA,
+           #         tag = NA,
            sample_n = NULL,
            silence_try_errors = TRUE) {
     # for each category in geneset calculates the abundance level
@@ -37,157 +40,120 @@ enrichment_in_abundance <-
     #     two sided t test
     # If the sample_comparison variable is set then do a comparison between this
     #     abundance and sample comparison set which is vector of valid column (sample) ids
-    results = data.frame(
-      row.names = geneset$names,
-      ingroup_n = rep(NA_real_, length(geneset$names)),
-      ingroupnames = rep(NA_character_, length(geneset$names)),
-      ingroup_mean = rep(NA_real_, length(geneset$names)),
-      outgroup_n = rep(NA_real_, length(geneset$names)),
-      outgroup_mean = rep(NA_real_, length(geneset$names)),
-      zscore = rep(NA_real_, length(geneset$names)),
-      oddsratio = rep(NA_real_, length(geneset$names)),
-      pvalue = rep(NA_real_, length(geneset$names)),
-      BH_pvalue = rep(NA_real_, length(geneset$names)),
-      SignedBH_pvalue = rep(NA_real_, length(geneset$names)),
-      background_n = rep(NA_real_, length(geneset$names)),
-      background_mean = rep(NA_real_, length(geneset$names)),
-      stringsAsFactors = FALSE
-    )
-    
-    
-    if (!is.null(mapping_column))
-      groupnames = SummarizedExperiment::rowData(eset)[, mapping_column]
-    else
-      groupnames = rownames(eset)
-    
-    for (i in 1:length(geneset$names)) {
-      thisname = geneset$names[i]
-      if (!is.null(matchset) && matchset != thisname)
-        next
-      
-      thissize = geneset$size[i]
-      thisdesc = geneset$desc[i]
-      #cat(thisname, thissize, "\n")
-      grouplist = geneset$matrix[i, 1:thissize]
-      #SJCG: looks like tag is no longer supported
-#      if (!is.na(tag))
-#        grouplist = sapply(grouplist, function (n)
-#          paste(tag, n, sep = "_"))
-      
-      #if (!is.null(mapping_column)) { ##use the featureData to extract ids
-        ingroupnames = grouplist[which(grouplist %in% groupnames)]
-        outgroupnames = groupnames[which(!groupnames %in% grouplist)] |> unique()
-        
-        if (!is.null(sample_n)) {
-          if (sample_n > length(ingroupnames) ||
-              sample_n > length(outgroupnames)) {
-            next
-          }
-          #cat(sample_n, length(ingroupnames), length(outgroupnames), "\n")
-          ingroupnames = sample(ingroupnames, sample_n)
-          outgroupnames = sample(outgroupnames, sample_n)
+
+
+    if (!is.null(mapping_column)) {
+      groupnames <- SummarizedExperiment::rowData(eset)[, mapping_column, drop = TRUE]
+    } else {
+      groupnames <- rownames(eset)
+    }
+
+    if (!is.null(matchset)) {
+      geneset <- geneset[which(geneset$names %in% matchset)]
+    }
+    results2 <- vapply(seq_along(1:length(geneset$names)), function(i){
+
+      thisname <- geneset$names[i]
+      thissize <- geneset$size[i]
+      thisdesc <- geneset$desc[i]
+      grouplist <- setdiff(geneset$matrix[i, seq_along(1:thissize), drop = FALSE],"")
+      ingroupnames <- grouplist[which(grouplist %in% groupnames)]
+      outgroupnames <- groupnames[which(!groupnames %in% grouplist)] |> unique()
+
+      if (!is.null(sample_n)) {
+        if (sample_n > length(ingroupnames) ||
+          sample_n > length(outgroupnames)) {
+          next
         }
-        
-        ingroup = SummarizedExperiment::assay(eset,assay_name)[which(groupnames %in% ingroupnames),
-                            abundance_column[which(abundance_column %in% colnames(eset))]]
-        
-        if (!is.null(sample_comparison))
-          outgroup = SummarizedExperiment::assay(eset,assay_name)[which(groupnames %in% ingroupnames),
-                               sample_comparison[which(sample_comparison %in% colnames(eset))]]
-        else
-          outgroup = SummarizedExperiment::assay(eset,assay_name)[which(groupnames  %in% outgroupnames), abundance_column]
-      # }
-      # else { #use rownames to extract IDs
-      #   # I changed this to make it easier to use- may break old code!
-      #   # ingroup = abundance[grouplist[which(grouplist %in% names(abundance))]]
-      #   # outgroup = abundance[which(!names(abundance) %in% grouplist)]
-      #   ingroupnames = grouplist[which(grouplist %in% rownames(eset))]
-      #   ingroup = unlist(Biobase::exprs(eset)[ingroupnames,
-      #                              abundance_column[which(abundance_column %in% colnames(eset))]])
-      #   
-      #   if (!is.null(sample_comparison))
-      #     outgroup = Biobase::exprs(eset)[ingroupnames,
-      #                          sample_comparison[which(sample_comparison %in% colnames(eset))]]
-      #   else
-      #     outgroup = Biobase::exprs(eset)[which(!rownames(eset) %in% grouplist),
-      #                          abundance_column[which(abundance_column %in% colnames(eset))]]
-      # }
-      #cat(length(ingroup), length(outgroup), "\n")
-      in_mean = mean(unlist(ingroup), na.rm = TRUE)
-      out_mean = mean(unlist(outgroup), na.rm = TRUE)
-      pvalue = NA
+        ingroupnames <- sample(ingroupnames, sample_n)
+        outgroupnames <- sample(outgroupnames, sample_n)
+      }
+
+      ingroup <- SummarizedExperiment::assay(eset, assay_name)[
+        which(groupnames %in% ingroupnames),
+        abundance_column[which(abundance_column %in% colnames(eset))]
+      ]
+
+      if (!is.null(sample_comparison)) {
+        outgroup <- SummarizedExperiment::assay(eset, assay_name)[
+          which(groupnames %in% ingroupnames),
+          sample_comparison[which(sample_comparison %in% colnames(eset)), drop = FALSE]
+        ]
+      } else {
+        outgroup <- SummarizedExperiment::assay(eset, assay_name)[which(groupnames %in% outgroupnames), abundance_column, drop = FALSE]
+      }
+      in_mean <- mean(unlist(ingroup), na.rm = TRUE)
+      out_mean <- mean(unlist(outgroup), na.rm = TRUE)
+      pvalue <- NA
       if (length(ingroup) > 1) {
-        pvalue = try(t.test(unlist(ingroup), unlist(outgroup))$p.value, silent =
-                       silence_try_errors)
-        ;
-        if (is(pvalue,"try-error"))
-          pvalue = NA
-        
-        
-        # we step through all components to calculate the number
-        #    that are above/below the threshold
-        # if (!is.null(min_p_threshold)) {
-        #   count_above = 0
-        #   count_below = 0
-        #   # this works with sample_comparison
-        #   for (this_bit in rownames(ingroup)) {
-        #     petevalue = try(t.test(ingroup[this_bit,], outgroup[this_bit,])$p.value, silent=F);
-        #     if (class(petevalue)=="try-error" || is.na(petevalue)) {
-        #       petevalue = NA;
-        #     }
-        #     else {
-        #       if (petevalue > min_p_threshold) count_above = count_above + 1
-        #       if (petevalue <= min_p_threshold) count_below = count_below + 1
-        #     }
-        #   }
-        #   results[thisname,"count_above"] = count_above
-        #   results[thisname,"count_below"] = count_below
-        # }
-      }
-      
-      delta = in_mean - out_mean
-      if (fdr) {
-        background = c()
-        abundances = c(ingroup, outgroup)
-        for (i in 1:fdr) {
-          # randomly sample genes for fdr times
-          ingroup = sample(1:length(abundances), length(ingroup))
-          outgroup = which(!1:length(abundances) %in% ingroup)
-          ingroup = abundances[ingroup]
-          outgroup = abundances[outgroup]
-          in_mean = mean(ingroup, na.rm = TRUE)
-          out_mean = mean(outgroup, na.rm = TRUE)
-          delta_r = in_mean - out_mean
-          background = c(background, delta_r)
+        pvalue <- try(t.test(unlist(ingroup), unlist(outgroup))$p.value,
+          silent =
+            silence_try_errors
+        )
+        if (is(pvalue, "try-error")) {
+          pvalue <- NA
         }
-        pvalue = sum(abs(background) > abs(delta)) / length(background)
       }
-      
+
+      delta <- in_mean - out_mean
+      if (fdr) {
+        background <- c()
+        abundances <- c(ingroup, outgroup)
+        for (i in 1:fdr) { #TODO
+          # randomly sample genes for fdr times
+          ingroup <- sample(seq_along(1:length(abundances)), length(ingroup))
+          outgroup <- which(!seq_along(1:length(abundances)) %in% ingroup)
+          ingroup <- abundances[ingroup]
+          outgroup <- abundances[outgroup]
+          in_mean <- mean(ingroup, na.rm = TRUE)
+          out_mean <- mean(outgroup, na.rm = TRUE)
+          delta_r <- in_mean - out_mean
+          background <- c(background, delta_r)
+        }
+        pvalue <- sum(abs(background) > abs(delta)) / length(background)
+      }
+
       # changing the order of output columns to match with the results from the other enrichment methods
-      
-      ingroupnames = paste(ingroupnames, collapse = ", ")
-      results[thisname, "ingroup_n"] = length(unlist(ingroup))
-      results[thisname, "ingroupnames"] = ingroupnames
-      results[thisname, "ingroup_mean"] = in_mean
-      results[thisname, "outgroup_n"] = length(unlist(outgroup))
-      results[thisname, "outgroup_mean"] = out_mean
-      results[thisname, "pvalue"] = pvalue
-      results[thisname, "oddsratio"] = delta
-      
-      #question : do we want to calculate an oddsratio for this too?
+
+      ingroupnames <- paste(ingroupnames, collapse = ", ")
+      # question : do we want to calculate an oddsratio for this too?
       # answer: yes, but for now we'll use the mean of the ingroup compared with the
       #        distribution of the background as a zscore
-      zscore = (out_mean - in_mean) / sd(unlist(outgroup), na.rm = TRUE)
-      #browser()
-      results[thisname, "zscore"] = zscore
-    }
-    #update
-    results[, "BH_pvalue"] = p.adjust(results[, "pvalue"], method = "BH")
-    
+      zscore <- (out_mean - in_mean) / sd(unlist(outgroup), na.rm = TRUE)
+
+      res <- c(ingroup_n = length(unlist(ingroup)), ingroupnames = ingroupnames, ingroup_mean = in_mean,
+               outgroup_n = length(unlist(outgroup)), outgroup_mean = out_mean, zscore = zscore,
+               oddsratio = delta, pvalue = pvalue,
+               BH_pvalue = NA, SignedBH_pvalue = NA,
+               background_n = NA, background_mean = NA)
+
+      return(res)
+
+    },c(ingroup_n = numeric(1), ingroupnames = "", ingroup_mean = numeric(1),
+        outgroup_n = numeric(1), outgroup_mean = numeric(1), zscore = numeric(1),
+        oddsratio = numeric(1), pvalue = numeric(1),
+        BH_pvalue = numeric(1), SignedBH_pvalue = numeric(1),
+        background_n = numeric(1), background_mean = numeric(1)))
+    # update
+    results <- t(results2)
+    rownames(results) <- geneset$names
+    results <- as.data.frame(results)
+    results[,'pvalue'] <- as.numeric(results[,'pvalue'])
+    results[,'ingroup_n'] <- as.numeric(results[,'ingroup_n'])
+    results[,'outgroup_n'] <- as.numeric(results[,'outgroup_n'])
+    results[,'oddsratio'] <- as.numeric(results[,'oddsratio'])
+    results[,'ingroup_mean'] <- as.numeric(results[,'ingroup_mean'])
+    results[,'outgroup_mean'] <- as.numeric(results[,'outgroup_mean'])
+    results[,'background_n'] <- as.numeric(results[,'background_n'])
+    results[,'background_mean'] <- as.numeric(results[,'background_mean'])
+    results[,'zscore'] <- as.numeric(results[,'zscore'])
+    results[,'BH_pvalue'] <- p.adjust(results[,'pvalue'], method = "BH")
+
+
     if (!is.null(min_p_threshold)) {
-      results = results[results$pvalue < min_p_threshold,]
+      results <- results[results[,'pvalue'] < min_p_threshold, ]
       return(results)
-    } else{
+    } else {
       return(results)
     }
   }

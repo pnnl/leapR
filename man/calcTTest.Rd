@@ -35,5 +35,5 @@ append results to ExpressionSet with two extra columsn: `pvalue` and `difference
         # read in the patient groups
         data("shortlist")
         data("longlist")
-        calcTTest(tset, 'transcriptomics', shortlist, longlist) 
+        calcTTest(tset, 'transcriptomics', shortlist, longlist)
 }
