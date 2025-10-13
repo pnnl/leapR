@@ -40,7 +40,7 @@ This combines matrices of different omics types together and adds prefix tags to
 
 
         # merge the three datasets by rows and add prefix tags for different omics types
-        multi_omics = combine_omics(list(pset, tset, phset), list(NA,NA,'hgnc_id'))
+        multi_omics <- combine_omics(list(pset, tset, phset), list(NA,NA,'hgnc_id'))
 
 
 }

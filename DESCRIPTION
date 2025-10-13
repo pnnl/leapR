@@ -9,7 +9,7 @@ Description: leapR is a package that identifies pathways that are enriched acros
 Depends: R (>= 4.5.0)
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 biocViews: 
   GeneSetEnrichment,
   Proteomics,
@@ -26,6 +26,8 @@ Imports:
     SummarizedExperiment
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 License: MIT + file LICENSE
+Config/testthat/edition: 3

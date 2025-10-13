@@ -138,16 +138,16 @@ enrichment_in_abundance <-
     results <- t(results2)
     rownames(results) <- geneset$names
     results <- as.data.frame(results)
-    results[,'pvalue'] <- as.numeric(results[,'pvalue'])
-    results[,'ingroup_n'] <- as.numeric(results[,'ingroup_n'])
-    results[,'outgroup_n'] <- as.numeric(results[,'outgroup_n'])
-    results[,'oddsratio'] <- as.numeric(results[,'oddsratio'])
-    results[,'ingroup_mean'] <- as.numeric(results[,'ingroup_mean'])
-    results[,'outgroup_mean'] <- as.numeric(results[,'outgroup_mean'])
-    results[,'background_n'] <- as.numeric(results[,'background_n'])
-    results[,'background_mean'] <- as.numeric(results[,'background_mean'])
-    results[,'zscore'] <- as.numeric(results[,'zscore'])
-    results[,'BH_pvalue'] <- p.adjust(results[,'pvalue'], method = "BH")
+    # results[,'pvalue'] <- as.numeric(results[,'pvalue'])
+    # results[,'ingroup_n'] <- as.numeric(results[,'ingroup_n'])
+    # results[,'outgroup_n'] <- as.numeric(results[,'outgroup_n'])
+    # results[,'oddsratio'] <- as.numeric(results[,'oddsratio'])
+    # results[,'ingroup_mean'] <- as.numeric(results[,'ingroup_mean'])
+    # results[,'outgroup_mean'] <- as.numeric(results[,'outgroup_mean'])
+    # results[,'background_n'] <- as.numeric(results[,'background_n'])
+    # results[,'background_mean'] <- as.numeric(results[,'background_mean'])
+    # results[,'zscore'] <- as.numeric(results[,'zscore'])
+    # results[,'BH_pvalue'] <- p.adjust(results[,'pvalue'], method = "BH")
 
 
     if (!is.null(min_p_threshold)) {

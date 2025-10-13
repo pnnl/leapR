@@ -21,7 +21,7 @@ correlation_enrichment <- function(geneset, eset, assay_name, mapping_column = N
   ids <- rownames(eset)
   cols <- seq_along(1:ncol(eset))
   if (!is.na(mapping_column)) {
-    map <- SummarizedExperiment::rowData(eset)[, mapping_column, drop=FALSE]
+    map <- SummarizedExperiment::rowData(eset)[, mapping_column, drop = TRUE]
   } else {
     map <- rownames(eset)
   }

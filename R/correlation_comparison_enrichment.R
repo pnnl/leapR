@@ -21,6 +21,8 @@ correlation_comparison_enrichment <- function(geneset, eset, assay_name,
                                               mode = "original") {
   allgenes <- unique(unlist(as.list(geneset$matrix)))
 
+  if (length(set1) == 1 || length(set2) == 1) {stop('Need at least two samples in each group to compare')}
+
   if (!is.na(tag)) allgenes <- vapply(allgenes, function(n) paste(tag, n, sep = "_"), "")
 
   # fixme: add support for an id column
@@ -31,7 +33,7 @@ correlation_comparison_enrichment <- function(geneset, eset, assay_name,
   if (!is.na(mapping_column)) {
     # NOTE: assumes that the mapping column is 1 and everything else
     #       is valid data- which may not be the case
-    ids <- SummarizedExperiment::rowData(eset)[, mapping_column, drop = FALSE]
+    ids <- SummarizedExperiment::rowData(eset)[, mapping_column, drop = TRUE]
     names(ids) <- rownames(eset)
   }
   allgenes_present <- names(ids[which(ids %in% intersect(allgenes, ids))])
@@ -45,8 +47,8 @@ correlation_comparison_enrichment <- function(geneset, eset, assay_name,
   abcols1 <- SummarizedExperiment::assay(eset, assay_name)[allgenes_present, cols1, drop = FALSE]
   abcols2 <- SummarizedExperiment::assay(eset, assay_name)[allgenes_present, cols2, drop = FALSE]
 
-  abcols1 <- abcols1[which(rowSums(!is.na(abcols1)) > 0), drop = FALSE]
-  abcols2 <- abcols2[which(rowSums(!is.na(abcols2)) > 0), drop = FALSE]
+  abcols1 <- abcols1[which(rowSums(!is.na(abcols1)) > 0), cols1, drop = FALSE]
+  abcols2 <- abcols2[which(rowSums(!is.na(abcols2)) > 0), cols2, drop = FALSE]
 
   allgenes_cor1 <- cor(t(abcols1), use = "p")
   allgenes_cor2 <- cor(t(abcols2), use = "p")

@@ -1,10 +1,10 @@
 #' cluster_enrichment
 #'
 #' Cluster enrichment Run enrichment (Fisher's exact) on clusters (lists of identifier groups)
-#'
+#' @param eset is an SummarizedExperiment containing data that is clustered
+#' @param assay_name i shte name of the assay
 #' @param geneset is a GeneSet object for pathway annotation
 #' @param clusters is a list of clusters (gene lists) to calculate enrichment on, generally the result of the `cuttree` function
-#' @param background is a list of genes to serve as the background for enrichment
 #' @param sigfilter minimum significance threshold default is .05
 #'
 #' @details This function will calculate enrichment (Fisher's exact test for membership overlap) on
@@ -34,30 +34,27 @@
 #'         clust.list <- lapply(c(1:5), function(x) return(names(which(transdata.hc.clusters==x))))
 #'         #calculates enrichment for each of the clusters individually and returns a list
 #'         #   of enrichment results
-#'         transdata.hc.enrichment <- leapR::cluster_enrichment(geneset=ncipid, clusters=clust.list, background=rownames(transdata))
+#'         transdata.hc.enrichment <- leapR::cluster_enrichment(eset=tset, assay_name='transcriptomics', geneset=ncipid, clusters=clust.list)
 #'
 #'
 #'
 
-cluster_enrichment <- function(geneset, clusters, background=NA, sigfilter=0.05) {
+cluster_enrichment <- function(eset, assay_name, geneset, clusters, sigfilter=0.05) {
   x <- length(clusters)
 
-  # The default background is all the genes that are in all the clusters
-  # the user can submit their own background list if they want to do something different
-  if (all(is.na(background)))  background <- unlist(vapply(seq_along(1:x), function(n) unlist(clusters[[n]])), numeric(1))
-
-  this <- vapply(seq_along(1:x), function(i) list(enrichment_in_groups(geneset = geneset, targets = clusters[[i]],
-                                                           background = background,
-                                                            method = "fishers")), data.frame(1))
+  this <- vapply(seq_along(1:x), function(i) list(leapR(eset = eset, assay = assay_name,
+                                                        geneset = geneset, enrichment_method = 'enrichment_in_sets',
+                                                        targets = clusters[[i]])), data.frame(1))
 
   # if the sigfilter is set we'll only return those functions that have a p-value
   #   lower than the threshold
   if (is.na(sigfilter)) return(this)
-  outlist <- vapply(seq_along(1:x), function(i){
-    these <- this[[i]]
+
+  outlist <- vapply(this, function(these){
     sigs <- which(these$BH_pvalue < sigfilter)
     these <- these[sigs,]
     return(list(these))
     }, list(list))
+
   return(outlist)
 }

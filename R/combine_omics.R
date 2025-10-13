@@ -42,7 +42,7 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
   # find the common subset of colnames
   common_conditions <- NA
   for (this in omics_list) { ##cannot seem to get rid of for loops
-      if (all(is.na(common_conditions))) common_conditions = colnames(this)
+      if (all(is.na(common_conditions))) common_conditions <- colnames(this)
       that <- colnames(this)
       common_conditions <- common_conditions[which(common_conditions %in% that)]
 
@@ -66,7 +66,7 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
     if (!is.na(id_column)) {
         # we need to add an id_column or use one that's here
           # add the idcolumn from the input phospho data
-      ids <- SummarizedExperiment::rowData(this)[,id_column, drop = FALSE]
+      ids <- SummarizedExperiment::rowData(this)[,id_column, drop = TRUE]
     }else {
       ids <- rownames(this)
     }

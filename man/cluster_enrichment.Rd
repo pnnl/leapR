@@ -4,14 +4,16 @@
 \alias{cluster_enrichment}
 \title{cluster_enrichment}
 \usage{
-cluster_enrichment(geneset, clusters, background = NA, sigfilter = 0.05)
+cluster_enrichment(eset, assay_name, geneset, clusters, sigfilter = 0.05)
 }
 \arguments{
+\item{eset}{is an SummarizedExperiment containing data that is clustered}
+
+\item{assay_name}{i shte name of the assay}
+
 \item{geneset}{is a GeneSet object for pathway annotation}
 
 \item{clusters}{is a list of clusters (gene lists) to calculate enrichment on, generally the result of the `cuttree` function}
-
-\item{background}{is a list of genes to serve as the background for enrichment}
 
 \item{sigfilter}{minimum significance threshold default is .05}
 }
@@ -38,19 +40,19 @@ a list of results matrices in the order of the input clusters.
 
         # read in the pathways
         data("ncipid")
-        
+
         # for the example we will limit the number of transcripts considered - arbitrarily in this case
-        transdata = SummarizedExperiment::assay(tset,'transcriptomics')
+        transdata <- SummarizedExperiment::assay(tset,'transcriptomics')
         transdata[which(is.na(transdata),arr.ind=TRUE)]<-0.0
         # perform heirarchical clustering on the  data
-        transdata.hc = hclust(dist(transdata), method="ward.D2")
-        
-        transdata.hc.clusters = cutree(transdata.hc, k=5)
+        transdata.hc <- hclust(dist(transdata), method="ward.D2")
+
+        transdata.hc.clusters <- cutree(transdata.hc, k=5)
         clust.list <- lapply(c(1:5), function(x) return(names(which(transdata.hc.clusters==x))))
         #calculates enrichment for each of the clusters individually and returns a list
         #   of enrichment results
-        transdata.hc.enrichment = leapR::cluster_enrichment(geneset=ncipid, clusters=clust.list, background=rownames(transdata))
-        
+        transdata.hc.enrichment <- leapR::cluster_enrichment(eset=tset, assay_name='transcriptomics', geneset=ncipid, clusters=clust.list)
+
 
 
 }

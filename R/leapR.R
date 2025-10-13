@@ -324,6 +324,17 @@ leapR = function(geneset, enrichment_method, eset, assay_name, ...){
                                                mapping_column = id_column)
     result <- as.data.frame(temp_result)
   }
+  result[,'pvalue'] <- as.numeric(result[,'pvalue'])
+  result[,'ingroup_n'] <- as.numeric(result[,'ingroup_n'])
+  result[,'outgroup_n'] <- as.numeric(result[,'outgroup_n'])
+  result[,'background_n'] <- as.numeric(result[,'background_n'])
+  result[,'oddsratio'] <- as.numeric(result[,'oddsratio'])
+  result[,'ingroup_mean'] <- as.numeric(result[,'ingroup_mean'])
+  result[,'outgroup_mean'] <- as.numeric(result[,'outgroup_mean'])
+  result[,'background_mean'] <- as.numeric(result[,'background_mean'])
+  result[,'zscore'] <- as.numeric(result[,'zscore'])
+  result[,'BH_pvalue'] <- p.adjust(result[,'pvalue'], method = "BH")
+  result[, 'SignedBH_pvalue'] <- result[,'BH_pvalue'] * sign(as.numeric(result[,'ingroup_mean']))
 
   return(result)
 }

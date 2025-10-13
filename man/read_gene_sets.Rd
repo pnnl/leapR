@@ -29,7 +29,7 @@ geneset list
 read_gene_sets is a function to import external pathway database files in .gmt format
 }
 \examples{
-gfile = system.file('extdata','h.all.v2024.1.Hs.symbols.gmt',package='leapR')
-glist = read_gene_sets(gfile)
+gfile <- system.file('extdata','h.all.v2024.1.Hs.symbols.gmt',package='leapR')
+glist <- read_gene_sets(gfile)
 
 }

@@ -22,10 +22,10 @@ get_pathway_information extracts information about a pathway from a GeneSet obje
 \examples{
 
      library(leapR)
-     
+
      # load example gene set
      data("ncipid")
-     
+
      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 
 

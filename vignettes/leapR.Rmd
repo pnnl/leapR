@@ -246,10 +246,10 @@ protdata.enrichment.sets.module_1 <- leapR::leapR(
 
 # To do enrichment on all modules and return the list of enrichment results tables do this
 protdata.enrichment.sets.modules <- do.call(rbind, leapR::cluster_enrichment(
+  eset = pset,
+  assay_name= 'proteomics',
   geneset = ncipid,
-  clusters = clusters,
-  background = modules, sigfilter = 0.25
-))
+  clusters = clusters, sigfilter = 0.25))
 ## nothing is enriched
 rmarkdown::paged_table(protdata.enrichment.sets.modules[, cols_to_display])
 ```

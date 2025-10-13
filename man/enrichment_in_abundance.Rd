@@ -19,7 +19,7 @@ enrichment_in_abundance(
 )
 }
 \arguments{
-\item{geneset}{Gene set to calculate enrichmnet}
+\item{geneset}{Gene set to calculate enrichment}
 
 \item{eset}{Molecular abundance data in `SummarizedExperiment` format}
 
