@@ -98,6 +98,7 @@ adjusted p-value lower than the specified threshold. If \code{sample_n} is speci
 pathway members to the specified number of components.
 \cr \cr
 correlation_enrichment
+\cr
 Calculates the enrichment of a pathway based on correlation between pathway members across conditions versus correlation between members not in the pathway.
 For each pathway in \code{geneset} calculates the pairwise correlation between all pathway members and non-pathway members
 across the specified \code{primary_columns} conditions in \code{eset}. Note that for large matrices this can take a long

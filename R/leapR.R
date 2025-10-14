@@ -163,6 +163,13 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
                                       "enrichment_in_sets")))
     stop("enrichment_method must be one of the methods designated in the function documentation")
 
+  #check that geneset is a geneset
+  if (!is(geneset, 'geneset_data'))
+    stop("geneset must be geneset object")
+
+  #check that eset is a SummarizedExpression object
+  if (!is(eset,'SummarizedExperiment'))
+    stop("eset must be SummarizedExperiment object")
 
   if (missing(assay_name)) {
     assay_name <- names(assay(eset))[1]

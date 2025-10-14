@@ -22,12 +22,9 @@
 #' \item{matrix}{Matrix containing the genes in the pathways}
 #' }
 #' @source MSIGDB
+#' @url https://www.gsea-msigdb.org/gsea/msigdb_license_terms.jsp
 #'
 "krbpaths"
-
-#' MSIGDB
-#' Is this necessary?
-"msigdb"
 
 #' Kinase substrate lists
 #'
