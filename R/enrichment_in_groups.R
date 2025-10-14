@@ -94,11 +94,11 @@ enrichment_in_groups <- function(geneset, targets = NULL, background = NULL, ass
         in_group_name <- paste(intersect(backlist, grouplist), collapse = ", ")
 
         if (abundance_column %in% colnames(background)) { # we are using exprs fro values
-          in_group <- SummarizedExperiment::assay(background, assay_name)[which(backlist %in% grouplist), abundance_column, drop = FALSE]
-          backlist <- SummarizedExperiment::assay(background, assay_name)[, abundance_column, drop = FALSE]
+          in_group <- SummarizedExperiment::assay(background, assay_name)[which(backlist %in% grouplist), abundance_column, drop = TRUE]
+          backlist <- SummarizedExperiment::assay(background, assay_name)[, abundance_column, drop = TRUE]
         } else {
-          in_group <- SummarizedExperiment::rowData(background)[which(backlist %in% grouplist), abundance_column, drop = FALSE]
-          backlist <- SummarizedExperiment::rowData(background)[, abundance_column, drop = FALSE]
+          in_group <- SummarizedExperiment::rowData(background)[which(backlist %in% grouplist), abundance_column, drop = TRUE]
+          backlist <- SummarizedExperiment::rowData(background)[, abundance_column, drop = TRUE]
         }
       }
 

@@ -232,7 +232,7 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
       if (is.null(id_column))
         backlist <- rownames(background)
       else
-        backlist <- SummarizedExperiment::rowData(background)[,id_column, drop = FALSE]
+        backlist <- SummarizedExperiment::rowData(background)[,id_column, drop = TRUE]
     }else if (is.list(background)) {
       backlist  <- background
     }
@@ -240,7 +240,7 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
       if (is.null(id_column))
         backlist <- rownames(background)
       else
-        backlist <- SummarizedExperiment::rowData(background)[,id_column]
+        backlist <- SummarizedExperiment::rowData(background)[,id_column, drop = TRUE]
    }
 
     if (greaterthan == FALSE & !is.null(threshold)) {
