@@ -185,7 +185,6 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
     # id_column will replace mapping_column
     # randomize might change - TBD
 
-    # TODO: add a validation that primary_columns is one column id for this case
     if (is.null(primary_columns)) {
       if (length(primary_columns) > 1) { stop("'primary_columns' must be a string of length 1") }
     }
@@ -194,7 +193,6 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
       ##primary_columsn can be in either the abundance data or the featureData, so here we check
       all_names <- c(colnames(eset), colnames(SummarizedExperiment::rowData(eset)))
 
-      # TODO: add a validation that eset has a column named primary_columns
       if (!is.element(primary_columns, all_names)) {stop("'primary_columns' must be column name of 'eset'")}
     }
 
@@ -217,7 +215,6 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
 
     if (!is.null(primary_columns)) {
       # We'll do the list splitting here
-      # TODO: add a validation that the primary_columns is one column for this case
       if (typeof(primary_columns) == 'list' && length(primary_columns) > 1) {stop("must specifiy one column for 'primary_columns'")}
       else if (typeof(primary_columns) != "character") {stop("must specify one column for 'primary_columns'")}
     }
@@ -226,7 +223,6 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
       ##primary_columsn can be in either the abundance data or the featureData, so here we check
       all_names <- c(colnames(eset), colnames(SummarizedExperiment::rowData(eset)))
 
-      # TODO: add a validation that the eset has a column with the primary_columns name
       if (!is.element(primary_columns, all_names)) {stop("'primary_columns' must be a column name of 'eset'")}
     }
 
@@ -247,7 +243,6 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
         backlist <- SummarizedExperiment::rowData(background)[,id_column]
    }
 
-        # TODO: we should allow the user to specify if they want it greater than or less than for the threshold
     if (greaterthan == FALSE & !is.null(threshold)) {
       if (primary_columns %in% colnames(eset)) {
         targ_ind <- which(SummarizedExperiment::assay(eset,assay_name)[,primary_columns] < threshold)

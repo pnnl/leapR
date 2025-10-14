@@ -97,7 +97,7 @@ enrichment_in_abundance <-
       if (fdr) {
         background <- c()
         abundances <- c(ingroup, outgroup)
-        for (i in 1:fdr) { #TODO
+        for (i in 1:fdr) { #add this to unit tests when you can
           # randomly sample genes for fdr times
           ingroup <- sample(seq_along(1:length(abundances)), length(ingroup))
           outgroup <- which(!seq_along(1:length(abundances)) %in% ingroup)
