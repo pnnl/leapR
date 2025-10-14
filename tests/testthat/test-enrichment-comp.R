@@ -9,4 +9,9 @@ test_enrichment_comp <- function(){
     secondary_columns = longlist
   )
 
+  sigs <- subset(protdata.enrichment.svl,BH_pvalue < 0.05)
+
+  expect_equal(nrow(sigs), 50)
 }
+
+

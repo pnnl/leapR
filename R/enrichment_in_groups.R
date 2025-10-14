@@ -103,7 +103,7 @@ enrichment_in_groups <- function(geneset, targets = NULL, background = NULL, ass
       }
 
       in_path <- length(in_group)
-      if ((in_path > minsize) & (any(!is.na(in_path))) &!all(is.na(in_group))) {
+      if ((in_path > minsize) & (any(!is.na(in_path))) & !all(is.na(in_group))) {
         in_back <- length(backlist)
         # The above block of code was replaced by the tryCatch block below to handle errors and warnings more elegantly.
         # The if(class(enr)) statement causes an error which doesn't let the rest of the code run.
@@ -111,7 +111,8 @@ enrichment_in_groups <- function(geneset, targets = NULL, background = NULL, ass
         enr <- NA
         enr <- tryCatch(
           {
-            suppressWarnings(ks.test(in_group, backlist))
+            #suppressWarnings(
+            ks.test(in_group, backlist)#)
           },
           error = function(e) {
             if (!silence_try_errors) message("An Error Occurred in KS test calculation")
@@ -165,15 +166,6 @@ enrichment_in_groups <- function(geneset, targets = NULL, background = NULL, ass
   results <- t(results2)
   rownames(results) <- geneset$names
   results <- as.data.frame(results)
-  # results[,'pvalue'] <- as.numeric(results[,'pvalue'])
-  # results[,'ingroup_n'] <- as.numeric(results[,'ingroup_n'])
-  # results[,'outgroup_n'] <- as.numeric(results[,'outgroup_n'])
-  # results[,'oddsratio'] <- as.numeric(results[,'oddsratio'])
-  # results[,'ingroup_mean'] <- as.numeric(results[,'ingroup_mean'])
-  # results[,'outgroup_mean'] <- as.numeric(results[,'outgroup_mean'])
-  # results[,'zscore'] <- as.numeric(results[,'zscore'])
-  # results[,'BH_pvalue'] <- p.adjust(results[,'pvalue'], method = "BH")
-  # results[, 'SignedBH_pvalue'] <- results[,'BH_pvalue'] * sign(as.numeric(results[,'ingroup_mean']))
 
   return(results)
 }

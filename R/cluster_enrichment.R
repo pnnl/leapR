@@ -42,7 +42,7 @@
 cluster_enrichment <- function(eset, assay_name, geneset, clusters, sigfilter=0.05) {
   x <- length(clusters)
 
-  this <- vapply(seq_along(1:x), function(i) list(leapR(eset = eset, assay = assay_name,
+  this <- vapply(seq_along(1:x), function(i) list(leapR(eset = eset, assay_name = assay_name,
                                                         geneset = geneset, enrichment_method = 'enrichment_in_sets',
                                                         targets = clusters[[i]])), data.frame(1))
 

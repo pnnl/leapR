@@ -61,14 +61,12 @@ enrichment_in_abundance <-
       outgroupnames <- groupnames[which(!groupnames %in% grouplist)] |> unique()
 
       if (!is.null(sample_n)) {
-        if (sample_n > length(ingroupnames) ||
-          sample_n > length(outgroupnames)) {
-          next
+        if (sample_n <= length(ingroupnames) ||
+          sample_n <= length(outgroupnames)) {
+          ingroupnames <- sample(ingroupnames, sample_n)
+          outgroupnames <- sample(outgroupnames, sample_n)
         }
-        ingroupnames <- sample(ingroupnames, sample_n)
-        outgroupnames <- sample(outgroupnames, sample_n)
       }
-
       ingroup <- SummarizedExperiment::assay(eset, assay_name)[
         which(groupnames %in% ingroupnames),
         abundance_column[which(abundance_column %in% colnames(eset))]

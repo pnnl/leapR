@@ -20,7 +20,7 @@ read_gene_sets <- function(gsfile, gene.labels=NA, gs.size.threshold.min=5, gs.s
   temp <- readr::read_lines(gsfile)
 
   max.Ng <- length(temp)
-  temp.size.G <- vapply(seq_along(1:max.Ng), function(i){ #vector(length = max.Ng, mode = "numeric")
+  temp.size.G <- vapply(seq_along(1:max.Ng), function(i){
     length(unlist(strsplit(temp[[i]], "\t"))) - 2
   }, double(1))
 
@@ -35,7 +35,9 @@ read_gene_sets <- function(gsfile, gene.labels=NA, gs.size.threshold.min=5, gs.s
     existing.set <- rep(TRUE, length(gene.set.tags))
 
     set.size <- length(existing.set[existing.set == TRUE])
-    if ((set.size < gs.size.threshold.min) || (set.size > gs.size.threshold.max)) next
+    if ((set.size < gs.size.threshold.min) || (set.size > gs.size.threshold.max)) {
+      return(NULL)
+    }
 
     return(list(gvals = c(gene.set.tags[existing.set], rep(NA, max.size.G - temp.size.G[i])),
                 gsnames = gene.set.name,

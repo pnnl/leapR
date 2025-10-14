@@ -5,3 +5,7 @@ protdata.enrichment.correlation <- leapR::leapR(
   assay_name = "proteomics",
   eset = pset
 )
+
+sigs <- subset(protdata.enrichment.correlation,BH_pvalue < 0.05)
+
+expect_equal(nrow(sigs), 71)

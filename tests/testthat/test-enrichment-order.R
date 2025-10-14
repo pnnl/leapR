@@ -5,3 +5,9 @@ protdata.enrichment.order <- leapR::leapR(
   assay_name = "proteomics",
   primary_columns = "TCGA-13-1484"
 )
+
+
+sigs <- subset(protdata.enrichment.order,BH_pvalue < 0.5)
+
+expect_equal(nrow(sigs), 5)
+
