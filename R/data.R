@@ -21,8 +21,7 @@
 #' \item{sizes}{Number of genes in the signaling pathways}
 #' \item{matrix}{Matrix containing the genes in the pathways}
 #' }
-#' @source MSIGDB
-#' @url https://www.gsea-msigdb.org/gsea/msigdb_license_terms.jsp
+#' @source https://www.gsea-msigdb.org/gsea/msigdb_license_terms.jsp
 #'
 "krbpaths"
 

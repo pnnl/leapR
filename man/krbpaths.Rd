@@ -14,7 +14,7 @@ A list with 4 items
 }
 }
 \source{
-MSIGDB
+https://www.gsea-msigdb.org/gsea/msigdb_license_terms.jsp
 }
 \usage{
 krbpaths

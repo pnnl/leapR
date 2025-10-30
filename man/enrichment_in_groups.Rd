@@ -6,7 +6,7 @@
 \usage{
 enrichment_in_groups(
   geneset,
-  targets = NULL,
+  targets = c(),
   background = NULL,
   assay_name = NULL,
   method = "fishers",
@@ -26,13 +26,15 @@ enrichment_in_groups(
 
 \item{assay_name}{is the name of the assay to use from the background}
 
-\item{method}{method to use for statistical test, options are 'fishers' or 'ks'}
+\item{method}{method to use for statistical test, options are
+'fishers' or 'ks'}
 
 \item{minsize}{minimum size of set}
 
 \item{mapping_column}{column name of mapping identifiers}
 
-\item{abundance_column}{columns mapping abundance, either in the `assay` matrix or `rowData`}
+\item{abundance_column}{columns mapping abundance, either in the `assay`
+matrix or `rowData`}
 
 \item{randomize}{true/false whether to randomize}
 
@@ -42,7 +44,8 @@ enrichment_in_groups(
 data frame with enrichment results
 }
 \description{
-Calculate the enrichment in pathways using Fisher's exact or Kolmogorov-Smirnov test, using either
+Calculate the enrichment in pathways using Fisher's exact or
+Kolmogorov-Smirnov test, using either
 the primary_columns to identify feature or the targets list.
 # access through leapr wrapper
 }

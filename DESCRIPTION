@@ -1,10 +1,11 @@
 Package: leapR
 Title: Layered enrichment analysis of pathways R
-Version: 0.99.3
-Authors@R: 
-    person("Jason", "McDermott", email = "jason.mcdermott@pnnl.gov", role = c("aut"))
-    person("Vincent","Danna",email="vincent.danna@pnnl.gov",role='ctb')
-    person("Sara", "Gosline", email = "sara.gosline@pnnl.gov", role = c('aut',"cre"), comment = c(ORCID = "0000-0002-6534-4774"))
+Version: 0.99.4
+Authors@R: c(
+    person("Sara", "Gosline", email = "sara.gosline@pnnl.gov", role = c('aut',"cre"), comment = c(ORCID = "0000-0002-6534-4774")),
+    person("Jason", "McDermott", email = "jason.mcdermott@pnnl.gov", role = "aut"),
+    person("Vincent","Danna",email="vincent.danna@pnnl.gov",role='ctb'),
+    person("National Institutes of Health", , role = 'fnd'))
 Description: leapR is a package that identifies pathways that are enriched across diverse 'omics experiments. It leverages any tabular expression data (proteomics, transcriptomics) using the `SummarizedExperiment` object. It works with any pathway in the .gct file format. 
 Depends: R (>= 4.5.0)
 Encoding: UTF-8

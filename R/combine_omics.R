@@ -1,37 +1,45 @@
 #' combine_omics
-#'
-#' Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
+#' Combine two or more omics matrices into one multi-omics matrix with
+#' 'tagged' ids.
 #'
 #' @importFrom SummarizedExperiment SummarizedExperiment
 #' @importFrom SummarizedExperiment rowData
 #' @importFrom SummarizedExperiment assay
 #' @importFrom SummarizedExperiment assays
-#' @param omics_list Is a list of \code{SummarizedExperiment} each with one assay
-#' @param id_list List of identifiers to use, in the same order as the omics_list elements. If an element
+#' @param omics_list Is a list of \code{SummarizedExperiment} each with
+#'  one assay
+#' @param id_list List of identifiers to use, in the same order as the
+#' omics_list elements. If an element
 #' is `NA`, then rownames are used.
-#' @return \code{SummarizedExperiment} with an additional assay called `combined`
-#' @details This combines matrices of different omics types together and adds prefix tags to the ids.
+#' @return \code{SummarizedExperiment} with an additional assay called
+#'  `combined`
+#' @details This combines matrices of different omics types together and
+#' adds prefix tags to the ids.
 #'
 #' @examples
 #'         library(leapR)
+#'         url <- 'https://api.figshare.com/v2/file/download/56536217'
 #'
-#'
-#'         pdata <- download.file('https://api.figshare.com/v2/file/download/56536217',method='libcurl',destfile='protData.rda')
+#'         pdata <- download.file(url,method='libcurl',destfile='protData.rda')
 #'         load('protData.rda')
 #'         p <- file.remove("protData.rda")
 #'
-#'         tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
+#'         url <- "https://api.figshare.com/v2/file/download/56536214"
+#'         tdata <- download.file(url,method='libcurl',destfile='transData.rda')
 #'         load('transData.rda')
 #'         p <- file.remove("transData.rda")
 #'
-#'         phdata<-download.file('https://api.figshare.com/v2/file/download/56536211',method='libcurl',destfile = 'phosData.rda')
+#'         url <- 'https://api.figshare.com/v2/file/download/56536211'
+#'         phdata<-download.file(url,method='libcurl',destfile = 'phosData.rda')
 #'         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
 #'         load('phosData.rda')
 #'         p <- file.remove('phosData.rda')# read in the example protein data
 #'
 #'
-#'         # merge the three datasets by rows and add prefix tags for different omics types
-#'         multi_omics <- combine_omics(list(pset, tset, phset), list(NA,NA,'hgnc_id'))
+#'         # merge the three datasets by rows and add prefix tags for
+#'         # different omics types
+#'         multi_omics <- combine_omics(list(pset, tset, phset),
+#'                     list(NA,NA,'hgnc_id'))
 #'
 #'
 #' @export
@@ -48,11 +56,12 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
 
   }
 
-  if (length(common_conditions) == 0) stop("No common conditions found")
+  stopifnot(length(common_conditions) >0)
 
   result <- NA
   allfeat <- NA
-  for (i in seq_along(1:length(omics_list))) { ##cannot seem to get rid of for loops for this test
+  for (i in seq_len(length(omics_list))) {
+    ##cannot seem to get rid of for loops for this test
     this <- omics_list[[i]]
     id_column <- id_list[[i]]
 
@@ -75,7 +84,8 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
 
       # tag all the ids appropriately
       expr <- SummarizedExperiment::assay(this,feat)
-      rownames(expr) <- vapply(rownames(expr), function(n) paste0(tag, n, sep = "_"), "")
+      rownames(expr) <- vapply(rownames(expr), function(n)
+        paste0(tag, n, sep = "_"), "")
 
       if (all(is.na(result))) result <- expr
       else result <- rbind(result, expr)
@@ -87,6 +97,8 @@ combine_omics <- function(omics_list, id_list = rep(NA,length(omics_list))){
 
   allfeat <- data.frame(allfeat)
   rownames(allfeat) <- rownames(result)
-
-  return(SummarizedExperiment::SummarizedExperiment(assays = as(list(combined = result),'SimpleList'), rowData = allfeat))
+  alist <-  as(list(combined = result),'SimpleList')
+  res <- SummarizedExperiment::SummarizedExperiment(assays = alist,
+                                                    rowData = allfeat)
+  return(res)
 }

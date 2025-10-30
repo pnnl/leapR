@@ -13,13 +13,19 @@
 #' @param mapping_column Column to use to map identifiers, if not rownames
 #' @return list of enrichment statistic table and correlation matrix
 
-correlation_enrichment <- function(geneset, eset, assay_name, mapping_column = NA) { # }, tag=NA) {
+correlation_enrichment <- function(geneset, eset,
+                                   assay_name,
+                                   mapping_column = NA) {
+
+  stopifnot(is(geneset,'geneset_data'),
+            is(eset,'SummarizedExperiment'))
+
   ## which genes are in geneset
   allgenes <- unique(unlist(as.list(geneset$matrix)))
 
   # fixme: add support for an id column
   ids <- rownames(eset)
-  cols <- seq_along(1:ncol(eset))
+  cols <- seq_len(ncol(eset))
   if (!is.na(mapping_column)) {
     map <- SummarizedExperiment::rowData(eset)[, mapping_column, drop = TRUE]
   } else {
@@ -30,10 +36,14 @@ correlation_enrichment <- function(geneset, eset, assay_name, mapping_column = N
 
   # NOTE: assumes that the mapping column is 1 and everything else
   #       is valid data- which may not be the case
-  allgenes_cor <- cor(t(SummarizedExperiment::assay(eset, assay_name)[allgenes_present, cols, drop = FALSE]), use = "p")
+  cm <- t(SummarizedExperiment::assay(eset, assay_name)[allgenes_present,
+                                                        cols,
+                                                        drop = FALSE])
+  allgenes_cor <- cor(cm, use = "p")
 
   return(list(
-    enrichment = enrichment_in_relationships(geneset, allgenes_cor, idmap = map),
+    enrichment = enrichment_in_relationships(geneset,
+                                             allgenes_cor, idmap = map),
     corrmat = allgenes_cor
   ))
 }

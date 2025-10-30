@@ -1,7 +1,7 @@
 #' enrichment_in_abundance
 #'
-#' Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
-# # access through leapr wrapper
+#' Enrichment in abundance calculates enrichment in pathways by the difference
+#' in abundance of the pathway members.
 #' @importFrom stats sd
 #' @importFrom stats p.adjust
 #' @importFrom SummarizedExperiment assay
@@ -15,35 +15,26 @@
 #' @param abundance_column  Columns to use to quantify abundance
 #' @param fdr number of times to sample for FDR value
 #' @param matchset Name of a set to use for enrichment
-#' @param sample_comparison list of samples to use as comparison
+#' @param sample_comparison list of samples to use as comparison. if missing
+#' background (eset) is used
 #' @param min_p_threshold  Only include p-values lower than this
 #' @param sample_n size of sample to use
 #' @param silence_try_errors set to true to silence try errors
 #' @return data frame of enrichment result
 
-enrichment_in_abundance <-
-  function(geneset,
-           eset,
-           assay_name,
-           mapping_column = NULL,
-           abundance_column = NULL,
-           fdr = 0,
-           matchset = NULL,
-           sample_comparison = NULL,
-           min_p_threshold = NULL,
-           #         tag = NA,
-           sample_n = NULL,
-           silence_try_errors = TRUE) {
-    # for each category in geneset calculates the abundance level
-    #     of the genes/proteins in the category versus those
-    #     not in the category and calculate a pvalue based on a
-    #     two sided t test
-    # If the sample_comparison variable is set then do a comparison between this
-    #     abundance and sample comparison set which is vector of valid column (sample) ids
+enrichment_in_abundance <- function(geneset,eset, assay_name,
+            mapping_column = NULL, abundance_column = NULL, fdr = 0,
+           matchset = NULL, sample_comparison = NULL,
+           min_p_threshold = NULL, sample_n = NULL, silence_try_errors = TRUE) {
 
+    #required input is the geneset, background and an abundance column
+    stopifnot(is(geneset,'geneset_data'),
+              is(eset,'SummarizedExperiment'),
+              !is.null(abundance_column))
 
     if (!is.null(mapping_column)) {
-      groupnames <- SummarizedExperiment::rowData(eset)[, mapping_column, drop = TRUE]
+      groupnames <- SummarizedExperiment::rowData(eset)[, mapping_column,
+                                                        drop = TRUE]
     } else {
       groupnames <- rownames(eset)
     }
@@ -51,12 +42,13 @@ enrichment_in_abundance <-
     if (!is.null(matchset)) {
       geneset <- geneset[which(geneset$names %in% matchset)]
     }
-    results2 <- vapply(seq_along(1:length(geneset$names)), function(i){
+    results2 <- vapply(seq_len(length(geneset$names)), function(i){
 
       thisname <- geneset$names[i]
       thissize <- geneset$size[i]
       thisdesc <- geneset$desc[i]
-      grouplist <- setdiff(geneset$matrix[i, seq_along(1:thissize), drop = FALSE],"")
+      grouplist <- setdiff(geneset$matrix[i, seq_len(thissize),
+                                          drop = FALSE],"")
       ingroupnames <- grouplist[which(grouplist %in% groupnames)]
       outgroupnames <- groupnames[which(!groupnames %in% grouplist)] |> unique()
 
@@ -75,10 +67,13 @@ enrichment_in_abundance <-
       if (!is.null(sample_comparison)) {
         outgroup <- SummarizedExperiment::assay(eset, assay_name)[
           which(groupnames %in% ingroupnames),
-          sample_comparison[which(sample_comparison %in% colnames(eset)), drop = FALSE]
+          sample_comparison[which(sample_comparison %in% colnames(eset)),
+                            drop = FALSE]
         ]
       } else {
-        outgroup <- SummarizedExperiment::assay(eset, assay_name)[which(groupnames %in% outgroupnames), abundance_column, drop = FALSE]
+        outgroup <- SummarizedExperiment::assay(eset, assay_name)
+        outgroup <- outgroup[which(groupnames %in% outgroupnames),
+                             abundance_column, drop = FALSE]
       }
       in_mean <- mean(unlist(ingroup), na.rm = TRUE)
       out_mean <- mean(unlist(outgroup), na.rm = TRUE)
@@ -97,10 +92,10 @@ enrichment_in_abundance <-
       if (fdr) {
         background <- c()
         abundances <- c(ingroup, outgroup)
-        for (i in 1:fdr) { #add this to unit tests when you can
+        for (i in seq_len(fdr)) { #add this to unit tests when you can
           # randomly sample genes for fdr times
-          ingroup <- sample(seq_along(1:length(abundances)), length(ingroup))
-          outgroup <- which(!seq_along(1:length(abundances)) %in% ingroup)
+          ingroup <- sample(seq_len(length(abundances)), length(ingroup))
+          outgroup <- which(!seq_len(length(abundances)) %in% ingroup)
           ingroup <- abundances[ingroup]
           outgroup <- abundances[outgroup]
           in_mean <- mean(ingroup, na.rm = TRUE)
@@ -111,24 +106,27 @@ enrichment_in_abundance <-
         pvalue <- sum(abs(background) > abs(delta)) / length(background)
       }
 
-      # changing the order of output columns to match with the results from the other enrichment methods
-
       ingroupnames <- paste(ingroupnames, collapse = ", ")
       # question : do we want to calculate an oddsratio for this too?
-      # answer: yes, but for now we'll use the mean of the ingroup compared with the
+      # answer: yes, but for now we'll use the mean of the ingroup compared
+      # with the
       #        distribution of the background as a zscore
       zscore <- (out_mean - in_mean) / sd(unlist(outgroup), na.rm = TRUE)
 
-      res <- c(ingroup_n = length(unlist(ingroup)), ingroupnames = ingroupnames, ingroup_mean = in_mean,
-               outgroup_n = length(unlist(outgroup)), outgroup_mean = out_mean, zscore = zscore,
+      res <- c(ingroup_n = length(unlist(ingroup)),
+               ingroupnames = ingroupnames, ingroup_mean = in_mean,
+               outgroup_n = length(unlist(outgroup)),
+               outgroup_mean = out_mean, zscore = zscore,
                oddsratio = delta, pvalue = pvalue,
                BH_pvalue = NA, SignedBH_pvalue = NA,
                background_n = NA, background_mean = NA)
 
       return(res)
 
-    },c(ingroup_n = numeric(1), ingroupnames = "", ingroup_mean = numeric(1),
-        outgroup_n = numeric(1), outgroup_mean = numeric(1), zscore = numeric(1),
+    },c(ingroup_n = numeric(1), ingroupnames = "",
+        ingroup_mean = numeric(1),
+        outgroup_n = numeric(1), outgroup_mean = numeric(1),
+        zscore = numeric(1),
         oddsratio = numeric(1), pvalue = numeric(1),
         BH_pvalue = numeric(1), SignedBH_pvalue = numeric(1),
         background_n = numeric(1), background_mean = numeric(1)))
@@ -136,17 +134,6 @@ enrichment_in_abundance <-
     results <- t(results2)
     rownames(results) <- geneset$names
     results <- as.data.frame(results)
-    # results[,'pvalue'] <- as.numeric(results[,'pvalue'])
-    # results[,'ingroup_n'] <- as.numeric(results[,'ingroup_n'])
-    # results[,'outgroup_n'] <- as.numeric(results[,'outgroup_n'])
-    # results[,'oddsratio'] <- as.numeric(results[,'oddsratio'])
-    # results[,'ingroup_mean'] <- as.numeric(results[,'ingroup_mean'])
-    # results[,'outgroup_mean'] <- as.numeric(results[,'outgroup_mean'])
-    # results[,'background_n'] <- as.numeric(results[,'background_n'])
-    # results[,'background_mean'] <- as.numeric(results[,'background_mean'])
-    # results[,'zscore'] <- as.numeric(results[,'zscore'])
-    # results[,'BH_pvalue'] <- p.adjust(results[,'pvalue'], method = "BH")
-
 
     if (!is.null(min_p_threshold)) {
       results <- results[results[,'pvalue'] < min_p_threshold, ]

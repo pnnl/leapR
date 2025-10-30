@@ -10,9 +10,7 @@ correlation_comparison_enrichment(
   assay_name,
   set1,
   set2,
-  mapping_column = NA,
-  tag = NA,
-  mode = "original"
+  mapping_column = NA
 )
 }
 \arguments{
@@ -36,6 +34,7 @@ correlation_comparison_enrichment(
 data frame with enrichment results
 }
 \description{
-# internal function to calculate enrichment in differences in correlation between two groups
+# internal function to calculate enrichment in differences in correlation
+# between two groups
 # access through the leapr wrapper
 }

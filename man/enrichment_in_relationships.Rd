@@ -8,7 +8,6 @@ enrichment_in_relationships(
   geneset,
   relationships,
   idmap = NA,
-  mode = "original",
   silence_try_errors = TRUE
 )
 }
@@ -17,9 +16,8 @@ enrichment_in_relationships(
 
 \item{relationships}{table of relationship information, e.g. correlation}
 
-\item{idmap}{list of identifiers to use for mapping, the names of the items should agree with names of features in matrix}
-
-\item{mode}{allowable values are 'original' or anything else}
+\item{idmap}{list of identifiers to use for mapping, the names of the items
+should agree with names of features in matrix}
 
 \item{silence_try_errors}{boolean to silence errors}
 }
@@ -27,7 +25,8 @@ enrichment_in_relationships(
 table of enrichment statistics
 }
 \description{
-enrichment_in_relationships function description is a general way to determine if a pathway
+enrichment_in_relationships function description is a general way to
+determine if a pathway
 is enriched in relationships (interactions, correlation) between its members
 # access through leapr wrapper
 }

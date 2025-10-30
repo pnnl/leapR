@@ -33,7 +33,8 @@ enrichment_in_abundance(
 
 \item{matchset}{Name of a set to use for enrichment}
 
-\item{sample_comparison}{list of samples to use as comparison}
+\item{sample_comparison}{list of samples to use as comparison. if missing
+background (eset) is used}
 
 \item{min_p_threshold}{Only include p-values lower than this}
 
@@ -45,5 +46,6 @@ enrichment_in_abundance(
 data frame of enrichment result
 }
 \description{
-Enrichment in abundance calculates enrichment in pathways by the difference in abundance of the pathway members.
+Enrichment in abundance calculates enrichment in pathways by the difference
+in abundance of the pathway members.
 }

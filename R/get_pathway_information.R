@@ -1,10 +1,11 @@
 #' get_pathway_information
 #'
-#' get_pathway_information extracts information about a pathway from a GeneSet object
+#' get_pathway_information extracts information about a pathway from a
+#' GeneSet object
 #'
 #' @param geneset is a GeneSet object for pathway annotation
 #' @param path  is the name of the gene set pathway to be return
-#' @param remove.tags boolean indicating whether ot remove tags
+#' @param remove.tags boolean indicating whether to remove tags
 #' @return list of pathway information
 #' @examples
 #'
@@ -25,13 +26,15 @@ get_pathway_information <- function(geneset, path, remove.tags=FALSE) {
   thisdesc <- geneset$desc[i]
 
   # default is to look through all members for effects on the pathway
-  grouplist <- geneset$matrix[i,seq_along(1:thissize)]
+  grouplist <- geneset$matrix[i,seq_len(thissize)]
   grouplist <- unique(sort(grouplist[which(grouplist != "")]))
 
   if (remove.tags) {
-    grouplist <- unique(vapply(grouplist, function(n) strsplit(n, "_")[[1]][2], ""))
+    grouplist <- unique(vapply(grouplist, function(n)
+      strsplit(n, "_")[[1]][2], ""))
   }
   thissize <- length(grouplist)
 
-  return(list(name = path, size = thissize, description = thisdesc, geneset = grouplist))
+  return(list(name = path, size = thissize,
+              description = thisdesc, geneset = grouplist))
 }
