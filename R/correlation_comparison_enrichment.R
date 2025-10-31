@@ -12,8 +12,6 @@
 #' @param set1 first set to use
 #' @param set2 second set to use
 #' @param mapping_column Column to use for id mapping within rowData
-#' @param tag Tag to add
-#' @param mode to use, default is 'original'
 #' @return data frame with enrichment results
 #'
 correlation_comparison_enrichment <- function(geneset, eset, assay_name,

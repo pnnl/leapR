@@ -27,7 +27,8 @@ enrichment_in_groups(
 \item{assay_name}{is the name of the assay to use from the background}
 
 \item{method}{method to use for statistical test, options are
-'fishers' or 'ks'}
+'fishers' or 'ks'. NOTE: if you do not call `suppressWarnings` then
+the KS test will warn you about ties.}
 
 \item{minsize}{minimum size of set}
 
@@ -45,7 +46,6 @@ data frame with enrichment results
 }
 \description{
 Calculate the enrichment in pathways using Fisher's exact or
-Kolmogorov-Smirnov test, using either
-the primary_columns to identify feature or the targets list.
-# access through leapr wrapper
+Kolmogorov-Smirnov test, using either the abundance column to identify
+feature or the targets list. access through leapr wrapper
 }
