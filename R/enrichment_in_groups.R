@@ -1,9 +1,8 @@
 #' enrichment_in_groups
 #'
 #' Calculate the enrichment in pathways using Fisher's exact or
-#' Kolmogorov-Smirnov test, using either
-#' the primary_columns to identify feature or the targets list.
-#' # access through leapr wrapper
+#' Kolmogorov-Smirnov test, using either the abundance column to identify
+#' feature or the targets list. access through leapr wrapper
 #' @importFrom SummarizedExperiment SummarizedExperiment
 #' @importFrom SummarizedExperiment rowData
 #' @importFrom SummarizedExperiment assay
@@ -15,7 +14,8 @@
 #' @param background `SummarizedExperiment` describing background to use
 #' @param assay_name is the name of the assay to use from the background
 #' @param method method to use for statistical test, options are
-#' 'fishers' or 'ks'
+#' 'fishers' or 'ks'. NOTE: if you do not call `suppressWarnings` then
+#' the KS test will warn you about ties.
 #' @param minsize minimum size of set
 #' @param mapping_column column name of mapping identifiers
 #' @param abundance_column columns mapping abundance, either in the `assay`
@@ -52,7 +52,8 @@ enrichment_in_groups <- function(geneset,
       grouplist <- sample(unlist(geneset$matrix), length(grouplist))
     }
 
-    # here backlist will be a list of feature names
+    # grouplist and backlist
+    # are both list of feature names of foreground/background
      if (!is.null(mapping_column)) {
         backlist <- SummarizedExperiment::rowData(background)[, mapping_column,
                                                                 drop = TRUE] |>
@@ -60,11 +61,11 @@ enrichment_in_groups <- function(geneset,
      }else{
       backlist <- rownames(background)
      }
-
+    backlist <- unlist(backlist)
     in_back <- length(backlist)
 
     if (method == "fishers") {
-      stopifnot(length(targets)>0)
+      stopifnot(length(targets) > 0)
       enr <- enrichment_by_fishers(targets, backlist, grouplist)
       p <- enr$fisher$p.value
       f <- enr$foldx
@@ -77,39 +78,29 @@ enrichment_in_groups <- function(geneset,
 
     } else if (method == "ks") { # Kolmogorov-Smirnov test
          # in this case "background" must be the continuous variable
-      ## here backlist is a list of values, with namesa s feature names
-      if (is.null(mapping_column)) { # use rownames here
-          backlist <- rownames(SummarizedExperiment::assay(background,
-                                                           assay_name))
-        if (any(abundance_column %in% colnames(background))) { ## use the exprs
-            in_group <- SummarizedExperiment::assay(background,
-                                                    assay_name)
-            backlist <- SummarizedExperiment::assay(background,assay_name)
-        } else { # mapping_column must be a featureData item
-            in_group <- SummarizedExperiment::rowData(background)
-            backlist <- SummarizedExperiment::rowData(background)
 
-        }
-        # reassign backlist to values not strings
-      } else {
-        # mapping_column adds the ability to use phospho-type data
-        # where the gene name (non-unique) is in the
-        backlist <- SummarizedExperiment::rowData(background)
-        backlist <- backlist[, mapping_column, drop = TRUE]
 
-        if (abundance_column %in% colnames(background)) { s
-            in_group <- SummarizedExperiment::assay(background, assay_name)
-            backlist <- SummarizedExperiment::assay(background, assay_name)
-        } else {
-          in_group <- SummarizedExperiment::rowData(background)
-          backlist <- SummarizedExperiment::rowData(background)
-        }
+      #these are the indices of the background
+      group_ind <- which(backlist %in% grouplist)
+      in_group_name <- paste(intersect(backlist, grouplist), collapse = ", ")
+
+      if (any(abundance_column %in% colnames(background))) {
+         in_group <- SummarizedExperiment::assay(background)[group_ind,
+                                                             abundance_column,
+                                                             drop = TRUE]
+         backvals <- SummarizedExperiment::assay(background)[,
+                                                             abundance_column,
+                                       drop = TRUE]
+      } else { ##we are working with rowData
+        in_group <- SummarizedExperiment::rowData(background)[group_ind,
+                                                              abundance_column,
+                                      drop = TRUE]
+        backvals <- SummarizedExperiment::rowData(background)[,
+                                                              abundance_column,
+                                      drop = TRUE]
       }
 
-      in_group <- in_group[grouplist[which(grouplist %in% backlist)],
-                           abundance_column, drop = FALSE]
-      backlist <- backlist[,abundance_column, drop = FALSE]
-      in_group_name <- paste(intersect(backlist, grouplist), collapse = ", ")
+      names(backvals) <- backlist
 
       in_path <- length(in_group)
       if ((in_path > minsize) & (any(!is.na(in_path))) &
@@ -119,12 +110,8 @@ enrichment_in_groups <- function(geneset,
         enr <- tryCatch(
           {
             #suppressWarnings(
-            ks.test(in_group, backlist)#)
-          },
-          error = function(e) {
-            return(NA)
-          }
-        )
+            ks.test(in_group, backvals, exact = FALSE)#)
+          })
         if (length(enr) > 1) {
           p.value <- enr$p.value
         } else {
@@ -135,22 +122,22 @@ enrichment_in_groups <- function(geneset,
         # another that's positive may pertain to zscore too (although not sure
         # it should) rank from largest to smallest
         if (is.null(mapping_column)) {
-          in_rank <- rank(-backlist)[which(rownames(background) %in%
+          in_rank <- rank(-backvals)[which(rownames(background) %in%
                                              grouplist)]
         } else {
-          in_rank <- rank(-backlist)[which(names(backlist) %in% grouplist)]
+          in_rank <- rank(-backvals)[which(names(backvals) %in% grouplist)]
         }
 
         # this will give not a fold enrichment - but a score that ranges
         # from 1 (most in top)
         #      to -1 (most in bottom).
-        foldx <- 1 - ((mean(in_rank, na.rm = TRUE) / length(backlist)) / 0.5)
+        foldx <- 1 - ((mean(in_rank, na.rm = TRUE) / length(backvals)) / 0.5)
 
-        zscore <- (mean(in_group, na.rm = TRUE) - mean(backlist, na.rm = TRUE))
+        zscore <- (mean(in_group, na.rm = TRUE) - mean(backvals, na.rm = TRUE))
         zscore <- zscore / sd(in_group, na.rm = TRUE)
         res <- c(ingroup_n = in_path, ingroupnames = in_group_name,
                  ingroup_mean = mean(in_group, na.rm = TRUE),
-                 outgroup_n = in_back, outgroup_mean = mean(backlist,
+                 outgroup_n = in_back, outgroup_mean = mean(backvals,
                                                             na.rm = TRUE),
                  zscore = zscore,
                  oddsratio = foldx, pvalue = p.value,
@@ -160,7 +147,7 @@ enrichment_in_groups <- function(geneset,
       }else{
           res <- c(ingroup_n = in_path, ingroupnames = in_group_name,
                    ingroup_mean = mean(in_group, na.rm = TRUE),
-                   outgroup_n = in_back, outgroup_mean = mean(backlist,
+                   outgroup_n = in_back, outgroup_mean = mean(backvals,
                                                               na.rm = TRUE),
                    zscore = NA,
                  oddsratio = NA, pvalue = NA,

@@ -27,15 +27,10 @@ need to load the required libraries:
 # load the library
 library(leapR)
 library(gplots)
+library(rmarkdown)
 ```
 
-Then we are ready to install via Bioconductor
-```{r install, eval = FALSE}
 
-library(BiocManager)
-BiocManager::install('leapR')
-
-```
 
 # Definitions 
 *Dataset* - an expression dataset, contained in the Bioconductor 

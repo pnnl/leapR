@@ -250,7 +250,8 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
     # minsize will remain the same
     # id_column will replace mapping_column
     # randomize isn't implemented for this application
-    stopifnot(!is.null(primary_columns) || !is.null(threshold) || !is.null(targets))
+    stopifnot(!is.null(primary_columns) ||
+                !is.null(threshold) || !is.null(targets))
     ##primary_columsn can be in either the abundance data or the featureData,
     all_names <- c(colnames(eset),
                    colnames(SummarizedExperiment::rowData(eset)))
@@ -259,12 +260,14 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
     if (!is.null(primary_columns) && primary_columns %in% colnames(eset)) {
      targ_vec <- SummarizedExperiment::assay(eset,assay_name)[,primary_columns]
     } else {
-     targ_vec <- SummarizedExperiment::assay(eset,assay_name)[,primary_columns]
+     targ_vec <- SummarizedExperiment::rowData(eset)[,primary_columns]
     }
-    if (greaterthan == FALSE ) {
-        targ_ind <- which(targ_vec < threshold)
-    }else{
-        targ_ind <- which(targ_vec > threshold)
+    if(!is.null(threshold)){
+        if (greaterthan == FALSE ) {
+            targ_ind <- which(targ_vec < threshold)
+        }else{
+            targ_ind <- which(targ_vec > threshold)
+        }
     }
 
     if (!is.null(id_column)) {

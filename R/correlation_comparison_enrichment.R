@@ -60,6 +60,5 @@ correlation_comparison_enrichment <- function(geneset, eset, assay_name,
   return(difference_enrichment_in_relationships(geneset,
                                                 allgenes_cor1,
                                                 allgenes_cor2,
-                                                idmap = ids,
-                                                mode = mode))
+                                                idmap = ids))
 }
