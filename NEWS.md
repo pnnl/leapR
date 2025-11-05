@@ -1,3 +1,3 @@
-# leapR 0.99.3
+# leapR 0.99.4
 
 * Initial CRAN submission.

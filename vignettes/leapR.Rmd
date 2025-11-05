@@ -23,14 +23,23 @@ knitr::opts_chunk$set(
 This is intended to be a short introduction to the `leapr` package. First we
 need to load the required libraries:
 
-```{r setup}
+```{r setup, eval = FALSE}
+# install from bioconductor
+if (!require(BiocManager)) {
+  install.packages('BiocManager')
+  BiocManager::install('leapR')
+}
+
+```
+
+
+# Load libraries needed
+```{r libraries}
 # load the library
 library(leapR)
 library(gplots)
 library(rmarkdown)
 ```
-
-
 
 # Definitions 
 *Dataset* - an expression dataset, contained in the Bioconductor 
