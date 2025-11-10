@@ -24,6 +24,10 @@ Imports:
     tibble,
     gplots,
     methods, 
+    ggplot2,
+    dplyr,
+    stringr,
+    tidyr,
     SummarizedExperiment
 Suggests: 
     knitr,
