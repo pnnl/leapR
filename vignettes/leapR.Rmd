@@ -516,8 +516,7 @@ plot <- plot_leapr_bar(
 
 # Using standard ggplot arguments, we can modify the plot further.
 plot + coord_flip() + labs(
-    x = "Enriched Genes",   # modified x axis title
-    y = "False Discovery Rate" # modified y axis title
+    x = "Enriched Genes"   # modified x axis title
 )
 ```
 
