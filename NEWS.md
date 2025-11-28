@@ -1,3 +1,3 @@
-# leapR 0.99.5
+# leapR 0.99.6
 
-* Initial CRAN submission.
+* Built-in Plotting Function Created.
