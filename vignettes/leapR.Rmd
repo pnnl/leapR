@@ -167,7 +167,7 @@ p <- file.remove("phosData.rda")
 ```
  
 ```{r show_pset_example}
-# Inspect the `pset` SummarizedExperiment used in the vignette.
+# Inspect the `pset` SummarizedExperiment.
 str(pset)
 dim(SummarizedExperiment::assay(pset, "proteomics"))
 head(rownames(pset))
