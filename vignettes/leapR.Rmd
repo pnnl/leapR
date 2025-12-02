@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 # Installation
 
-This is intended to be a short introduction to the `leapr` package. First we
+This is intended to be a short introduction to the `leapR` package. First we
 need to load the required libraries:
 
 ```{r setup, eval = FALSE}
@@ -34,11 +34,16 @@ if (!require(BiocManager)) {
 
 
 # Load libraries needed
-```{r libraries}
-# load the library
+```{r libraries, message=FALSE, warning = FALSE}
+# load the core libraries
 library(leapR)
 library(gplots)
 library(rmarkdown)
+# plotting helpers used in this vignette
+library(ggplot2)
+library(dplyr)
+library(tibble)
+library(stringr)
 ```
 
 # Definitions 
@@ -96,15 +101,16 @@ that the normalization method hasn't obscured the desired results.
 
 ### Background
 The background of comparison for functional enrichment is always important,
-but really only impacts the Fisher's exact tests in my applications below.
-The background is the answer to "my functional group of interest is s
-tatistically enriched relative to what?" For Fisher's exact tests this is
-really important. Generally, it is best to compare enrichment versus those 
-components observed in the data - not against the universe of all possible
-components. For example, a proteomics dataset from plasma may have a limited 
-number of proteins observed relative to all possible human proteins. Functional
-enrichment using all possible proteins will yield very different results than 
-if it's performed using only those proteins observed in plasma as a background.
+but it mainly impacts the Fisher's exact tests in the examples below.
+The background answers the question: "My functional group of interest is
+statistically enriched relative to what?" For Fisher's exact tests this is
+critical. Generally, it is best to compare enrichment against the components
+observed in the data (the experiment's universe) rather than the universe of
+all possible components. For example, a proteomics dataset from plasma may
+contain a limited set of proteins compared with all possible human proteins; 
+using the observed proteins as the background usually yields more meaningful 
+results. Using all possible proteins will result in substantially different 
+findings.
 
 ### Multiple hypothesis correction
 When testing the statistical significance of differences in a lot of pathways 
@@ -121,7 +127,7 @@ is taken from the NCI's Pathway Interaction Database (PID) and covers signaling
 pathways in human - but is no longer being actively maintained. 
 They can be loaded as follows:
 
-``` {r pathdb}
+```{r pathdb}
 data(ncipid)
 ```
 
@@ -141,7 +147,7 @@ store example file as `rda` on
 as example.
 
 This data can be loaded as follows:
-``` {r omicsdata, message=FALSE, warning=FALSE}
+```{r omicsdata, message=FALSE, warning=FALSE}
 url <- "https://api.figshare.com/v2/file/download/56536217"
 pdata <- download.file(url, method = "libcurl", destfile = "protData.rda")
 #  as.matrix()
@@ -158,6 +164,14 @@ url <- "https://api.figshare.com/v2/file/download/56536211"
 phdata <- download.file(url, method = "libcurl", destfile = "phosData.rda")
 load("phosData.rda")
 p <- file.remove("phosData.rda")
+```
+ 
+```{r show_pset_example}
+# Inspect the `pset` SummarizedExperiment.
+str(pset)
+dim(SummarizedExperiment::assay(pset, "proteomics"))
+head(rownames(pset))
+head(colnames(pset))
 ```
 We also include some groups of patients to compare stored as R data objects:
 ``` {r ptlists}
@@ -352,7 +366,20 @@ protdata.enrichment.sets.modules <- do.call(rbind,
 rmarkdown::paged_table(protdata.enrichment.sets.modules[, cols_to_display])
 ```
 
-## Example 3. The Kolmogorov–Smirnov test (KS)
+#### Visualizing Fisher's exact results
+```{r fishers_plot, echo=TRUE, warning=FALSE, message=FALSE}
+# Plot the top enriched gene sets from Fisher's exact test
+# Stars indicate significance (None seen here)
+plot_leapr_bar(
+  protdata.enrichment.sets.test,
+  title = "Fisher's Exact Test: Top Enriched Pathways",
+  top_n = 10,
+  star_thresholds = c(0.05, 0.01, 0.001),
+  wrap = 40
+)
+```
+
+## Example 3: The Kolmogorov–Smirnov test (KS)
 Similar to the popular GSEA, KS tests whether a group of components
 (the pathway) is distributed in a statistically significant manner in a
 ranked list of components. That is, if all the members of the pathway are 
@@ -380,7 +407,7 @@ pathway relative to the entire list - closer to 0 is higher in the list and
 closer to 1 is closer to the bottom of the list. Each of these should give 
 consistent results, but will be somewhat different.
 
-``` {r ks, echo=TRUE, warning = FALSE, message=FALSE}
+```{r ks, echo=TRUE, warning = FALSE, message=FALSE}
 # This is how you calculate enrichment in a ranked list 
 # (for example from topology)
 ### using enrichment_wrapper function
@@ -396,11 +423,24 @@ or <- order(protdata.enrichment.sets[, "pvalue"])
 rmarkdown::paged_table(protdata.enrichment.sets[or, cols_to_display])
 ```
 
+#### Visualizing KS test results
+```{r ks_plot, echo=TRUE, warning = FALSE, message=FALSE}
+# Plot the ranked enrichment results
+plot_leapr_bar(
+  protdata.enrichment.sets,
+  title = "Kolmogorov-Smirnov Test: Ranked Enrichment",
+  top_n = 12,
+  fill_sig = "#2166AC",
+  fill_ns = "#B2DFDB",
+  wrap = 38
+)
+```
+
 In this section I'll go through the ideas behind and use of several different 
 kinds of enrichment that I've been working on. Consider this section to be 
 under development and so use at your risk.
 
-## Example 4. Enrichment in correlation
+## Example 4: Enrichment in Correlation
 The idea here is to use the correlation of pathway members to each other versus 
 to non-pathway members as a way to assess functional enrichment. This idea 
 seems sound- pathways that are varying in a correlated way across a bunch of
@@ -418,7 +458,7 @@ to each other versus those pathway members to non-pathway components. The
 correlation relative to non-pathway member correlation (which is similar but 
 slightly different than the other p-values).
 
-``` {r correlation, echo=TRUE, warning=FALSE, message=FALSE}
+```{r correlation, echo=TRUE, warning=FALSE, message=FALSE}
 ### using enrichment_wrapper function
 protdata.enrichment.correlation <- leapR::leapR(
   geneset = ncipid,
@@ -452,12 +492,25 @@ rmarkdown::paged_table(head(protdata.enrichment.correlation.long[or,
                                                             cols_to_display]))
 ```
 
-## Example 5. Phosphoproteomics data analysis
+#### Visualizing correlation enrichment results
+```{r corr_plot, echo=TRUE, warning=FALSE, message=FALSE}
+# Compare correlation patterns across conditions
+plot_leapr_bar(
+  protdata.enrichment.correlation.short,
+  title = "Correlation Enrichment: Short Survivors",
+  top_n = 10,
+  fill_sig = "#1B9E77",
+  fill_ns = "#D8F0E8",
+  wrap = 36
+)
+```
+
+## Example 5: Phosphoproteomics data analysis
 
 In this example we will use phosphoproteomics data to assess the enrichment 
 in known kinase substrates (a proxy for kinase activity)
 
-``` {r phosphoproteomics, echo=TRUE, warning=FALSE, message=FALSE}
+```{r phosphoproteomics, echo=TRUE, warning=FALSE, message=FALSE}
 data("kinasesubstrates")
 
 # for an individual tumor calculate the Kinase-Substrate 
@@ -490,6 +543,31 @@ phosphodata.sets.order <- leapR::leapR(
 or <- order(phosphodata.sets.order[, "pvalue"])
 rmarkdown::paged_table(phosphodata.sets.order[or, cols_to_display])
 ```
+
+#### Visualizing kinase substrate enrichment
+```{r phos_plot, echo=TRUE, warning=FALSE, message=FALSE}
+plot <- plot_leapr_bar(
+  phosphodata.sets.order,
+  title            = "Kinase Substrate Enrichment (Phosphoproteomics)",
+  top_n            = 15,
+  star_thresholds  = c(0.05, 0.01, 1e-3),
+  wrap             = 36,
+  fill_sig         = "#0F766E",  # dark teal for significant
+  fill_ns          = "#99F6E4",  # light teal for non-significant
+  outline          = "grey30",
+  axis_text_y_size = 7,
+  axis_text_x_size = 8
+)
+
+plot
+
+# You can also modify the plot further using standard ggplot2 arguments
+plot + ggplot2::labs(
+  y = expression(-log[10]("adjusted p-value")),
+  caption = "* p<0.05, ** p<0.01, *** p<0.001"
+)
+```
+
 
 ### Figure 2
 We will compare the ability of transcriptomics, proteomics, and 
@@ -543,7 +621,7 @@ phosphodata.comp.enrichment.svl <- leapR::leapR(
 
 
 # set enrichment in transcriptomics data
-# perform the comparison t tes
+# perform the comparison t-test
 tset <- leapR::calcTTest(tset, assay_name = "transcriptomics", 
                          shortlist, longlist)
 
