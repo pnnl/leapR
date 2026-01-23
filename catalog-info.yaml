@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: leap-r
+  title: Leap R
+  description: Layered Enrichment Analysis of Pathways in R (leapR) a tool that carries out statistical enrichment analysis on single- or multi-omics data.
+  annotations:
+    # Conditional host-specific annotations rendered to avoid empty-string values that fail catalog validation.
+    github.com/project-slug: pnnl/leapR
+  links:
+    - title: Leap R Repository
+      url: https://github.com/pnnl/leapR
+    - title: Leap R Publication
+      url: https://pubs.acs.org/doi/full/10.1021/acs.jproteome.0c00963
+  tags:
+    - R
+spec:
+  type: api
+  owner: user:default/sara.gosline_pnnl.gov # Sara Gosline project lead
+  visibility: private # to expose this item in the catalog to others at PNNL, change the visibility to 'public'
+  # system: 
+  lifecycle: production
+
+  # TODO: does leap-r depend on another resource or component?
+  # dependsOn:
+
+  # TODO: does another resource depend on leap-r? 
+  # dependencyOf:
