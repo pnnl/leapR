@@ -220,7 +220,7 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
 .enrichment_wrapper <- function(geneset,enrichment_method, eset, assay_name,
                                 id_column=NULL, primary_columns=NULL,
                                 secondary_columns=NULL, threshold=NULL,
-                                minsize=5, mode=NULL,
+                                minsize=5, mode=NULL, method = 'ks',
                                 fdr=0, min_p_threshold=NULL, sample_n=NULL,
                                significance_threshold=NA,  targets=NULL,
                                greaterthan=TRUE){
@@ -238,8 +238,8 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
     result <- enrichment_in_groups(geneset = geneset,
                                      background = eset,
                                      assay_name = assay_name,
-                                     method = "ks",
                                      minsize = minsize,
+                                     method = method,
                                      mapping_column = id_column,
                                      abundance_column = primary_columns)
   }
@@ -345,6 +345,7 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
                                                mapping_column = id_column)
     result <- as.data.frame(temp_result)
   }
+  
   result[,'pvalue'] <- as.numeric(result[,'pvalue'])
   result[,'ingroup_n'] <- as.numeric(result[,'ingroup_n'])
   result[,'outgroup_n'] <- as.numeric(result[,'outgroup_n'])
@@ -354,7 +355,7 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
   result[,'outgroup_mean'] <- as.numeric(result[,'outgroup_mean'])
   result[,'background_mean'] <- as.numeric(result[,'background_mean'])
   result[,'zscore'] <- as.numeric(result[,'zscore'])
-  result[,'BH_pvalue'] <- p.adjust(result[,'pvalue'], method = "BH")
+  result[,'BH_pvalue'] <- p.adjust(result[,'pvalue'], method = "BH", n = length(which(!is.na(result$pvalue))))
   result[, 'SignedBH_pvalue'] <-
     result[,'BH_pvalue'] * sign(as.numeric(result[,'ingroup_mean']))
 

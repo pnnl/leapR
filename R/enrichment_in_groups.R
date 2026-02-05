@@ -14,7 +14,8 @@
 #' @param background `SummarizedExperiment` describing background to use
 #' @param assay_name is the name of the assay to use from the background
 #' @param method method to use for statistical test, options are
-#' 'fishers' or 'ks'. NOTE: if you do not call `suppressWarnings` then
+#' 'fishers', 'ks', 'ztest', or 'chisq'. Remember that KS test assumes normality, so it would be good
+#' to log your data before calling. NOTE: if you do not call `suppressWarnings` then
 #' the KS test will warn you about ties.
 #' @param minsize minimum size of set
 #' @param mapping_column column name of mapping identifiers
@@ -76,9 +77,9 @@ enrichment_in_groups <- function(geneset,
                oddsratio = f, pvalue = p,BH_pvalue = NA, SignedBH_pvalue = NA,
                background_n = mat[2,2], background_mean = mat[2,1])
 
-    } else if (method == "ks") { # Kolmogorov-Smirnov test
-         # in this case "background" must be the continuous variable
-
+    } else if (method %in% c('ks','ztest','chisq')) { ##try out one of our 
+      #three continuous tests
+       # in this case "background" must be the continuous variable
 
       #these are the indices of the background
       group_ind <- which(backlist %in% grouplist)
@@ -99,54 +100,81 @@ enrichment_in_groups <- function(geneset,
                                                               abundance_column,
                                       drop = TRUE]
       }
-
-      names(backvals) <- backlist
-
-      in_path <- length(in_group)
+      ##remove NA vals from in group
+      in_group <- in_group[!is.na(in_group)]
+      in_group_mean <- mean(in_group)
+      
+      
+      names(backvals) <- backlist#[-group_ind]
+      in_back <- length(backvals)
+      
+      outgroup_mean = mean(backvals[-group_ind], na.rm = T)
+      
+      in_path <- length(in_group) #how many left after na.rm
       if ((in_path > minsize) & (any(!is.na(in_path))) &
-          !all(is.na(in_group))) {
-        in_back <- length(backlist)
-        enr <- NA
-        enr <- tryCatch(
+         !all(is.na(in_group))) {
+        if (method == 'ks') { 
+              in_back <- length(backlist)
+              enr <- NA
+              enr <- tryCatch(
           {
             #suppressWarnings(
-            ks.test(in_group, backvals, exact = FALSE)#)
+            ks.test(in_group, backvals[-group_ind], exact = FALSE)#)
           })
-        if (length(enr) > 1) {
-          p.value <- enr$p.value
-        } else {
-          p.value < -NA
-        }
-        # this expression of foldx might be subject to some weird pathological
-        # conditions e.g. one sample has a background that is always negative,
-        # another that's positive may pertain to zscore too (although not sure
-        # it should) rank from largest to smallest
-        if (is.null(mapping_column)) {
-          in_rank <- rank(-backvals)[which(rownames(background) %in%
-                                             grouplist)]
-        } else {
-          in_rank <- rank(-backvals)[which(names(backvals) %in% grouplist)]
-        }
+          if (length(enr) > 1) {
+            p.value <- enr$p.value
+          } else {
+            p.value < -NA
+          }
+          # this expression of foldx might be subject to some weird pathological
+          # conditions e.g. one sample has a background that is always negative,
+          # another that's positive may pertain to zscore too (although not sure
+          # it should) rank from largest to smallest
+          if (is.null(mapping_column)) {
+            in_rank <- rank(-backvals)[which(rownames(background) %in%
+                    #  backvals[which(rownames(background) %in%                  
+                                       grouplist)]
+          } else {
+            in_rank <- rank(-backvals)[which(names(backvals) %in% grouplist)]
+          }
+          # this will give not a fold enrichment - but a score that ranges
+          # from 1 (most in top)
+          #      to -1 (most in bottom).
+          foldx <- 1 - ((mean(in_rank) / length(backvals)) / 0.5)
+        } else if (method == 'ztest') {
+        ##add z test here
+            foldx <- sqrt(thissize) * in_group_mean
+            p.value <- 2 * pnorm(-abs(foldx))
+        } else if (method == 'chisq') {
+         #add chisq test here
+          foldx <- vapply(in_group, function(x) (x - in_group_mean)^2,numeric(1))
+          foldx <- (sum(foldx) - (thissize - 1))/(2*(thissize - 1))
+          p.value <- 2 * pnorm(-abs(foldx))
+        } 
+        zscore <- (in_group_mean - outgroup_mean)
+        zscore <- zscore / sd(in_group)
 
-        # this will give not a fold enrichment - but a score that ranges
-        # from 1 (most in top)
-        #      to -1 (most in bottom).
-        foldx <- 1 - ((mean(in_rank, na.rm = TRUE) / length(backvals)) / 0.5)
-
-        zscore <- (mean(in_group, na.rm = TRUE) - mean(backvals, na.rm = TRUE))
-        zscore <- zscore / sd(in_group, na.rm = TRUE)
+       
+      res <- c(ingroup_n = in_path, ingroupnames = in_group_name,
+               ingroup_mean = in_group_mean,
+               outgroup_n = in_back, outgroup_mean = outgroup_mean,
+               zscore = zscore,
+               oddsratio = foldx, pvalue = p.value,
+               BH_pvalue = NA, SignedBH_pvalue = NA,
+               background_n = NA, background_mean = NA)
+      }  else{
         res <- c(ingroup_n = in_path, ingroupnames = in_group_name,
-                 ingroup_mean = mean(in_group, na.rm = TRUE),
-                 outgroup_n = in_back, outgroup_mean = mean(backvals,
-                                                            na.rm = TRUE),
-                 zscore = zscore,
-                 oddsratio = foldx, pvalue = p.value,
+                 ingroup_mean = in_group_mean,
+                 outgroup_n = in_back, outgroup_mean = outgroup_mean,
+                 zscore = NA,
+                 oddsratio = NA, pvalue = NA,
                  BH_pvalue = NA, SignedBH_pvalue = NA,
                  background_n = NA, background_mean = NA)
-
-      }else{
-          res <- c(ingroup_n = in_path, ingroupnames = in_group_name,
-                   ingroup_mean = mean(in_group, na.rm = TRUE),
+      } 
+    } 
+    else {
+        res <- c(ingroup_n = in_path, ingroupnames = in_group_name,
+                   ingroup_mean = NA,
                    outgroup_n = in_back, outgroup_mean = mean(backvals,
                                                               na.rm = TRUE),
                    zscore = NA,
@@ -154,9 +182,10 @@ enrichment_in_groups <- function(geneset,
                  BH_pvalue = NA, SignedBH_pvalue = NA,
                  background_n = NA, background_mean = NA)
       }
-    }
+  
+    
     return(res)
-
+  
   }, c(ingroup_n = numeric(1), ingroupnames = "", ingroup_mean = numeric(1),
        outgroup_n = numeric(1), outgroup_mean = numeric(1),
        zscore = numeric(1),

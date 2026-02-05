@@ -315,6 +315,7 @@ rmarkdown::paged_table(protdata.enrichment.sets.test[or, cols_to_display])
 ### using enrichment_wrapper function
 protdata.enrichment.order <- leapR::leapR(
   geneset = ncipid,
+  minsize = 20,
   enrichment_method = "enrichment_in_order",
   eset = pset, 
   assay_name = "proteomics",

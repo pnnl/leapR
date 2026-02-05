@@ -27,7 +27,8 @@ enrichment_in_groups(
 \item{assay_name}{is the name of the assay to use from the background}
 
 \item{method}{method to use for statistical test, options are
-'fishers' or 'ks'. NOTE: if you do not call `suppressWarnings` then
+'fishers', 'ks', 'ztest', or 'chisq'. Remember that KS test assumes normality, so it would be good
+to log your data before calling. NOTE: if you do not call `suppressWarnings` then
 the KS test will warn you about ties.}
 
 \item{minsize}{minimum size of set}
