@@ -221,6 +221,7 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
                                 id_column=NULL, primary_columns=NULL,
                                 secondary_columns=NULL, threshold=NULL,
                                 minsize=5, mode=NULL, method = 'ks',
+                                log_transformed = FALSE,
                                 fdr=0, min_p_threshold=NULL, sample_n=NULL,
                                significance_threshold=NA,  targets=NULL,
                                greaterthan=TRUE){
@@ -240,6 +241,7 @@ leapR <- function(geneset, enrichment_method, eset, assay_name, ...){
                                      assay_name = assay_name,
                                      minsize = minsize,
                                      method = method,
+                                     log_transformed = log_transformed,
                                      mapping_column = id_column,
                                      abundance_column = primary_columns)
   }

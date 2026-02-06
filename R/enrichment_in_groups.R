@@ -32,6 +32,7 @@ enrichment_in_groups <- function(geneset,
                                  method = "fishers",
                                  minsize = 5,
                                  mapping_column = NULL,
+                                 log_transformed = FALSE,
                                  abundance_column = NULL,
                                  randomize = FALSE,
                                  silence_try_errors = TRUE) {
@@ -80,30 +81,35 @@ enrichment_in_groups <- function(geneset,
     } else if (method %in% c('ks','ztest','chisq')) { ##try out one of our 
       #three continuous tests
        # in this case "background" must be the continuous variable
+       #lets ensure that the data are normally distributed
 
       #these are the indices of the background
       group_ind <- which(backlist %in% grouplist)
       in_group_name <- paste(intersect(backlist, grouplist), collapse = ", ")
 
       if (any(abundance_column %in% colnames(background))) {
-         in_group <- SummarizedExperiment::assay(background)[group_ind,
-                                                             abundance_column,
-                                                             drop = TRUE]
+       #  in_group <- SummarizedExperiment::assay(background)[group_ind,
+      #                                                       abundance_column,
+      #                                                       drop = TRUE]
          backvals <- SummarizedExperiment::assay(background)[,
                                                              abundance_column,
                                        drop = TRUE]
       } else { ##we are working with rowData
-        in_group <- SummarizedExperiment::rowData(background)[group_ind,
-                                                              abundance_column,
-                                      drop = TRUE]
+       # in_group <- SummarizedExperiment::rowData(background)[group_ind,
+      #                                                        abundance_column,
+      #                                drop = TRUE]
         backvals <- SummarizedExperiment::rowData(background)[,
                                                               abundance_column,
                                       drop = TRUE]
       }
+
+      ##make normal - this is new and might change results
+     backvals <- (backvals - mean(backvals, na.rm=T))/sd(backvals,na.rm=T)
+      
+      in_group <- backvals[group_ind]
       ##remove NA vals from in group
       in_group <- in_group[!is.na(in_group)]
       in_group_mean <- mean(in_group)
-      
       
       names(backvals) <- backlist#[-group_ind]
       in_back <- length(backvals)
@@ -143,13 +149,13 @@ enrichment_in_groups <- function(geneset,
           foldx <- 1 - ((mean(in_rank) / length(backvals)) / 0.5)
         } else if (method == 'ztest') {
         ##add z test here
-            foldx <- sqrt(thissize) * in_group_mean
-            p.value <- 2 * pnorm(-abs(foldx))
+            foldx <- sqrt(thissize) * in_group_mean #z test
+            p.value <- 2 * pnorm(-abs(foldx)) #2 sided pvalue
         } else if (method == 'chisq') {
          #add chisq test here
           foldx <- vapply(in_group, function(x) (x - in_group_mean)^2,numeric(1))
           foldx <- (sum(foldx) - (thissize - 1))/(2*(thissize - 1))
-          p.value <- 2 * pnorm(-abs(foldx))
+          p.value <- 2 * pnorm(-abs(foldx)) # 2 sided pvalue
         } 
         zscore <- (in_group_mean - outgroup_mean)
         zscore <- zscore / sd(in_group)
