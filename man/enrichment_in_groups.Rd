@@ -6,7 +6,7 @@
 \usage{
 enrichment_in_groups(
   geneset,
-  targets = NULL,
+  targets = c(),
   background = NULL,
   assay_name = NULL,
   method = "fishers",
@@ -20,19 +20,23 @@ enrichment_in_groups(
 \arguments{
 \item{geneset}{geneset to use for enrichment}
 
-\item{targets}{targets to use for enrichmenet}
+\item{targets}{targets to use for enrichment}
 
 \item{background}{`SummarizedExperiment` describing background to use}
 
 \item{assay_name}{is the name of the assay to use from the background}
 
-\item{method}{method to use for statistical test, options are 'fishers' or 'ks'}
+\item{method}{method to use for statistical test, options are
+'fishers', 'ks', 'ztest', or 'chisq'. Remember that KS test assumes normality, so it would be good
+to log your data before calling. NOTE: if you do not call `suppressWarnings` then
+the KS test will warn you about ties.}
 
 \item{minsize}{minimum size of set}
 
 \item{mapping_column}{column name of mapping identifiers}
 
-\item{abundance_column}{columns mapping abundance, either in the `assay` matrix or `rowData`}
+\item{abundance_column}{columns mapping abundance, either in the `assay`
+matrix or `rowData`}
 
 \item{randomize}{true/false whether to randomize}
 
@@ -42,7 +46,7 @@ enrichment_in_groups(
 data frame with enrichment results
 }
 \description{
-Calculate the enrichment in pathways using Fisher's exact or Kolgmorov-Smirnov test, using either
-the primary_columns to identify feature or the targets list.
-# access through leapr wrapper
+Calculate the enrichment in pathways using Fisher's exact or
+Kolmogorov-Smirnov test, using either the abundance column to identify
+feature or the targets list. access through leapr wrapper
 }

@@ -10,9 +10,7 @@ correlation_comparison_enrichment(
   assay_name,
   set1,
   set2,
-  mapping_column = NA,
-  tag = NA,
-  mode = "original"
+  mapping_column = NA
 )
 }
 \arguments{
@@ -27,15 +25,12 @@ correlation_comparison_enrichment(
 \item{set2}{second set to use}
 
 \item{mapping_column}{Column to use for id mapping within rowData}
-
-\item{tag}{Tag to add}
-
-\item{mode}{to use, default is 'original'}
 }
 \value{
 data frame with enrichment results
 }
 \description{
-# internal function to calculate enrichment in differences in correlation between two groups
+# internal function to calculate enrichment in differences in correlation
+# between two groups
 # access through the leapr wrapper
 }

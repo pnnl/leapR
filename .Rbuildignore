@@ -4,3 +4,4 @@
 ^.*\.Rhistory$
 ^.*\.gitignore
 ^LICENSE\.md$
+^.git*$

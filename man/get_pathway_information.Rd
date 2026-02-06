@@ -11,21 +11,22 @@ get_pathway_information(geneset, path, remove.tags = FALSE)
 
 \item{path}{is the name of the gene set pathway to be return}
 
-\item{remove.tags}{boolean indicating whether ot remove tags}
+\item{remove.tags}{boolean indicating whether to remove tags}
 }
 \value{
 list of pathway information
 }
 \description{
-get_pathway_information extracts information about a pathway from a GeneSet object
+get_pathway_information extracts information about a pathway from a
+GeneSet object
 }
 \examples{
 
      library(leapR)
-     
+
      # load example gene set
      data("ncipid")
-     
+
      tnfpathway = get_pathway_information(ncipid, "tnfpathway")
 
 
