@@ -29,7 +29,8 @@ Imports:
     dplyr,
     stringr,
     tidyr,
-    SummarizedExperiment
+    SummarizedExperiment, 
+    BiocStyle
 Suggests: 
     knitr,
     rmarkdown,
