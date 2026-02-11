@@ -58,6 +58,7 @@ We want to evaluate how various samples compare in enrichmnet
 ```{r compare}
 
 i = 8
+data("ncipid")
 
 cor.res <- do.call(rbind,lapply(1:length(shortlist), function (i) {
   protdata.enrichment.ks <- leapR::leapR(
