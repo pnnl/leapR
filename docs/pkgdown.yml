@@ -1,0 +1,8 @@
+pandoc: 3.7.0.2
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  examples: examples.html
+  leapR: leapR.html
+  order-enrichment: order-enrichment.html
+last_built: 2026-02-08T00:00Z

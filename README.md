@@ -5,14 +5,11 @@ Layered Enrichment Analysis of Pathways in R (leapR) a tool that carries out sta
 ## Install
 leapR is available through Bioconductor repository here
 
-```{r install}
-
+```
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install(version = "3.21")
-
 BiocManager::install('BiocStyle')
-  
 BiocManager::install('leapR')
 ```
 
