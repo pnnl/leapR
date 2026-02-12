@@ -12,7 +12,8 @@ read_gene_sets(
 )
 }
 \arguments{
-\item{gsfile}{is a gene set file, for example a .gmt file (gene matrix transposed file format)}
+\item{gsfile}{is a gene set file, for example a .gmt file
+(gene matrix transposed file format)}
 
 \item{gene.labels}{defaults to NA}
 
@@ -26,10 +27,12 @@ gene set object
 geneset list
 }
 \description{
-read_gene_sets is a function to import external pathway database files in .gmt format
+read_gene_sets is a function to import external pathway
+database files in .gmt format
 }
 \examples{
-gfile = system.file('extdata','h.all.v2024.1.Hs.symbols.gmt',package='leapR')
-glist = read_gene_sets(gfile)
+gfile <- system.file('extdata','h.all.v2024.1.Hs.symbols.gmt',
+          package='leapR')
+glist <- read_gene_sets(gfile)
 
 }

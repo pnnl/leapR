@@ -2,45 +2,57 @@
 % Please edit documentation in R/combine_omics.R
 \name{combine_omics}
 \alias{combine_omics}
-\title{combine_omics}
+\title{combine_omics
+Combine two or more omics matrices into one multi-omics matrix with
+'tagged' ids.}
 \usage{
 combine_omics(omics_list, id_list = rep(NA, length(omics_list)))
 }
 \arguments{
-\item{omics_list}{Is a list of \code{SummarizedExperiment} each with one assay}
+\item{omics_list}{Is a list of \code{SummarizedExperiment} each with
+one assay}
 
-\item{id_list}{List of identifiers to use, in the same order as the omics_list elements. If an element
+\item{id_list}{List of identifiers to use, in the same order as the
+omics_list elements. If an element
 is `NA`, then rownames are used.}
 }
 \value{
-\code{SummarizedExperiment} with an additional assay called `combined`
+\code{SummarizedExperiment} with an additional assay called
+ `combined`
 }
 \description{
-Combine two or more omics matrices into one multi-omics matrix with 'tagged' ids.
+combine_omics
+Combine two or more omics matrices into one multi-omics matrix with
+'tagged' ids.
 }
 \details{
-This combines matrices of different omics types together and adds prefix tags to the ids.
+This combines matrices of different omics types together and
+adds prefix tags to the ids.
 }
 \examples{
         library(leapR)
+        url <- 'https://api.figshare.com/v2/file/download/56536217'
 
-
-        pdata <- download.file('https://api.figshare.com/v2/file/download/56536217',method='libcurl',destfile='protData.rda')
+        pdata <- download.file(url,method='libcurl',destfile='protData.rda')
         load('protData.rda')
         p <- file.remove("protData.rda")
-        
-        tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",method='libcurl',destfile='transData.rda')
+
+        url <- "https://api.figshare.com/v2/file/download/56536214"
+        tdata <- download.file(url,method='libcurl',destfile='transData.rda')
         load('transData.rda')
         p <- file.remove("transData.rda")
-        
-        phdata<-download.file('https://api.figshare.com/v2/file/download/56536211',method='libcurl',destfile = 'phosData.rda')
+
+        url <- 'https://api.figshare.com/v2/file/download/56536211'
+        phdata<-download.file(url,method='libcurl',destfile = 'phosData.rda')
         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
         load('phosData.rda')
         p <- file.remove('phosData.rda')# read in the example protein data
-        
 
-        # merge the three datasets by rows and add prefix tags for different omics types
-        multi_omics = combine_omics(list(pset, tset, phset), list(NA,NA,'hgnc_id'))
+
+        # merge the three datasets by rows and add prefix tags for
+        # different omics types
+        multi_omics <- combine_omics(list(pset, tset, phset),
+                    list(NA,NA,'hgnc_id'))
 
 
 }

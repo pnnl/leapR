@@ -1,3 +1,3 @@
-# leapR 0.99.0
+# leapR 0.99.6
 
-* Initial Bioconductor submission.
+* Built-in Plotting Function Created.
