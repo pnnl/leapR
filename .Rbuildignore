@@ -5,3 +5,6 @@
 ^.*\.gitignore
 ^LICENSE\.md$
 ^.git*$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

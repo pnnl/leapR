@@ -1,6 +1,6 @@
 Package: leapR
 Title: Layered enrichment analysis of pathways R
-Version: 0.99.7
+Version: 0.99.8
 Authors@R: c(
     person("Sara", "Gosline", email = "sara.gosline@pnnl.gov", role = c('aut',"cre"), comment = c(ORCID = "0000-0002-6534-4774")),
     person("Jason", "McDermott", email = "jason.mcdermott@pnnl.gov", role = "aut"),
