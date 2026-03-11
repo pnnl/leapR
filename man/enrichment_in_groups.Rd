@@ -12,6 +12,7 @@ enrichment_in_groups(
   method = "fishers",
   minsize = 5,
   mapping_column = NULL,
+  log_transformed = FALSE,
   abundance_column = NULL,
   randomize = FALSE,
   silence_try_errors = TRUE
@@ -34,6 +35,8 @@ the KS test will warn you about ties.}
 \item{minsize}{minimum size of set}
 
 \item{mapping_column}{column name of mapping identifiers}
+
+\item{log_transformed}{Set to TRUE if data is already log-transformed}
 
 \item{abundance_column}{columns mapping abundance, either in the `assay`
 matrix or `rowData`}
