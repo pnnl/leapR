@@ -7,6 +7,13 @@
 \description{
 leapR is a package that identifies pathways that are enriched across diverse 'omics experiments. It leverages any tabular expression data (proteomics, transcriptomics) using the `SummarizedExperiment` object. It works with any pathway in the .gct file format.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://pnnl.github.io/leapR/}
+}
+
+}
 \author{
 \strong{Maintainer}: Sara Gosline \email{sara.gosline@pnnl.gov} (\href{https://orcid.org/0000-0002-6534-4774}{ORCID})
 

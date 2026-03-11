@@ -40,3 +40,4 @@ Suggests:
 VignetteBuilder: knitr
 License: MIT + file LICENSE
 Config/testthat/edition: 3
+URL: https://pnnl.github.io/leapR/
