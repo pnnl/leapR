@@ -18,23 +18,21 @@
 #'
 #' @examples
 #'         library(leapR)
-#'         url <- 'https://api.figshare.com/v2/file/download/56536217'
-#'
-#'         pdata <- download.file(url,method='libcurl',destfile='protData.rda')
-#'         load('protData.rda')
-#'         p <- file.remove("protData.rda")
-#'
+#'         library(BiocFileCache)
+#'         path <- tools::R_user_dir("leapR", which = "cache")
+#'         bfc <- BiocFileCache(path, ask = FALSE)
+#'         
+#'         url <- "https://api.figshare.com/v2/file/download/56536217"
+#'         pc <- bfcadd(bfc, "pdat", fpath = url)
+#'         load(pc)
+#'         
 #'         url <- "https://api.figshare.com/v2/file/download/56536214"
-#'         tdata <- download.file(url,method='libcurl',destfile='transData.rda')
-#'         load('transData.rda')
-#'         p <- file.remove("transData.rda")
-#'
-#'         url <- 'https://api.figshare.com/v2/file/download/56536211'
-#'         phdata<-download.file(url,method='libcurl',destfile = 'phosData.rda')
-#'         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
-#'         load('phosData.rda')
-#'         p <- file.remove('phosData.rda')# read in the example protein data
-#'
+#'         tc <- bfcadd(bfc, "tdat", fpath = url)
+#'         load(tc)
+#'         
+#'         url <- "https://api.figshare.com/v2/file/download/56536211"
+#'         phc <- bfcadd(bfc, "phdat", fpath = url)
+#'         load(phc)
 #'
 #'         # merge the three datasets by rows and add prefix tags for
 #'         # different omics types
