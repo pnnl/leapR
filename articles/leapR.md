@@ -469,7 +469,7 @@ plot_leapr_bar(
 #### KS alternative: the one-sample Z test
 
 Given that the KS test [has not always been the best for gene set
-enrichment](https://pnnl-github.io/leapR/articles/) we also implement
+enrichment](https://pnnl.github.io/leapR/articles/) we also implement
 the one-sample z test.
 
 ``` r

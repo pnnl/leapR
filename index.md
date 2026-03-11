@@ -15,7 +15,7 @@ leapR is available through Bioconductor repository here
 
 Once you have successfully installed the package you can load the
 vignette to read examples using the
-[`vignette('leapR')`](https://pnnl-github.io/leapR/articles/leapR.md)
+[`vignette('leapR')`](https://pnnl.github.io/leapR/articles/leapR.md)
 command.
 
 ## Basic Usage
