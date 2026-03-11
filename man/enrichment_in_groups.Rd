@@ -12,6 +12,7 @@ enrichment_in_groups(
   method = "fishers",
   minsize = 5,
   mapping_column = NULL,
+  log_transformed = FALSE,
   abundance_column = NULL,
   randomize = FALSE,
   silence_try_errors = TRUE

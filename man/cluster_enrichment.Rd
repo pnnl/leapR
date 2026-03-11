@@ -36,12 +36,14 @@ a list of results matrices in the order of the input clusters.
 }
 \examples{
         library(leapR)
-
-        # read in the example transcriptomic data
+        library(BiocFileCache)
+        
+        path <- tools::R_user_dir("leapR", which = "cache")
+        bfc <- BiocFileCache(path, ask = FALSE)
+        
         url <- "https://api.figshare.com/v2/file/download/56536214"
-        tdata <- download.file(url,method='libcurl',destfile='transData.rda')
-        load('transData.rda')
-        p <- file.remove("transData.rda")
+        tc <- bfcadd(bfc, "tdat", fpath = url)
+        load(tc)
 
         # read in the pathways
         data("ncipid")

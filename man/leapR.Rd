@@ -151,13 +151,14 @@ pathway.
 }
 \examples{
         library(leapR)
-
- # read in the example abundance data
- # read in the example transcriptomic data
- tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",
-      method='libcurl',destfile='transData.rda')
- load('transData.rda')
- p <- file.remove("transData.rda")
+        library(BiocFileCache)
+        
+        path <- tools::R_user_dir("leapR", which = "cache")
+        bfc <- BiocFileCache(path, ask = FALSE)
+        
+        url <- "https://api.figshare.com/v2/file/download/56536214"
+        tc <- bfcadd(bfc, "tdat", fpath = url)
+        load(tc)
 
  # read in the pathways
  data("ncipid")

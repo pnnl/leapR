@@ -13,6 +13,7 @@ leapR is a package that identifies pathways that are enriched across diverse 'om
 Authors:
 \itemize{
   \item Jason McDermott \email{jason.mcdermott@pnnl.gov}
+  \item Jeremy Jacobson \email{jeremy.jacobson@pnnl.gov}
 }
 
 Other contributors:
