@@ -11,7 +11,7 @@ append results to ExpressionSet with two extra columns: `pvalue` and
 
     <a class="navbar-brand me-2" href="../index.html">leapR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,12 +82,20 @@ slot: pvalue, and estimate</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span>        <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">leapR</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pnnl.github.io/leapR/" class="external-link">leapR</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BiocFileCache</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: dbplyr</span>
+<span class="r-in"><span>        </span></span>
+<span class="r-in"><span>        <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">R_user_dir</a></span><span class="op">(</span><span class="st">"leapR"</span>, which <span class="op">=</span> <span class="st">"cache"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="va">bfc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span><span class="va">path</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        </span></span>
 <span class="r-in"><span>        <span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://api.figshare.com/v2/file/download/56536214"</span></span></span>
-<span class="r-in"><span>        <span class="va">tdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">url</span>,method<span class="op">=</span><span class="st">'libcurl'</span>,destfile<span class="op">=</span><span class="st">'transData.rda'</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">'transData.rda'</span><span class="op">)</span></span></span>
-<span class="r-in"><span>        <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="st">"transData.rda"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span>        <span class="va">tc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcadd</a></span><span class="op">(</span><span class="va">bfc</span>, <span class="st">"tdat"</span>, fpath <span class="op">=</span> <span class="va">url</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Error while performing HEAD request.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>    Proceeding without cache information.</span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="va">tc</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        </span></span>
 <span class="r-in"><span>        <span class="co"># read in the pathways</span></span></span>
 <span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ncipid"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

@@ -5,6 +5,12 @@ diverse 'omics experiments. It leverages any tabular expression data
 (proteomics, transcriptomics) using the \`SummarizedExperiment\` object.
 It works with any pathway in the .gct file format.
 
+## See also
+
+Useful links:
+
+- <https://pnnl.github.io/leapR/>
+
 ## Author
 
 **Maintainer**: Sara Gosline <sara.gosline@pnnl.gov>
@@ -13,6 +19,8 @@ It works with any pathway in the .gct file format.
 Authors:
 
 - Jason McDermott <jason.mcdermott@pnnl.gov>
+
+- Jeremy Jacobson <jeremy.jacobson@pnnl.gov>
 
 Other contributors:
 

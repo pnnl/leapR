@@ -37,11 +37,19 @@ pvalue, and estimate
 
 ``` r
         library(leapR)
+        library(BiocFileCache)
+#> Loading required package: dbplyr
+        
+        path <- tools::R_user_dir("leapR", which = "cache")
+        bfc <- BiocFileCache(path, ask = FALSE)
+        
         url <- "https://api.figshare.com/v2/file/download/56536214"
-        tdata <- download.file(url,method='libcurl',destfile='transData.rda')
-        load('transData.rda')
-        p <- file.remove("transData.rda")
-
+        tc <- bfcadd(bfc, "tdat", fpath = url)
+#> 
+#> Error while performing HEAD request.
+#>    Proceeding without cache information.
+        load(tc)
+        
         # read in the pathways
         data("ncipid")
 

@@ -12,17 +12,28 @@ library(ggplot2)
 library(dplyr)
 library(tibble)
 library(stringr)
+library(BiocFileCache)
 ```
 
 ## Load our test proteomics dataset
 
 ``` r
-url <- "https://api.figshare.com/v2/file/download/56536217"
-pdata <- download.file(url, method = "libcurl", destfile = "protData.rda")
-#  as.matrix()
-load("protData.rda")
 
-p <- file.remove("protData.rda")
+
+#currently using the BiocFileCache though i'm not sure it helps
+path <- tools::R_user_dir("leapR", which = "cache")
+bfc <- BiocFileCache(path, ask = FALSE)
+
+url <- "https://api.figshare.com/v2/file/download/56536217"
+pd <- bfcadd(bfc, 'protdat', url)
+#> Error while performing HEAD request.
+#>    Proceeding without cache information.
+load(pd)
+#pdata <- download.file(url, method = "libcurl", destfile = "protData.rda")
+#  as.matrix()
+#load("protData.rda")
+
+#p <- file.remove("protData.rda")
 
 data(shortlist)
 data(longlist)
@@ -51,7 +62,9 @@ cor.res <- do.call(rbind,lapply(1:length(shortlist), function (i) {
     primary_columns = shortlist[i]
   )
   
-  colnames(protdata.enrichment.ks) <- paste('ks',colnames(protdata.enrichment.ks),sep='.')
+  colnames(protdata.enrichment.ks) <- paste('ks',
+                                            colnames(protdata.enrichment.ks),
+                                            sep = '.')
   
   
   protdata.enrichment.cs <- leapR::leapR(
@@ -61,7 +74,9 @@ cor.res <- do.call(rbind,lapply(1:length(shortlist), function (i) {
     assay_name = "proteomics",
     primary_columns = shortlist[i]
   )
-  colnames(protdata.enrichment.cs) <- paste('chisq',colnames(protdata.enrichment.cs),sep='.')
+  colnames(protdata.enrichment.cs) <- paste('chisq',
+                                            colnames(protdata.enrichment.cs),
+                                            sep = '.')
   
   protdata.enrichment.zt <- leapR::leapR(
     geneset = ncipid, "enrichment_in_order",
@@ -71,7 +86,9 @@ cor.res <- do.call(rbind,lapply(1:length(shortlist), function (i) {
     primary_columns = shortlist[i]
   )
   
-  colnames(protdata.enrichment.zt) <- paste('ztest',colnames(protdata.enrichment.zt),sep='.')
+  colnames(protdata.enrichment.zt) <- paste('ztest',
+                                            colnames(protdata.enrichment.zt),
+                                            sep = '.')
   
   paths <- rownames(protdata.enrichment.ks)
   allvals <- cbind(protdata.enrichment.cs[paths,], 

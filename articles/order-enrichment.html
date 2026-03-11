@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">leapR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,25 +71,36 @@
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the core libraries</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">leapR</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pnnl.github.io/leapR/" class="external-link">leapR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/talgalili/gplots" class="external-link">gplots</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/rmarkdown" class="external-link">rmarkdown</a></span><span class="op">)</span></span>
 <span><span class="co"># plotting helpers used in this vignette</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BiocFileCache</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="load-our-test-proteomics-dataset">Load our test proteomics dataset<a class="anchor" aria-label="anchor" href="#load-our-test-proteomics-dataset"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://api.figshare.com/v2/file/download/56536217"</span></span>
-<span><span class="va">pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">url</span>, method <span class="op">=</span> <span class="st">"libcurl"</span>, destfile <span class="op">=</span> <span class="st">"protData.rda"</span><span class="op">)</span></span>
-<span><span class="co">#  as.matrix()</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"protData.rda"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
 <span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="st">"protData.rda"</span><span class="op">)</span></span>
+<span><span class="co">#currently using the BiocFileCache though i'm not sure it helps</span></span>
+<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">R_user_dir</a></span><span class="op">(</span><span class="st">"leapR"</span>, which <span class="op">=</span> <span class="st">"cache"</span><span class="op">)</span></span>
+<span><span class="va">bfc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span><span class="va">path</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://api.figshare.com/v2/file/download/56536217"</span></span>
+<span><span class="va">pd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcadd</a></span><span class="op">(</span><span class="va">bfc</span>, <span class="st">'protdat'</span>, <span class="va">url</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error while performing HEAD request.</span></span>
+<span><span class="co">#&gt;    Proceeding without cache information.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="va">pd</span><span class="op">)</span></span>
+<span><span class="co">#pdata &lt;- download.file(url, method = "libcurl", destfile = "protData.rda")</span></span>
+<span><span class="co">#  as.matrix()</span></span>
+<span><span class="co">#load("protData.rda")</span></span>
+<span></span>
+<span><span class="co">#p &lt;- file.remove("protData.rda")</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">shortlist</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longlist</span><span class="op">)</span></span>
@@ -117,7 +128,9 @@
 <span>    primary_columns <span class="op">=</span> <span class="va">shortlist</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
 <span>  <span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.ks</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'ks'</span>,<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.ks</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">'.'</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.ks</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'ks'</span>,</span>
+<span>                                            <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.ks</span><span class="op">)</span>,</span>
+<span>                                            sep <span class="op">=</span> <span class="st">'.'</span><span class="op">)</span></span>
 <span>  </span>
 <span>  </span>
 <span>  <span class="va">protdata.enrichment.cs</span> <span class="op">&lt;-</span> <span class="fu">leapR</span><span class="fu">::</span><span class="fu"><a href="../reference/leapR.html">leapR</a></span><span class="op">(</span></span>
@@ -127,7 +140,9 @@
 <span>    assay_name <span class="op">=</span> <span class="st">"proteomics"</span>,</span>
 <span>    primary_columns <span class="op">=</span> <span class="va">shortlist</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
 <span>  <span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.cs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'chisq'</span>,<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.cs</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">'.'</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.cs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'chisq'</span>,</span>
+<span>                                            <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.cs</span><span class="op">)</span>,</span>
+<span>                                            sep <span class="op">=</span> <span class="st">'.'</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="va">protdata.enrichment.zt</span> <span class="op">&lt;-</span> <span class="fu">leapR</span><span class="fu">::</span><span class="fu"><a href="../reference/leapR.html">leapR</a></span><span class="op">(</span></span>
 <span>    geneset <span class="op">=</span> <span class="va">ncipid</span>, <span class="st">"enrichment_in_order"</span>,</span>
@@ -137,7 +152,9 @@
 <span>    primary_columns <span class="op">=</span> <span class="va">shortlist</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
 <span>  <span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.zt</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'ztest'</span>,<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.zt</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">'.'</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.zt</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'ztest'</span>,</span>
+<span>                                            <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">protdata.enrichment.zt</span><span class="op">)</span>,</span>
+<span>                                            sep <span class="op">=</span> <span class="st">'.'</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">protdata.enrichment.ks</span><span class="op">)</span></span>
 <span>  <span class="va">allvals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">protdata.enrichment.cs</span><span class="op">[</span><span class="va">paths</span>,<span class="op">]</span>, </span>
