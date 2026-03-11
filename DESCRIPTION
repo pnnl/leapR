@@ -31,7 +31,8 @@ Imports:
     stringr,
     tidyr,
     SummarizedExperiment, 
-    BiocStyle
+    BiocStyle,
+    BiocFileCache
 Suggests: 
     knitr,
     rmarkdown,
