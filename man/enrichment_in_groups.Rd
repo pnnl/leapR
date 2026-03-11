@@ -36,6 +36,8 @@ the KS test will warn you about ties.}
 
 \item{mapping_column}{column name of mapping identifiers}
 
+\item{log_transformed}{Set to TRUE if data is already log-transformed}
+
 \item{abundance_column}{columns mapping abundance, either in the `assay`
 matrix or `rowData`}
 
