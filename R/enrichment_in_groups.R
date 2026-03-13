@@ -18,6 +18,7 @@
 #' to log your data before calling. NOTE: if you do not call `suppressWarnings` then
 #' the KS test will warn you about ties.
 #' @param minsize minimum size of set
+#' @param log_transformed Set to TRUE if data are log transformed
 #' @param mapping_column column name of mapping identifiers
 #' @param abundance_column columns mapping abundance, either in the `assay`
 #' matrix or `rowData`
