@@ -18,7 +18,6 @@
 #'
 #' @examples
 #'         library(leapR)
-
 #'         library(BiocFileCache)
 #'         path <- tools::R_user_dir("leapR", which = "cache")
 #'         bfc <- BiocFileCache(path, ask = FALSE)
