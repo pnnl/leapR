@@ -3,6 +3,7 @@
 ## Load libraries needed
 
 ``` r
+
 # load the core libraries
 library(leapR)
 library(gplots)
@@ -29,6 +30,7 @@ This data can be loaded as follows:
 
 ``` r
 
+
 #currently using the BiocFileCache though i'm not sure it helps
 path <- tools::R_user_dir("leapR", which = "cache")
 bfc <- BiocFileCache(path, ask = FALSE)
@@ -49,6 +51,7 @@ load(phc)
 We also have local data we can load
 
 ``` r
+
 
 data(shortlist)
 data(longlist)
@@ -76,6 +79,7 @@ multi-omics.
 The resulting heatmap is presented as Figure 2 in the paper.
 
 ``` r
+
 # load the single omic and multi-omic pathway databases
 data("krbpaths")
 data("mo_krbpaths")
@@ -363,6 +367,7 @@ sets of kinases (from Phosphosite Plus) that are enriched in the short
 vs long comparison of phosphopeptides.
 
 ``` r
+
 # this comparison of abundance in substrates between case and control
 #     is lopsided in the sense that phosphorylation levels were previously
 #     reported to be overall higher in the short survivors. Thus the
@@ -409,6 +414,7 @@ barplot(ksea_result[, "oddsratio"],
 ![](examples_files/figure-html/figure_3-1.png)
 
 ``` r
+
 
 # plot right panel: abundance comparison results of the same kinases
 barplot(phosphodata.ksea.comp.svl[rownames(ksea_result), "oddsratio"],

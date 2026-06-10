@@ -30,14 +30,14 @@ to support pathway information and multi-omics datasets.
 Here is a list of enrichment arguments that can be called with the
 `leapR` command.
 
-| Argument                      | Description                                                                                                                                                 |
-|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enrichment_in_sets`          | Calculates enrichment in pathway membership in a list (e.g. highly differential proteins) relative to background using Fisher’s exact test.                 |
-| `enrichment_in_order`         | Calculates enrichment of pathways based on a ranked list using the Kolmogorov-Smirnov test                                                                  |
-| `enrichment_comparison`       | Compares the distribution of abundances between two sets of conditions for each pathway using a t test                                                      |
-| `enrichment_in_pathways`      | Compares the distribution of abundances in a pathway with the background distribution of abundances using a t test                                          |
-| `correlation_enrichment`      | Calculates the enrichment of a pathway based on correlation between pathway members across conditions versus correlation between members not in the pathway |
-| `enrichment_in_relationships` | Calculates the enrichment of a pathway in specified interactions relative to non-pathway members                                                            |
+| Argument | Description |
+|----|----|
+| `enrichment_in_sets` | Calculates enrichment in pathway membership in a list (e.g. highly differential proteins) relative to background using Fisher’s exact test. |
+| `enrichment_in_order` | Calculates enrichment of pathways based on a ranked list using the Kolmogorov-Smirnov test |
+| `enrichment_comparison` | Compares the distribution of abundances between two sets of conditions for each pathway using a t test |
+| `enrichment_in_pathways` | Compares the distribution of abundances in a pathway with the background distribution of abundances using a t test |
+| `correlation_enrichment` | Calculates the enrichment of a pathway based on correlation between pathway members across conditions versus correlation between members not in the pathway |
+| `enrichment_in_relationships` | Calculates the enrichment of a pathway in specified interactions relative to non-pathway members |
 
 ### Data examples
 

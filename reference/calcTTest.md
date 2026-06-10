@@ -36,6 +36,7 @@ pvalue, and estimate
 ## Examples
 
 ``` r
+
         library(leapR)
         library(BiocFileCache)
 #> Loading required package: dbplyr

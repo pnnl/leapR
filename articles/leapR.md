@@ -6,6 +6,7 @@ This is intended to be a short introduction to the `leapR` package.
 First we need to load the required libraries:
 
 ``` r
+
 # install from bioconductor
 if (!require(BiocManager)) {
   install.packages('BiocManager')
@@ -16,6 +17,7 @@ if (!require(BiocManager)) {
 ## Load libraries needed
 
 ``` r
+
 # load the core libraries
 library(leapR)
 library(gplots)
@@ -120,6 +122,7 @@ covers signaling pathways in human - but is no longer being actively
 maintained. They can be loaded as follows:
 
 ``` r
+
 data(ncipid)
 ```
 
@@ -143,6 +146,7 @@ as example.
 This data can be loaded as follows:
 
 ``` r
+
 # Inspect the `pset` SummarizedExperiment.
 str(pset)
 #> Formal class 'SummarizedExperiment' [package "SummarizedExperiment"] with 5 slots
@@ -185,6 +189,7 @@ We also include some groups of patients to compare stored as R data
 objects:
 
 ``` r
+
 data(shortlist)
 data(longlist)
 
@@ -241,6 +246,7 @@ size. You can look at the effect size by comparing the `ingroup_mean`
 and `outgroup_mean` columns.
 
 ``` r
+
 # in this example we lump a bunch of patients together (the 'short survivors')
 # and compare them to another group (the 'long survivors')
 
@@ -259,6 +265,7 @@ rmarkdown::paged_table(protdata.enrichment.svl[or, cols_to_display])
 ```
 
 ``` r
+
 # another application is to compare just one patient against another
 # (this would be the  equivalent of comparing one time point to another)
 
@@ -322,6 +329,7 @@ column gives a ratio of in versus not in the genelist, values \> 1 being
 enriched and \<1 being depleted.
 
 ``` r
+
 # for this example we will construct a list of genes from the expression data
 #     to emulate what you might be inputting
 genelist <- rownames(pset)[which(SummarizedExperiment::assay(pset, 
@@ -339,6 +347,7 @@ rmarkdown::paged_table(protdata.enrichment.sets.test[or, cols_to_display])
 ```
 
 ``` r
+
 
 
 
@@ -387,6 +396,7 @@ rmarkdown::paged_table(protdata.enrichment.sets.modules[, cols_to_display])
 ##### Visualizing Fisher’s exact results
 
 ``` r
+
 # Plot the top enriched gene sets from Fisher's exact test
 # Stars indicate significance (None seen here)
 plot_leapr_bar(
@@ -434,6 +444,7 @@ the list. Each of these should give consistent results, but will be
 somewhat different.
 
 ``` r
+
 # This is how you calculate enrichment in a ranked list 
 # (for example from topology)
 ### using enrichment_wrapper function
@@ -453,6 +464,7 @@ rmarkdown::paged_table(protdata.enrichment.order[or, cols_to_display])
 ##### Visualizing KS test results
 
 ``` r
+
 # Plot the ranked enrichment results
 plot_leapr_bar(
   protdata.enrichment.order,
@@ -473,6 +485,7 @@ enrichment](https://pnnl.github.io/leapR/articles/) we also implement
 the one-sample z test.
 
 ``` r
+
 # This is how you calculate enrichment in a ranked list 
 # (for example from topology)
 ### using enrichment_wrapper function
@@ -490,6 +503,7 @@ rmarkdown::paged_table(protdata.enrichment.order[or, cols_to_display])
 ```
 
 ``` r
+
 
 plot_leapr_bar(
   protdata.enrichment.order,
@@ -525,6 +539,7 @@ to non-pathway member correlation (which is similar but slightly
 different than the other p-values).
 
 ``` r
+
 ### using enrichment_wrapper function
 protdata.enrichment.correlation <- leapR::leapR(
   geneset = ncipid,
@@ -540,6 +555,7 @@ rmarkdown::paged_table(head(protdata.enrichment.correlation[or,
 
 ``` r
 
+
 protdata.enrichment.correlation.short <- leapR::leapR(
   geneset = ncipid,
   enrichment_method = "correlation_enrichment",
@@ -552,6 +568,7 @@ rmarkdown::paged_table(head(protdata.enrichment.correlation.short[or,
 ```
 
 ``` r
+
 
 protdata.enrichment.correlation.long <- leapR::leapR(
   geneset = ncipid,
@@ -567,6 +584,7 @@ rmarkdown::paged_table(head(protdata.enrichment.correlation.long[or,
 ##### Visualizing correlation enrichment results
 
 ``` r
+
 # Compare correlation patterns across conditions
 plot_leapr_bar(
   protdata.enrichment.correlation.short,
@@ -586,6 +604,7 @@ In this example we will use phosphoproteomics data to assess the
 enrichment in known kinase substrates (a proxy for kinase activity)
 
 ``` r
+
 data("kinasesubstrates")
 
 # for an individual tumor calculate the Kinase-Substrate 
@@ -610,6 +629,7 @@ rmarkdown::paged_table(phosphodata.ksea.order[or, cols_to_display])
 ``` r
 
 
+
 # now do the same thing but use a threshold
 phosphodata.sets.order <- leapR::leapR(
   geneset = kinasesubstrates,
@@ -626,6 +646,7 @@ rmarkdown::paged_table(phosphodata.sets.order[or, cols_to_display])
 ##### Visualizing kinase substrate enrichment
 
 ``` r
+
 plot <- plot_leapr_bar(
   phosphodata.sets.order,
   title            = "Kinase Substrate Enrichment (Phosphoproteomics)",
@@ -646,6 +667,7 @@ plot
 
 ``` r
 
+
 # You can also modify the plot further using standard ggplot2 arguments
 plot + ggplot2::labs(
   y = expression(-log[10]("adjusted p-value")),
@@ -658,10 +680,11 @@ plot + ggplot2::labs(
 Lastly we print out the session info!
 
 ``` r
+
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -680,49 +703,49 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#>  [1] BiocFileCache_3.0.0 dbplyr_2.5.2        stringr_1.6.0      
-#>  [4] tibble_3.3.1        dplyr_1.2.0         ggplot2_4.0.2      
-#>  [7] rmarkdown_2.30      gplots_3.3.0        leapR_0.99.9       
-#> [10] BiocStyle_2.38.0   
+#>  [1] BiocFileCache_3.2.0 dbplyr_2.5.2        stringr_1.6.0      
+#>  [4] tibble_3.3.1        dplyr_1.2.1         ggplot2_4.0.3      
+#>  [7] rmarkdown_2.31      gplots_3.3.0        leapR_1.1.2        
+#> [10] BiocStyle_2.40.0   
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] SummarizedExperiment_1.40.0 gtable_0.3.6               
-#>  [3] httr2_1.2.2                 xfun_0.56                  
-#>  [5] bslib_0.10.0                caTools_1.18.3             
-#>  [7] Biobase_2.70.0              lattice_0.22-7             
-#>  [9] tzdb_0.5.0                  vctrs_0.7.1                
-#> [11] tools_4.5.2                 bitops_1.0-9               
-#> [13] generics_0.1.4              curl_7.0.0                 
-#> [15] stats4_4.5.2                RSQLite_2.4.6              
+#>  [1] SummarizedExperiment_1.42.0 gtable_0.3.6               
+#>  [3] httr2_1.2.2                 xfun_0.58                  
+#>  [5] bslib_0.11.0                caTools_1.18.3             
+#>  [7] Biobase_2.72.0              lattice_0.22-9             
+#>  [9] tzdb_0.5.0                  vctrs_0.7.3                
+#> [11] tools_4.6.0                 bitops_1.0-9               
+#> [13] generics_0.1.4              curl_7.1.0                 
+#> [15] stats4_4.6.0                RSQLite_3.53.1             
 #> [17] blob_1.3.0                  pkgconfig_2.0.3            
-#> [19] Matrix_1.7-4                KernSmooth_2.23-26         
-#> [21] RColorBrewer_1.1-3          S7_0.2.1                   
-#> [23] desc_1.4.3                  S4Vectors_0.48.0           
-#> [25] lifecycle_1.0.5             compiler_4.5.2             
+#> [19] Matrix_1.7-5                KernSmooth_2.23-26         
+#> [21] RColorBrewer_1.1-3          S7_0.2.2                   
+#> [23] desc_1.4.3                  S4Vectors_0.50.1           
+#> [25] lifecycle_1.0.5             compiler_4.6.0             
 #> [27] farver_2.1.2                textshaping_1.0.5          
-#> [29] Seqinfo_1.0.0               htmltools_0.5.9            
+#> [29] Seqinfo_1.2.0               htmltools_0.5.9            
 #> [31] sass_0.4.10                 yaml_2.3.12                
-#> [33] pillar_1.11.1               pkgdown_2.2.0              
-#> [35] jquerylib_0.1.4             DelayedArray_0.36.0        
+#> [33] pkgdown_2.2.0               pillar_1.11.1              
+#> [35] jquerylib_0.1.4             DelayedArray_0.38.2        
 #> [37] cachem_1.1.0                abind_1.4-8                
 #> [39] gtools_3.9.5                tidyselect_1.2.1           
 #> [41] digest_0.6.39               stringi_1.8.7              
-#> [43] purrr_1.2.1                 bookdown_0.46              
+#> [43] purrr_1.2.2                 bookdown_0.46              
 #> [45] labeling_0.4.3              fastmap_1.2.0              
-#> [47] grid_4.5.2                  cli_3.6.5                  
-#> [49] SparseArray_1.10.9          magrittr_2.0.4             
-#> [51] S4Arrays_1.10.1             readr_2.2.0                
+#> [47] grid_4.6.0                  cli_3.6.6                  
+#> [49] SparseArray_1.12.2          magrittr_2.0.5             
+#> [51] S4Arrays_1.12.0             readr_2.2.0                
 #> [53] withr_3.0.2                 filelock_1.0.3             
 #> [55] rappdirs_0.3.4              scales_1.4.0               
-#> [57] bit64_4.6.0-1               XVector_0.50.0             
+#> [57] bit64_4.8.2                 XVector_0.52.0             
 #> [59] matrixStats_1.5.0           bit_4.6.0                  
-#> [61] ragg_1.5.1                  hms_1.1.4                  
-#> [63] memoise_2.0.1               evaluate_1.0.5             
-#> [65] knitr_1.51                  GenomicRanges_1.62.1       
-#> [67] IRanges_2.44.0              rlang_1.1.7                
-#> [69] DBI_1.3.0                   glue_1.8.0                 
-#> [71] BiocManager_1.30.27         BiocGenerics_0.56.0        
-#> [73] jsonlite_2.0.0              R6_2.6.1                   
-#> [75] MatrixGenerics_1.22.0       systemfonts_1.3.2          
-#> [77] fs_1.6.7
+#> [61] otel_0.2.0                  ragg_1.5.2                 
+#> [63] hms_1.1.4                   memoise_2.0.1              
+#> [65] evaluate_1.0.5              knitr_1.51                 
+#> [67] GenomicRanges_1.64.0        IRanges_2.46.0             
+#> [69] rlang_1.2.0                 DBI_1.3.0                  
+#> [71] glue_1.8.1                  BiocManager_1.30.27        
+#> [73] BiocGenerics_0.58.1         jsonlite_2.0.0             
+#> [75] R6_2.6.1                    MatrixGenerics_1.24.0      
+#> [77] systemfonts_1.3.2           fs_2.1.0
 ```

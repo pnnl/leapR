@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Layered enrichment analysis of pathways R • leapR</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Layered enrichment analysis of pathways R">
 <meta name="description" content="leapR is a package that identifies pathways that are enriched across diverse 'omics experiments. It leverages any tabular expression data (proteomics, transcriptomics) using the `SummarizedExperiment` object. It works with any pathway in the .gct file format.">
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">leapR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,32 +81,32 @@
 <col width="42%">
 <col width="57%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Argument</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>enrichment_in_sets</code></td>
 <td>Calculates enrichment in pathway membership in a list (e.g. highly differential proteins) relative to background using Fisher’s exact test.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>enrichment_in_order</code></td>
 <td>Calculates enrichment of pathways based on a ranked list using the Kolmogorov-Smirnov test</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>enrichment_comparison</code></td>
 <td>Compares the distribution of abundances between two sets of conditions for each pathway using a t test</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>enrichment_in_pathways</code></td>
 <td>Compares the distribution of abundances in a pathway with the background distribution of abundances using a t test</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>correlation_enrichment</code></td>
 <td>Calculates the enrichment of a pathway based on correlation between pathway members across conditions versus correlation between members not in the pathway</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>enrichment_in_relationships</code></td>
 <td>Calculates the enrichment of a pathway in specified interactions relative to non-pathway members</td>
 </tr>

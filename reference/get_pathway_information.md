@@ -30,6 +30,7 @@ list of pathway information
 ## Examples
 
 ``` r
+
      library(leapR)
 
      # load example gene set

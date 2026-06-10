@@ -3,6 +3,7 @@
 ## Load libraries needed
 
 ``` r
+
 # load the core libraries
 library(leapR)
 library(gplots)
@@ -49,6 +50,7 @@ cols_to_display <- c("ingroup_n", "outgroup_n", "background_n",
 We want to evaluate how various samples compare in enrichmnet
 
 ``` r
+
 
 i = 8
 data("ncipid")
@@ -186,6 +188,7 @@ cor.res <- do.call(rbind,lapply(1:length(shortlist), function (i) {
 We can compare the corrected p-values
 
 ``` r
+
 library(ggplot2)
 
 cor.res |> as.data.frame() |>

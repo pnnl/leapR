@@ -16,13 +16,13 @@
 ## Citation
 
 Gosline S, McDermott J, Jacobson J (2026). *leapR: Layered enrichment
-analysis of pathways R*. R package version 0.99.9,
+analysis of pathways R*. R package version 1.1.2,
 <https://pnnl.github.io/leapR/>.
 
     @Manual{,
       title = {leapR: Layered enrichment analysis of pathways R},
       author = {Sara Gosline and Jason McDermott and Jeremy Jacobson},
       year = {2026},
-      note = {R package version 0.99.9},
+      note = {R package version 1.1.2},
       url = {https://pnnl.github.io/leapR/},
     }
