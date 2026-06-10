@@ -37,7 +37,7 @@ library(stringr)
 # Load our test proteomics dataset
 ```{r load data}
 url <- "https://api.figshare.com/v2/file/download/56536217"
-pdata <- download.file(url, method = "libcurl", destfile = "protData.rda")
+pdata <- download.file(url, method = "wget", destfile = "protData.rda")
 #  as.matrix()
 load("protData.rda")
 
