@@ -20,17 +20,17 @@
 #'         library(leapR)
 #'         url <- 'https://api.figshare.com/v2/file/download/56536217'
 #'
-#'         pdata <- download.file(url,method='libcurl',destfile='protData.rda')
+#'         pdata <- download.file(url,method='wget',destfile='protData.rda')
 #'         load('protData.rda')
 #'         p <- file.remove("protData.rda")
 #'
 #'         url <- "https://api.figshare.com/v2/file/download/56536214"
-#'         tdata <- download.file(url,method='libcurl',destfile='transData.rda')
+#'         tdata <- download.file(url,method='wget',destfile='transData.rda')
 #'         load('transData.rda')
 #'         p <- file.remove("transData.rda")
 #'
 #'         url <- 'https://api.figshare.com/v2/file/download/56536211'
-#'         phdata<-download.file(url,method='libcurl',destfile = 'phosData.rda')
+#'         phdata<-download.file(url,method='wget',destfile = 'phosData.rda')
 #'         #phosphodata<-read.csv("phdata",check.names=FALSE,row.names=1)
 #'         load('phosData.rda')
 #'         p <- file.remove('phosData.rda')# read in the example protein data

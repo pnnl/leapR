@@ -19,7 +19,7 @@
 #'
 #'         library(leapR)
 #'         url <- "https://api.figshare.com/v2/file/download/56536214"
-#'         tdata <- download.file(url,method='libcurl',destfile='transData.rda')
+#'         tdata <- download.file(url,method='wget',destfile='transData.rda')
 #'         load('transData.rda')
 #'         p <- file.remove("transData.rda")
 #'

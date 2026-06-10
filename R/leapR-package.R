@@ -100,6 +100,8 @@
 #' abundance values in the \code{eset} \code{primary_columns} is significant
 #' relative to a random distribution. Note that currently
 #' \code{primary_columns} only accepts a single column for this method.
+#' #' \code{method} Defaults to \code{ks} for the KS test, but can be changed to
+#' the \code{ztest} to run the z statistic.
 #' \cr \cr
 #' enrichment_in_sets
 #' \cr
@@ -147,7 +149,7 @@
 #'  # read in the example abundance data
 #'  # read in the example transcriptomic data
 #'  tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",
-#'       method='libcurl',destfile='transData.rda')
+#'       method='wget',destfile='transData.rda')
 #'  load('transData.rda')
 #'  p <- file.remove("transData.rda")
 #'

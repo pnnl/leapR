@@ -106,6 +106,8 @@ Kolmogorov-Smirnov test. For each pathway in \code{geneset} uses a
 Kolmogorov-Smirnov test for rank order to test if the distribution of ranked
 abundance values in the \code{eset} \code{primary_columns} is significant
 relative to a random distribution. Note that currently
+\code{method} Defaults to \code{ks} for the KS test, but can be changed to
+the \code{ztest} to run the z statistic.
 \code{primary_columns} only accepts a single column for this method.
 \cr \cr
 enrichment_in_sets
@@ -155,7 +157,7 @@ pathway.
  # read in the example abundance data
  # read in the example transcriptomic data
  tdata <- download.file("https://api.figshare.com/v2/file/download/56536214",
-      method='libcurl',destfile='transData.rda')
+      method='wget',destfile='transData.rda')
  load('transData.rda')
  p <- file.remove("transData.rda")
 
