@@ -96,6 +96,8 @@
 #' Kolmogorov-Smirnov test for rank order to test if the distribution of ranked
 #' abundance values in the \code{eset} \code{primary_columns} is significant
 #' relative to a random distribution. Note that currently
+#' \code{method} Defaults to \code{ks} for the KS test, but can be changed to
+#' the \code{ztest} to run the z statistic.
 #' \code{primary_columns} only accepts a single column for this method.
 #' \cr \cr
 #' enrichment_in_sets

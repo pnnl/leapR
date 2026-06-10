@@ -150,9 +150,11 @@ as example.
 
 This data can be loaded as follows:
 ```{r omicsdata, message=FALSE, warning=FALSE, echo = FALSE}
+
 #currently using the BiocFileCache though i'm not sure it helps
 path <-tools::R_user_dir("leapR", which = "cache")
 bfc <- BiocFileCache(path, ask = FALSE)
+
 
 url <- "https://api.figshare.com/v2/file/download/56536217"
 pc <- bfcadd(bfc, "pdat", fpath = url)

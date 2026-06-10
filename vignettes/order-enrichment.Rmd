@@ -38,7 +38,6 @@ library(BiocFileCache)
 # Load our test proteomics dataset
 ```{r load data}
 
-
 #currently using the BiocFileCache though i'm not sure it helps
 path <- tools::R_user_dir("leapR", which = "cache")
 bfc <- BiocFileCache(path, ask = FALSE)
